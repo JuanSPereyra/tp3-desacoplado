@@ -1,7 +1,6 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,21 +20,14 @@ public class Grafo {
     		mapaDeListaDeVecinos.put(v, new ArrayList<>());    
     }   
     
-    public void agregarArista(Vertice origen, Vertice destino, double peso) {
-    	 	if (validarPeso(peso) && validarArista(origen, destino)) {
-    	 		Arista arista = new Arista(origen, destino, peso);
+    public void agregarArista(Vertice origen, Vertice destino) {
+    	 	if ( validarArista(origen, destino)) {
+    	 		Arista arista = new Arista(origen, destino);
     	 		
     	 		mapaDeListaDeVecinos.get(origen).add(arista);
     	 		mapaDeListaDeVecinos.get(destino).add(arista);
     	 	}
     }     
-    
-    private boolean validarPeso(double peso) {
-		if (peso <= 0)
-			throw new IllegalArgumentException("El peso debe ser valor positivo");
-			
-		else {return true;}
-	}
     
 	private boolean validarArista(Vertice origen, Vertice destino) {
 		if (!mapaDeListaDeVecinos.containsKey(origen) || !mapaDeListaDeVecinos.containsKey(destino))
@@ -53,6 +45,27 @@ public class Grafo {
     public boolean contieneVertice(Vertice v) {
         return mapaDeListaDeVecinos.containsKey(v);
     }    
+    
+    public boolean estaAislado(Vertice v) {
+        return grado(v) == 0;
+    }
+    
+    
+    public boolean esConjuntoDominante(Set<Vertice> conjunto) {
+        for (Vertice v : mapaDeListaDeVecinos.keySet()) {
+            if (!conjunto.contains(v) && !tieneVecinoEn(v, conjunto))
+                return false;
+        }
+        return true;
+    }
+    
+    private boolean tieneVecinoEn(Vertice v, Set<Vertice> conjunto) {
+        for (Vertice vecino : obtenerVecinos(v)) {
+            if (conjunto.contains(vecino))
+                return true;
+        }
+        return false;
+    }
     
     public void eliminarVertice(Vertice v) {
         validarVerticePertenceAGrafo(v);
@@ -101,16 +114,6 @@ public class Grafo {
         return mapaDeListaDeVecinos.size();
     }
     
-    public boolean esConexo() {
-        if (mapaDeListaDeVecinos.isEmpty())
-            return true;
-        
-        Vertice origen = mapaDeListaDeVecinos.keySet().iterator().next();   
-        int tamanioVerticesConectados = BFS.verticesAlcanzablesDesde(this, origen).size();
-        
-        return tamanioVerticesConectados == cantidadVertices();
-    }
-    
     public void eliminarArista(Vertice a, Vertice b) {
         validarVerticesExistenEnGrafo(a, b);      
         Arista arista = buscarArista(a, b);
@@ -140,11 +143,17 @@ public class Grafo {
         return null;
     } 
     
-    public List<Arista> obtenerAristasOrdenadasMayorAMenor() {
-		List<Arista> ordenadas = new ArrayList<>(obtenerTodasLasAristas());
-		
-		Collections.sort(ordenadas, Collections.reverseOrder());
-		return ordenadas;
+    public Set<Vertice> obtenerVecinos(Vertice v) {
+        validarVerticePertenceAGrafo(v);
+        Set<Vertice> vecinos = new HashSet<>();
+        for (Arista a : mapaDeListaDeVecinos.get(v))
+            vecinos.add(a.obtenerOpuesto(v));
+        return vecinos;
+    }
+
+    public int grado(Vertice v) {
+        validarVerticePertenceAGrafo(v);
+        return mapaDeListaDeVecinos.get(v).size();
     }  
     
     @Override

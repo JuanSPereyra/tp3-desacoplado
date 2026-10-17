@@ -1,15 +1,15 @@
 package modelo;
 
-public class Arista implements Comparable<Arista> {
+public class Arista  {
 
     private Vertice origen;
     private Vertice destino;
-    private double peso;
+    
 
-    public Arista(Vertice origen, Vertice destino, double peso) {
+    public Arista(Vertice origen, Vertice destino) {
         this.origen = origen;
         this.destino = destino;
-        this.peso = peso;
+        
     }
     
     public Vertice getOrigen() {
@@ -20,9 +20,7 @@ public class Arista implements Comparable<Arista> {
         return destino;
     }
     
-    public double getPeso() {
-        return peso;
-    }
+   
     
     public Vertice obtenerOpuesto(Vertice v) {
 	    	if (getOrigen().equals(v)) return getDestino();
@@ -30,13 +28,10 @@ public class Arista implements Comparable<Arista> {
 	    	throw new IllegalArgumentException("El vertice no pertenece a esta arista.");
     }
     
-    @Override
-    public int compareTo(Arista otra) {
-        return Double.compare(this.peso, otra.peso);
-    }   
+      
     
     @Override
     public String toString() {
-        return origen + " -- " + destino + " (" + peso + ")";
+        return origen + " -- " + destino ;
     }  
 }
