@@ -2,12 +2,12 @@ package test;
 
 import static org.junit.Assert.*;
 
+
 import org.junit.Test;
 
-import modelo.Arista;
 import modelo.GeneradorGrafo;
 import modelo.Grafo;
-
+import modelo.Vertice;
 
 public class GeneradorGrafoTest {
 
@@ -31,10 +31,11 @@ public class GeneradorGrafoTest {
 
 	    assertEquals(maximo, g.cantidadAristas());
 	    for (int i = 0; i < n; i++) {
+	    	Vertice v1 = g.getVertice(String.valueOf(i));
 	        for (int j = 0; j < n; j++) {
 	            if (i != j) {
-	            	Arista ar = new Arista(g.getVertice(String.valueOf(i)), g.getVertice(String.valueOf(j)));
-	                assertTrue(g.existeArista(ar));
+	            	Vertice v2 = g.getVertice(String.valueOf(j));
+	            	assertTrue(g.existeArista(v1,v2));
 	            }
 	        }
 	    }
@@ -75,9 +76,11 @@ public class GeneradorGrafoTest {
 
 	    for (int i = 0; i < n; i++) {
 	        for (int j = i + 1; j < n; j++) {
-	            Arista a1 = new Arista(g1.getVertice(String.valueOf(i)), g1.getVertice(String.valueOf(j)));
-	            Arista a2 = new Arista(g2.getVertice(String.valueOf(i)), g2.getVertice(String.valueOf(j)));
-	            assertEquals(g1.existeArista(a1), g2.existeArista(a2));
+	            Vertice a1 = g1.getVertice(String.valueOf(i));
+	            Vertice b1 = g1.getVertice(String.valueOf(j));
+	            Vertice a2 = g2.getVertice(String.valueOf(i));
+	            Vertice b2 = g2.getVertice(String.valueOf(j));
+	            assertEquals(g1.existeArista(a1, b1), g2.existeArista(a2, b2));
 	        }
 	    }
 	}

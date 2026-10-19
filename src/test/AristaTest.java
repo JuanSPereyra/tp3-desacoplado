@@ -3,7 +3,6 @@ package test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-
 import modelo.Arista;
 import modelo.Vertice;
 
@@ -22,40 +21,34 @@ public class AristaTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void OpuestoDeVerticeAjenoTest() {
-    	new Arista(a,b,5).obtenerOpuesto(c);
+    	new Arista(a,b).obtenerOpuesto(c);
     }
     
 
     @Test
     public void obtenerOrigenTest() {
-        Arista arista = new Arista(a, b, 10);
+        Arista arista = new Arista(a, b);
         assertEquals(a, arista.getOrigen());
     }
 
     @Test
     public void obtenerDestinoTest() {
-        Arista arista = new Arista(a, b, 10);
+        Arista arista = new Arista(a, b);
         assertEquals(b, arista.getDestino());
     }
 
-    @Test
-    public void obtenerPesoTest() {
-        Arista arista = new Arista(a, b, 7);
-        assertEquals(7, arista.getPeso(),0);
-    }
+   
 
     @Test
     public void obtenerExtremoTest() {
-        Arista arista = new Arista(a, b, 10);
+        Arista arista = new Arista(a, b);
         assertEquals(b, arista.obtenerOpuesto(a));
     }
-
+    
     @Test
-    public void compareToPesoTest() {
-        Arista a1 = new Arista(a, b, 5.0);
-        Arista a2 = new Arista(a, b, 5.0);
-        assertEquals(0, a1.compareTo(a2));
+    public void obtenerNombreTest() {
+    	Arista arista = new Arista(a, b);
+    	assertEquals("Argentina" + " -- " + "Brasil",arista.toString());
     }
 
-   
 }

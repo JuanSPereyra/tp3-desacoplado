@@ -28,9 +28,8 @@ public class GeneradorGrafo {
 		while (agregados <m) {
 			Vertice a = vertices.get(rnd.nextInt(n));
 			Vertice b = vertices.get(rnd.nextInt(n));
-			Arista ar = new Arista(a, b);
-			if(a != b && !grf.existeArista(ar)) {
-				grf.agregarAristaSinPeso(a, b);
+			if(!a.equals(b) && !grf.existeArista(a,b)) {
+				grf.agregarArista(a, b);
 				agregados++;
 			}
 		}

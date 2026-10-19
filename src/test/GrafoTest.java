@@ -1,5 +1,10 @@
 package test;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,227 +15,175 @@ import modelo.Vertice;
 public class GrafoTest {
 
     private Grafo grafo;
-    private Vertice a;
-    private Vertice b;
-    private Vertice c;
-    private Vertice d;
-    private Vertice e;
+    private Grafo vacio;
+    private Vertice a, b, c, d, e, f, h;
 
     @Before
-    public void inicializar() {
+    public void setUp() {
         grafo = new Grafo();
+        
+        vacio = new Grafo();
+        
+
         a = new Vertice("A");
         b = new Vertice("B");
         c = new Vertice("C");
         d = new Vertice("D");
         e = new Vertice("E");
+        f = new Vertice("F");
+        h = new Vertice("H");
+
+        grafo.agregarVertice(a);
+        grafo.agregarVertice(b);
+        grafo.agregarVertice(c);
+        grafo.agregarVertice(d);
+        grafo.agregarVertice(e);
+        grafo.agregarVertice(f);
+        grafo.agregarVertice(h);
+
+        grafo.agregarArista(a, b);
+        grafo.agregarArista(b, c);
+        grafo.agregarArista(c, d);
+        grafo.agregarArista(c, e);
+        grafo.agregarArista(e, f);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void eliminarAristaConVerticeInexistenteLanzaExcepcionTest() {
-        grafo.agregarVertice(a);
-        grafo.eliminarArista(a, b);
+    	vacio.agregarVertice(a);
+        vacio.eliminarArista(a, b);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void aristaConDestinoInexistenteLanzaExcepcionTest() {
-        grafo.agregarVertice(a);
-        grafo.agregarArista(a, b, 1);
+        vacio.agregarVertice(a);
+        vacio.agregarArista(a, b);           // b no existe
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void aristaDuplicadaLanzaExcepcionTest() {
-    	aristaDuplicada();
+        grafo.agregarArista(a, b);           // A-B ya existe
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void aristaDuplicadaInvertidaLanzaExcepcionTest() {
-    	aristaDuplicadaInvertida();
+        grafo.agregarArista(b, a);           // A-B ya existe, al revés
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void aristaHaciaSiMismoLanzaExcepcionTest() {
-        grafo.agregarVertice(a);
-        grafo.agregarArista(a, a, 1);
+        grafo.agregarArista(a, a);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void aristaConOrigenInexistenteLanzaExcepcionTest() {
-        grafo.agregarVertice(b);
-        grafo.agregarArista(new Vertice("Alemania"), b,1);
+        grafo.agregarArista(new Vertice("Alemania"), b);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void eliminarAristaInexistenteLanzaExcepcionTest() {
-    	eliminarAristainexistente();
+        grafo.eliminarArista(a, c);          // existen los dos, pero no hay A-C
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void eliminarVerticeInexistenteLanzaExcepcionTest() {
-        grafo.eliminarVertice(a);
+        grafo.eliminarVertice(new Vertice("Z"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void busquedaEnGrafoVacioLanzaExcepcionTest() {
-        grafo.getVertice("Argentina");
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void getAristasDeVerticeInexistenteLanzaExcepcionTest() {
-        grafo.obtenerAristasDe(a);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void aristaConPesoNegativoLanzaExcepcionTest() {
-    	agregoAristaPesoCero();
+        vacio.getVertice("Argentina");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void aristaConPesoCeroLanzaExcepcionTest() {
-    	agregoAristaPesoCero();
+    public void getAristasDeVerticeInexistenteLanzaExcepcionTest() {
+        grafo.obtenerAristasDe(new Vertice("Z"));
     }
+    
+    
     
     @Test
     public void getVerticePorNombreDevuelveElVerticeTest() {
-        grafo.agregarVertice(a);
         assertEquals(a, grafo.getVertice("A"));
     }
-    
+
     @Test
     public void agregaVerticeNuevoYAumentaCantidadTest() {
-        grafo.agregarVertice(a);
-        assertEquals(1, grafo.cantidadVertices());
-        assertTrue(grafo.obtenerVertices().contains(a));
+        vacio.agregarVertice(a);
+        assertEquals(1, vacio.cantidadVertices());
+        assertTrue(vacio.obtenerVertices().contains(a));
     }
 
     @Test
     public void verticesConMismoNombreSonElMismoVerticeTest() {
-        grafo.agregarVertice(new Vertice("Argentina"));
-        grafo.agregarVertice(new Vertice("Argentina"));
-        assertEquals(1, grafo.cantidadVertices());
+        vacio.agregarVertice(new Vertice("Argentina"));
+        vacio.agregarVertice(new Vertice("Argentina"));
+        assertEquals(1, vacio.cantidadVertices());
     }
 
-    @Test
-    public void agregaAristaValidaYApareceEnAmbosVerticesTest() {
-        agregoAristaPesoPositivo();
-        assertEquals(1, grafo.obtenerAristasDe(a).size());
-    }
-
-    @Test
-    public void eliminaVerticeSinAristasTest() {
-        grafo.agregarVertice(a);
-        grafo.eliminarVertice(a);
-        assertFalse(grafo.obtenerVertices().contains(a));
-    }
-    
-    @Test
-    public void eliminaAristaExistente() {
-    	agregarYEliminarArista();
-        assertEquals(0, grafo.obtenerAristasDe(a).size());
-    }
- 
-    @Test
-    public void getAristasDeVerticeSinAristasDevuelveListaVaciaTest() {
-        grafo.agregarVertice(a);
-        assertTrue(grafo.obtenerAristasDe(a).isEmpty());
-    }
-
-    @Test
-    public void grafoVacioEsConexoTest() {
-        assertTrue(grafo.esConexo());
-    }
-
-    @Test
-    public void grafoConUnVerticeEsConexoTest() {
-        grafo.agregarVertice(a);
-        assertTrue(grafo.esConexo());
-    }
-   
-    @Test
-    public void grafoEnLineaEsConexo() {
-    	crearGrafoConexo();
-        assertTrue(crearGrafoConexo().esConexo());
-    }
-  
-    @Test
-    public void grafoConVerticesAisladosNoEsConexo() {
-        assertFalse(crearGrafoInconexo().esConexo());
-    }
-    
     @Test
     public void contieneVerticeAgregadoTest() {
-        grafo.agregarVertice(a);
         assertTrue(grafo.contieneVertice(a));
     }
 
     @Test
     public void noContieneVerticeNoAgregadoTest() {
-        assertFalse(grafo.contieneVertice(a));
+        assertFalse(grafo.contieneVertice(new Vertice("Z")));
     }
-    
+
+    @Test
+    public void eliminaVerticeSinAristasTest() {
+        grafo.eliminarVertice(h);
+        assertFalse(grafo.contieneVertice(h));
+    }
+
     @Test
     public void eliminarVerticeConAristasLoQuitaDelGrafoTest() {
-        agregoAristaPesoPositivo();
         grafo.eliminarVertice(a);
         assertFalse(grafo.contieneVertice(a));
     }
 
     @Test
     public void eliminarVerticeConAristasQuitaLaAristaDelVecinoTest() {
-        agregoAristaPesoPositivo();
         grafo.eliminarVertice(a);
-        assertTrue(grafo.obtenerAristasDe(b).isEmpty());
+        assertEquals(1, grafo.obtenerAristasDe(b).size());   // solo queda B-C
     }
     
+    @Test
+    public void eliminaAristaExistenteTest() {
+        grafo.eliminarArista(a, b);
+        assertEquals(0, grafo.obtenerAristasDe(a).size());
+    }
+
     @Test
     public void eliminarAristaTambienLaQuitaDelOtroVerticeTest() {
-        agregarYEliminarArista();
-        assertTrue(grafo.obtenerAristasDe(b).isEmpty());
+        grafo.eliminarArista(a, b);
+        assertEquals(1, grafo.obtenerAristasDe(b).size());   // solo queda B-C
     }
-    
+
+    @Test
+    public void getAristasDeVerticeSinAristasDevuelveListaVaciaTest() {
+        assertTrue(grafo.obtenerAristasDe(h).isEmpty());
+    }
+
     @Test
     public void todasLasAristasDeGrafoVacioEsListaVaciaTest() {
-        assertTrue(grafo.obtenerTodasLasAristas().isEmpty());
+        assertTrue(vacio.obtenerTodasLasAristas().isEmpty());
     }
 
     @Test
-    public void todasLasAristasNoDuplicaLaAristaCompartidaTest() {
-        agregoAristaPesoPositivo();
-        assertEquals(1, grafo.obtenerTodasLasAristas().size());
-    }
-
-    @Test
-    public void todasLasAristasDeGrafoEnLineaTest() {
-        assertEquals(2, crearGrafoConexo().obtenerTodasLasAristas().size());
-    }
-    
-    @Test
-    public void aristasOrdenadasDeGrafoVacioEsListaVaciaTest() {
-        assertTrue(grafo.obtenerAristasOrdenadasMayorAMenor().isEmpty());
-    }
-
-    @Test
-    public void aristasOrdenadasPrimeraEsLaDeMayorPesoTest() {
-        agregoAristasConPesosDistintos();
-        assertEquals(7, grafo.obtenerAristasOrdenadasMayorAMenor().get(0).getPeso(), 0);
-    }
-
-    @Test
-    public void aristasOrdenadasUltimaEsLaDeMenorPesoTest() {
-        agregoAristasConPesosDistintos();
-        assertEquals(1, grafo.obtenerAristasOrdenadasMayorAMenor().get(1).getPeso(), 0);
+    public void todasLasAristasNoDuplicaLasAristasCompartidasTest() {
+        assertEquals(5, grafo.obtenerTodasLasAristas().size());
     }
     
     @Test
     public void modificarVerticesObtenidosNoAfectaAlGrafoTest() {
-        grafo.agregarVertice(a);
         grafo.obtenerVertices().clear();
-        assertEquals(1, grafo.cantidadVertices());
+        assertEquals(7, grafo.cantidadVertices());
     }
 
     @Test
     public void modificarAristasObtenidasNoAfectaAlGrafoTest() {
-        agregoAristaPesoPositivo();
         grafo.obtenerAristasDe(a).clear();
         assertEquals(1, grafo.obtenerAristasDe(a).size());
     }
@@ -242,68 +195,50 @@ public class GrafoTest {
 
     @Test
     public void toStringIncluyeLaSeccionDeAristasTest() {
-        agregoAristaPesoPositivo();
         assertTrue(grafo.toString().contains("Aristas:"));
     }
-    private void agregoAristasConPesosDistintos() {
-        grafo.agregarVertice(a);
-        grafo.agregarVertice(b);
-        grafo.agregarVertice(c);
-        grafo.agregarArista(a, b, 1);
-        grafo.agregarArista(b, c, 7);
-    }
     
-    private void agregoAristaPesoPositivo() {
-    	grafo.agregarVertice(a);
-        grafo.agregarVertice(b);
-        grafo.agregarArista(a, b, 5);
+    @Test
+    public void verticeAisladoTest() {
+        assertTrue(grafo.estaAislado(h));
     }
-    private void agregoAristaPesoCero() {
-    	grafo.agregarVertice(a);
-        grafo.agregarVertice(b);
-        grafo.agregarArista(a, b, 0);
+
+    @Test
+    public void verticeConAristaNoEstaAisladoTest() {
+        assertFalse(grafo.estaAislado(a));
+        assertFalse(grafo.estaAislado(c));
     }
-    private  void agregarYEliminarArista() {
-    	grafo.agregarVertice(a);
-        grafo.agregarVertice(b);
-        grafo.agregarArista(a, b, 1);
-        grafo.eliminarArista(a, b);
+
+    @Test
+    public void conjuntoDominanteValidoTest() {
+        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(b, c, e, h));
+        assertTrue(grafo.esConjuntoDominante(conjunto));
     }
-    private void eliminarAristainexistente() {
-    	grafo.agregarVertice(a);
-        grafo.agregarVertice(b);
-        grafo.agregarArista(a, b, 1.0);
-        grafo.eliminarArista(a, b);
-        grafo.eliminarArista(a, b);
+
+    @Test
+    public void conjuntoSinElAisladoNoDominaTest() {
+        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(b, c, e));   // falta H
+        assertFalse(grafo.esConjuntoDominante(conjunto));
     }
-    private void aristaDuplicada() {
-   	 grafo.agregarVertice(a);
-        grafo.agregarVertice(b);
-        grafo.agregarArista(a, b, 1);
-        grafo.agregarArista(a, b, 2);
-   }
-   private void aristaDuplicadaInvertida() {
-   	grafo.agregarVertice(a);
-       grafo.agregarVertice(b);
-       grafo.agregarArista(a, b, 1);
-       grafo.agregarArista(b, a, 2);
-   }
-    private Grafo crearGrafoConexo() {
-        Grafo g = new Grafo();
-        g.agregarVertice(a);
-        g.agregarVertice(b);
-        g.agregarVertice(c);
-        g.agregarArista(a, b, 1);
-        g.agregarArista(b, c, 1);
-        return g;
+
+    @Test
+    public void conjuntoQueNoDominaTest() {
+        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(c, h));      // A y F quedan sin cubrir
+        assertFalse(grafo.esConjuntoDominante(conjunto));
     }
+
+    @Test
+    public void conjuntoVacioNoDominaGrafoConVerticesTest() {
+        assertFalse(grafo.esConjuntoDominante(new HashSet<>()));
+    }
+
+    @Test
+    public void conjuntoVacioDominaGrafoVacioTest() {
+        assertTrue(vacio.esConjuntoDominante(new HashSet<>()));
+    }
+   
+   
     
-    private Grafo crearGrafoInconexo() {
-        Grafo g = crearGrafoConexo();
-        g.agregarVertice(d);
-        g.agregarVertice(e);
-        g.agregarArista(d, e, 1);
-        return g;
-    }
+    
 
 }

@@ -9,11 +9,11 @@ import modelo.Vertice;
 
 public class VerticeTest {
 	private Vertice vertice;
-	private Vertice verticeConCoord;
+	
 	@Before
 	public void inicializar() {
 	vertice=new Vertice("Argentina");
-	verticeConCoord=new Vertice("Argentina", -10, -20);
+	
 	
 	}
 	
@@ -22,40 +22,18 @@ public class VerticeTest {
 		assertEquals("Argentina",vertice.getNombre());
 	}
 	
-	@Test
-    public void constructorSimpleInicializaLatitudEnCeroTest() {
-        assertEquals(0, vertice.getLat(), 0);
-    }
 	
-	@Test
-	public void constructorSimpleInicializaLongitudEnCeroTest() {
-	    assertEquals(0, vertice.getLon(), 0);
-	}
 	
-	@Test
-	public void constructorConCoordenadasGuardaElNombreTest() {
-	    assertEquals("Argentina", verticeConCoord.getNombre());
-	}
 	
-	@Test
-	public void constructorConCoordenadasGuardaLatitudTest() {
-	    assertEquals(-10, verticeConCoord.getLat(), 0);
-	}
 	
-	@Test
-    public void constructorConCoordenadasGuardaLongitudTest() {
-        assertEquals(-20, verticeConCoord.getLon(), 0);
-    }
+	
 	
     @Test
     public void verticesConMismoNombreSonIgualesTest() {
         assertEquals(vertice,new Vertice("Argentina"));
     }
     
-    @Test
-    public void verticesConMismoNombreYDistintasCoordenadasSonIgualesTest() {
-        assertEquals(verticeConCoord, new Vertice("Argentina", 3, 4));
-    }
+    
     
     @Test
     public void verticesIgualesTienenMismoHashCodeTest() {
@@ -82,10 +60,6 @@ public class VerticeTest {
         assertTrue(vertice.equals(vertice));
     }
     
-    @Test
-    public void verticesConMismoNombreYDistintasCoordenadasTienenMismoHashCodeTest() {
-        assertEquals(verticeConCoord.hashCode(), new Vertice("Argentina", 3, 4).hashCode());
-    }
     
     @Test
     public void toStringDevuelveElNombre() {
