@@ -21,6 +21,25 @@ public class Grafo {
     		mapaDeListaDeVecinos.put(v, new ArrayList<>());    
     }   
     
+    public void agregarAristaSinPeso (Vertice origen, Vertice destino) {
+    	Arista arista = new Arista(origen, destino);
+ 		
+ 		mapaDeListaDeVecinos.get(origen).add(arista);
+ 		mapaDeListaDeVecinos.get(destino).add(arista);
+ 	}
+    
+    public boolean existeArista (Arista a) {
+    	List<Arista> vecinos = mapaDeListaDeVecinos.get(a.getOrigen());
+    	if (vecinos==null) return false;
+    	
+    	for (Arista ar : vecinos) {
+    		boolean mismoSentido = ar.getOrigen().equals(a.getOrigen()) && ar.getDestino().equals(a.getDestino());
+    		boolean sentidoInverso = ar.getOrigen().equals(a.getDestino()) && ar.getDestino().equals(a.getOrigen());
+    		if (mismoSentido || sentidoInverso) return true;
+    	}
+    	return false;
+    }
+    
     public void agregarArista(Vertice origen, Vertice destino, double peso) {
     	 	if (validarPeso(peso) && validarArista(origen, destino)) {
     	 		Arista arista = new Arista(origen, destino, peso);
@@ -99,6 +118,14 @@ public class Grafo {
     
     public int cantidadVertices() {
         return mapaDeListaDeVecinos.size();
+    }
+    
+    public int cantidadAristas() {
+    	int suma =0;
+    	for (List<Arista> vecinos: mapaDeListaDeVecinos.values()) {
+    		suma+= vecinos.size();
+    	}
+    	return suma/2;
     }
     
     public boolean esConexo() {

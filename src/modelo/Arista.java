@@ -5,6 +5,11 @@ public class Arista implements Comparable<Arista> {
     private Vertice origen;
     private Vertice destino;
     private double peso;
+    
+    public Arista(Vertice origen, Vertice destino) {
+        this.origen = origen;
+        this.destino = destino;
+    }
 
     public Arista(Vertice origen, Vertice destino, double peso) {
         this.origen = origen;
