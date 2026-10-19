@@ -3,8 +3,10 @@ package vista;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,27 +51,30 @@ public class PantallaResultado extends JFrame {
 	}
 
 	private void crearLblTitulo() {
-		lblTitulo = new JLabel("Resultado del Conjunto Dominante Mínimo", SwingConstants.CENTER);
-		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
-		lblTitulo.setForeground(Color.WHITE);
-		lblTitulo.setBounds(100, 40, 700, 40);
+		lblTitulo = new JLabel("RESULTADO DEL CONJUNTO DOMINANTE", SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblTitulo.setForeground(new Color(248, 250, 252));
+		lblTitulo.setBounds(100, 30, 700, 40);
 		panelFondo.add(lblTitulo);
 	}
 
 	private void crearAreaResultado() {
 		txtResultado = new JTextArea();
-		txtResultado.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtResultado.setForeground(new Color(30, 41, 59));
+		txtResultado.setFont(new Font("Consolas", Font.PLAIN, 15)); 
+		txtResultado.setBackground(new Color(15, 23, 42));
+		txtResultado.setForeground(new Color(241, 245, 249));
 		txtResultado.setEditable(false);
+		txtResultado.setMargin(new Insets(15, 15, 15, 15));
 
 		JScrollPane scrollPane = new JScrollPane(txtResultado);
-		scrollPane.setBounds(150, 110, 600, 300);
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(51, 65, 85)));
+		scrollPane.setBounds(150, 90, 600, 320);
 		panelFondo.add(scrollPane);
 	}
 
 	private void crearBtnVolver(InterfazGestorPantalla gestorInterfaz) {
 		btnVolver = new JButton("Volver al Menú");
-		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		btnVolver.setForeground(Color.WHITE);
 		btnVolver.setBackground(new Color(37, 99, 235));
 		btnVolver.setFocusPainted(false);
@@ -91,7 +96,7 @@ public class PantallaResultado extends JFrame {
 
 	private void crearBtnSalir() {
 		btnSalir = new JButton("Salir");
-		btnSalir.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btnSalir.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.setBackground(new Color(239, 68, 68));
 		btnSalir.setFocusPainted(false);
@@ -113,5 +118,6 @@ public class PantallaResultado extends JFrame {
 
 	public void mostrarResultado(String texto) {
 		txtResultado.setText(texto);
+		txtResultado.setCaretPosition(0); 
 	}
 }

@@ -12,7 +12,5 @@ public interface CargarDatosVista {
  
 	void limpiarCampoVertice();
  
-	void limpiarCampoPeso();
- 
 	void mostrarMensajeError(String mensaje);
 }
