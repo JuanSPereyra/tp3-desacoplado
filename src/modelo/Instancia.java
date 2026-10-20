@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import util.Par;
+
 public class Instancia {
 	private final Grafo grafo;
 
@@ -56,5 +58,20 @@ public class Instancia {
 	public void eliminarArista(Vertice origen, Vertice destino) {
 		grafo.eliminarArista(origen, destino);
 		
+	}
+
+	public List<Par<String,String>> getAristasComoNombres() {
+		List<Par<String,String>> aristas = new ArrayList<>();
+
+		for (Vertice v : getVertices()) {
+			for (Vertice vecino : vecinosDe(v)) {
+				// Evitar duplicados: solo agregamos si origen < destino (orden alfabético)
+				if (v.getNombre().compareTo(vecino.getNombre()) < 0) {
+					aristas.add(new Par<>(v.getNombre(), vecino.getNombre()));
+				}
+			}
+		}
+
+		return aristas;
 	}
 }
