@@ -6,23 +6,23 @@ import java.util.Set;
 
 public class Solucion {
     private Instancia instancia;
-    private Set<Vertice> vertices;
+    private Set<Vertice> verticesConjuntoMinimo;
     private Set<Vertice> dominados;
 
     public Solucion(Instancia instancia) {
         this.instancia = instancia;
-        this.vertices = new HashSet<>();
+        this.verticesConjuntoMinimo = new HashSet<>();
         this.dominados = new HashSet<>();
     }
 
     public void agregar(Vertice v) {
-        vertices.add(v);
+        verticesConjuntoMinimo.add(v);
         dominados.add(v);
         dominados.addAll(instancia.vecinosDe(v));
     }
 
     public boolean contiene(Vertice v) {
-        return vertices.contains(v);
+        return verticesConjuntoMinimo.contains(v);
     }
 
     public boolean estaDominado(Vertice v) {
@@ -49,15 +49,15 @@ public class Solucion {
     }
     
     public int cardinal() {
-        return vertices.size();
+        return verticesConjuntoMinimo.size();
     }
 
     public Set<Vertice> getVertices() {
-        return new HashSet<>(vertices);
+        return new HashSet<>(verticesConjuntoMinimo);
     }
 
     @Override
     public String toString() {
-        return "Solucion " + vertices;
+        return "Solucion " + verticesConjuntoMinimo;
     }
 }

@@ -5,6 +5,9 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -22,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import presentador.CargarDatosPresentador;
 
+@SuppressWarnings("serial")
 public class PantallaCargarDatosManual extends JFrame implements CargarDatosVista {
 
 	private CargarDatosPresentador presentador;
@@ -36,6 +40,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	private JTable tablaVertices, tablaAristas;
 	private JComboBox<String> comboOrigen, comboDestino;
 	private DefaultTableModel modeloVertices, modeloAristas;
+//	private static final String eliminar = "X";
 
 	public PantallaCargarDatosManual(InterfazGestorPantalla gestorInterfaz) {
 		this.presentador = new CargarDatosPresentador(this, gestorInterfaz);
@@ -96,11 +101,27 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		tablaVertices = new JTable(modeloVertices);
 		estiloTabla(tablaVertices);
 		configurarColumnaEliminar(tablaVertices);
+		agregarListenerEliminarVertice();
 		panelFondo.add(crearScroll(tablaVertices, 40, 160, 360, 290));
+		
+	}
+
+	private void agregarListenerEliminarVertice() {
+		tablaVertices.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaVertices.rowAtPoint(e.getPoint());
+				int columna = tablaVertices.columnAtPoint(e.getPoint());
+				if (fila >= 0 && columna == tablaVertices.getColumnCount() - 1) {
+					String nombre = (String) modeloVertices.getValueAt(fila, 0);
+					presentador.manejarClickEliminarVertice(nombre);
+				}
+			}
+		});
 	}
 
 	private void crearSeccionAristas() {
-		lblOrigen = new JLabel("2. ORIGEN:");
+		lblOrigen = new JLabel("ORIGEN:");
 		estiloEtiqueta(lblOrigen);
 		lblOrigen.setBounds(460, 80, 180, 22);
 		panelFondo.add(lblOrigen);
@@ -138,14 +159,32 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		tablaAristas = new JTable(modeloAristas);
 		estiloTabla(tablaAristas);
 		configurarColumnaEliminar(tablaAristas);
+		
+		agregarListenerEliminarArista();
+		
 		panelFondo.add(crearScroll(tablaAristas, 460, 210, 380, 240));
+	}
+
+	private void agregarListenerEliminarArista() {
+		tablaAristas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaAristas.rowAtPoint(e.getPoint());
+				int columna = tablaAristas.columnAtPoint(e.getPoint());
+				if (fila >= 0 && columna == tablaAristas.getColumnCount() - 1) {
+					String origen = (String) modeloAristas.getValueAt(fila, 0);
+					String destino = (String) modeloAristas.getValueAt(fila, 1);
+					presentador.manejarClickEliminarArista(origen, destino);
+				}
+			}
+		});
 	}
 
 	private void crearElementos(InterfazGestorPantalla gestorInterfaz) {
 		btnIrResultado = new JButton("Ver Resultado");
 		btnIrResultado.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnIrResultado.setForeground(Color.WHITE);
-		btnIrResultado.setBackground(new Color(16, 185, 129)); // verde
+		btnIrResultado.setBackground(new Color(16, 185, 129));
 		btnIrResultado.setFocusPainted(false);
 		btnIrResultado.setBorderPainted(false);
 		btnIrResultado.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -162,7 +201,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		btnVolver = new JButton("Volver al Menú");
 		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnVolver.setForeground(Color.WHITE);
-		btnVolver.setBackground(new Color(239, 68, 68)); // rojo
+		btnVolver.setBackground(new Color(239, 68, 68));
 		btnVolver.setFocusPainted(false);
 		btnVolver.setBorderPainted(false);
 		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));

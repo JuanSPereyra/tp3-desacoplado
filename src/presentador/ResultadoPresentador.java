@@ -1,5 +1,7 @@
 package presentador;
 
+import java.util.List;
+
 import modelo.Instancia;
 import modelo.Solucion;
 import modelo.SolverGoloso;
@@ -26,15 +28,23 @@ public class ResultadoPresentador {
 		}
 
 		SolverGoloso solver = new SolverGoloso(instancia);
-		Solucion solucion = solver.resolverPorCobertura();
+		List<Solucion> soluciones = solver.resolver();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Conjunto Dominante Mínimo\n");
-		sb.append("Total de vértices en la solución: ").append(solucion.cardinal()).append("\n\n");
-		sb.append("Vértices seleccionados:\n");
-
-		for (Vertice v : solucion.getVertices()) {
-			sb.append(". ").append(v.getNombre()).append("\n");
+		
+		Integer num = 1;
+		
+		for (Solucion sol : soluciones) {
+			sb.append("Solucion " + num).append("\n");
+			sb.append("Total de vértices en la solución: ")
+		      .append(sol.cardinal()).append("\n");
+		    sb.append("Vértices seleccionados:\n");
+		    for (Vertice v : sol.getVertices()) {
+		        sb.append(". ").append(v.getNombre()).append("\n");
+		    }
+		    sb.append("\n");
+		    
+		    num ++;
 		}
 
 		pantallaResultado.mostrarResultado(sb.toString());

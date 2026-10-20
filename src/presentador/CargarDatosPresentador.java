@@ -1,6 +1,8 @@
 package presentador;
 
+import modelo.Arista;
 import modelo.Instancia;
+import modelo.Vertice;
 import vista.CargarDatosVista;
 import vista.InterfazGestorPantalla;
 import vista.PantallaResultado;
@@ -50,10 +52,18 @@ public class CargarDatosPresentador {
 	}
 
 	public void manejarClickEliminarArista(String origen, String destino) {
+		instancia.eliminarArista(instancia.getVertice(origen), instancia.getVertice(destino));
 		_cdVista.eliminarArista(origen, destino);
 	}		
 	
 	public void manejarClickEliminarVertice(String nombre) {
+		Vertice vertice = instancia.getVertice(nombre);
+		 
+		for (Arista arista : instancia.obtenerAristasDe(vertice)) {
+			_cdVista.eliminarArista(arista.getOrigen().getNombre(), arista.getDestino().getNombre());
+		}
+
+		instancia.eliminarVertice(vertice);
 		_cdVista.eliminarVertice(nombre);
 	} 	
 	

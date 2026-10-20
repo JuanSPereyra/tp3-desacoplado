@@ -15,9 +15,16 @@ public class Grafo {
         this.mapaDeListaDeVecinos = new HashMap<>();
     }  
     
-    public void agregarVertice(Vertice v) {  	
+    public Map<Vertice, List<Arista>> getMapaDeListaDeVecinos() {
+		return mapaDeListaDeVecinos;
+	}
+
+	public void agregarVertice(Vertice v) {  	
     		if(!mapaDeListaDeVecinos.containsKey(v)) 
-    		mapaDeListaDeVecinos.put(v, new ArrayList<>());    
+    		mapaDeListaDeVecinos.put(v, new ArrayList<>());
+    		else {
+    			throw new IllegalArgumentException("Vertice ya existente");
+    		}
     }   
     
     public void agregarArista(Vertice origen, Vertice destino) {
