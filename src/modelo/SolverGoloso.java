@@ -1,13 +1,32 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class SolverGoloso {
     private Instancia instancia;
+    private List<Solucion> conjuntoSoluciones;
 
     public SolverGoloso(Instancia instancia) {
         this.instancia = instancia;
     }
+    
+	public List<Solucion> resolver() {
+		conjuntoSoluciones = new ArrayList<>();
+		
+		Solucion solucion1 = resolverPorCobertura();
+		Solucion solucion2 = resolverPorGrado();
+		Solucion solucion3 = resolverPorPesoDelVertice();
+		
+		
+		conjuntoSoluciones.add(solucion1);
+		conjuntoSoluciones.add(solucion2);
+		conjuntoSoluciones.add(solucion3);
+		
+
+		return conjuntoSoluciones;
+	}
 
     //estrategia 1: el que cubre mas vertices nuevos
     public Solucion resolverPorCobertura() {
@@ -79,4 +98,6 @@ public class SolverGoloso {
     private double peso(Vertice v) {
         return 1.0 / (instancia.grado(v) + 1);
     }
+
+
 }

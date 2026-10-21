@@ -9,5 +9,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="gson-2.2.jar"/>
+	<classpathentry kind="lib" path="mxgraphx-all-4.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
