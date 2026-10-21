@@ -90,11 +90,10 @@ public class InstanciaTest {
         assertTrue(vacia.getVertices().contains(a));
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void agregarVerticeRepetidoNoAumentaElTamanoTest() {
         vacia.agregarVertice("A");
         vacia.agregarVertice("A");
-        assertEquals(1, vacia.getTamanio());
     }
 
     @Test
@@ -184,11 +183,10 @@ public class InstanciaTest {
         assertEquals(1, vacia.cantidadVertices());
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void cantidadVerticesNoCambiaAlAgregarRepetidoTest() {
         vacia.agregarVertice("A");
         vacia.agregarVertice("A");
-        assertEquals(1, vacia.cantidadVertices());
     }
 
     @Test

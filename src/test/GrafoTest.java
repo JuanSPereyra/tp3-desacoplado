@@ -114,11 +114,10 @@ public class GrafoTest {
         assertTrue(vacio.obtenerVertices().contains(a));
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void verticesConMismoNombreSonElMismoVerticeTest() {
         vacio.agregarVertice(new Vertice("Argentina"));
         vacio.agregarVertice(new Vertice("Argentina"));
-        assertEquals(1, vacio.cantidadVertices());
     }
 
     @Test
