@@ -18,6 +18,10 @@ public class BienvenidaPresentador {
 		gestorInterfaz.crearPantallaCargaDesdeJSON();
 	}	
 	
+	public void manejarClickBotonTestStress() {
+		gestorInterfaz.crearPantallaTestStress();
+	}
+	
 	public void manejarClickBotonSalir() {
 	    System.exit(0);
 	}

@@ -4,41 +4,75 @@ import java.util.List;
 import java.util.Random;
 
 public class GeneradorGrafo {
+	private int cantidadVertices;
+	private int cantidadAristas;
+	long semilla;
+	private Grafo grafoARetornar;
+	private List<Vertice> listaDeVertices;
 	
-	public static Grafo random (int n, int m, long semilla) {
-		if (n < 0 ) throw new IllegalArgumentException("Vertice no puede ser menor a 0");
-		if (m < 0) throw new IllegalArgumentException("Arista no puede ser menor a 0");
-		if (m > n * (n - 1) / 2) throw new IllegalArgumentException("Cantidad de Aristas supera el maximo" + n * (n - 1) / 2);
+	public Grafo grafoRandom(int cantidadVertices, int cantidadAristas, long semilla) {	
+		return random(cantidadVertices, cantidadAristas, semilla);
+	}
+	
+	private Grafo random (int cantidadVertices, int cantidadAristas, long semilla) {
 		
-		Grafo grf = new Grafo();
-		Random rnd = new Random(semilla);
-		List<Vertice> vertices = new ArrayList<>();
+		this.cantidadVertices = cantidadVertices;
+		this.cantidadAristas = cantidadAristas;
+		this.semilla = semilla;
+		
+		this.grafoARetornar = new Grafo();
+		this.listaDeVertices = new ArrayList<Vertice>();
+				
+		validarCantVertices(cantidadVertices);
+		validadCantAristas(cantidadAristas);	
+		validarMaximoAristas(cantidadVertices, cantidadAristas);
 
-		agregarVertices(n, grf, vertices);
-		agregarAristas(n, m, grf, rnd, vertices);
-		return grf;
+		agregarVertices();
+		agregarAristas();
+		
+		return grafoARetornar;
 	}
 
-	public static Grafo random(int n, int m) {
-	    return random(n, m, new Random().nextLong());
+	private void validarCantVertices(int cantidadVertices) {
+		if (cantidadVertices < 0 ) throw new IllegalArgumentException("Vertice no puede ser menor a 0");
 	}
 	
-	private static void agregarAristas(int n, int m, Grafo grf, Random rnd, List<Vertice> vertices) {
-		int agregados=0;
-		while (agregados <m) {
-			Vertice a = vertices.get(rnd.nextInt(n));
-			Vertice b = vertices.get(rnd.nextInt(n));
-			if(!a.equals(b) && !grf.existeArista(a,b)) {
-				grf.agregarArista(a, b);
+	private void validadCantAristas(int cantidadVertices) {
+		if (cantidadVertices < 0) throw new IllegalArgumentException("Arista no puede ser menor a 0");
+	}
+	
+	private void validarMaximoAristas(int cantidadVertices, int cantidadAristas) {		
+		int cantMaxAristas = cantidadVertices * (cantidadVertices - 1) / 2;
+		
+		if (cantidadAristas > cantMaxAristas) throw new IllegalArgumentException("Cantidad de Aristas supera el maximo" + cantMaxAristas);
+	}
+	
+	private void agregarAristas() {
+		
+		Random rnd = new Random(semilla);
+		
+		int agregados = 0;
+		int n = cantidadVertices;
+		int m = cantidadAristas;
+		
+		while (agregados < m) {
+			Vertice a = listaDeVertices.get(rnd.nextInt(n));
+			Vertice b = listaDeVertices.get(rnd.nextInt(n));
+			
+			if(!a.equals(b) && !grafoARetornar.existeArista(a,b)) {
+				grafoARetornar.agregarArista(a, b);
 				agregados++;
 			}
 		}
 	}
-	private static void agregarVertices(int n, Grafo grf, List<Vertice> vertices) {
+	
+	private void agregarVertices() {		
+		int n = cantidadVertices;
+		
 		for (int i=0; i<n; i++) {
-		Vertice v = new  Vertice (String.valueOf(i));
-		grf.agregarVertice(v);
-		vertices.add(v);
+			Vertice v = new  Vertice (String.valueOf(i));
+			grafoARetornar.agregarVertice(v);
+			listaDeVertices.add(v);
 		}
 	}
 }

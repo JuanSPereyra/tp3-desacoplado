@@ -12,5 +12,7 @@ public interface InterfazGestorPantalla {
 	
 	void mostrarPantallaCargaManual();
 	
+	void crearPantallaTestStress();
+	
 	void mostrarPantallaCargaDesdeJSON();
 }

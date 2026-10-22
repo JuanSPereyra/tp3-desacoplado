@@ -16,12 +16,14 @@ import javax.swing.SwingConstants;
 
 import presentador.BienvenidaPresentador;
 
+@SuppressWarnings("serial")
 public class PantallaInicio extends JFrame {
 
 	private BienvenidaPresentador bienvenidaPresentador;
 	private JPanel panelFondo;
 	private JLabel lblTitulo, lblSubtitulo, lblImagen;
 	private JButton btnCargaManual, btnCargaDocumento, btnSalir;
+	private JButton btnTestStress;
 
 	public PantallaInicio(InterfazGestorPantalla gestorInterfaz) {
 		bienvenidaPresentador = new BienvenidaPresentador(gestorInterfaz);
@@ -31,6 +33,7 @@ public class PantallaInicio extends JFrame {
 		crearLblSubtitulo();
 		crearBtnCargaManual();
 		crearBtnCargaDocumento();
+		crearBtnTestStress();
 		crearBtnSalir();		
 		crearImagenFondo();
 	}
@@ -101,6 +104,24 @@ public class PantallaInicio extends JFrame {
 		});
 		panelFondo.add(btnCargaDocumento);
 	}
+	
+	private void crearBtnTestStress(){
+		btnTestStress = new JButton("Stress Test");
+		btnTestStress.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bienvenidaPresentador.manejarClickBotonTestStress();
+			}
+		});
+		btnTestStress.setOpaque(true);
+		btnTestStress.setForeground(Color.WHITE);
+		btnTestStress.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btnTestStress.setFocusPainted(false);
+		btnTestStress.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnTestStress.setBorderPainted(false);
+		btnTestStress.setBackground(new Color(190, 123, 123));
+		btnTestStress.setBounds(300, 399, 300, 50);
+		panelFondo.add(btnTestStress);
+	}
 
 	private void crearBtnSalir() {
 		btnSalir = new JButton("Salir");
@@ -111,7 +132,7 @@ public class PantallaInicio extends JFrame {
 		btnSalir.setBorderPainted(false);
 		btnSalir.setOpaque(true);
 		btnSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnSalir.setBounds(300, 400, 300, 50);
+		btnSalir.setBounds(300, 477, 300, 50);
 
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -133,5 +154,6 @@ public class PantallaInicio extends JFrame {
 		lblImagen.setIcon(new ImageIcon(escalada));
 		lblImagen.setBounds(0, 0, 900, 570);
 		panelFondo.add(lblImagen);
+
 	}
 }

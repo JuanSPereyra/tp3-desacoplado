@@ -28,7 +28,6 @@ import com.mxgraph.view.mxGraph;
 
 import presentador.ResultadoPresentador;
 import util.Par;
-import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class PantallaResultado extends JFrame {
@@ -114,16 +113,16 @@ public class PantallaResultado extends JFrame {
 
 		for (String v : vertices) {
 			String estilo = "shape=ellipse;"
-					+ "strokeColor=purple;"
-					+ "fillColor=yellow;"
-					+ "gradientColor=blue;"
-					+ "gradientDirection=east";
+					+ "strokeColor=white;"
+					+ "fillColor=blue;"
+					+ "fontColor=white;"
+					+ "fontSize=14";
 			if (solucionDominante.contains(v)) {
-				estilo = "shape=doubleEllipse;"
+				estilo = "shape=rectangle;"
 						+ "strokeColor=white;"
-						+ "fillColor=white;"
-						+ "gradientColor=red;"
-						+ "gradientDirection=north";
+						+ "fillColor=red;"
+						+ "fontColor=white;"
+						+ "fontSize=14";
 			}
 			Object nodo = graph.insertVertex(parent, null, v, 0, 0, 50, 50, estilo);
 			vertexMap.put(v, nodo);

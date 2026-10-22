@@ -8,6 +8,7 @@ public class GestorPantallas implements InterfazGestorPantalla {
 	private PantallaCargarDatosManual pantallaCargaDatos;
 	private PantallaCargarDatosDesdeJSON pantallaCargaDesdeJSON;
 	private PantallaResultado pantallaResultado;
+	private PantallaCargarTestStress pantallaCargarTestStress;
 	
 	public void crearPantallaInicio() {
 		pantallaInicio = new PantallaInicio(this);
@@ -22,6 +23,11 @@ public class GestorPantallas implements InterfazGestorPantalla {
 	public void crearPantallaCargaDesdeJSON() {
 	    pantallaCargaDesdeJSON = new PantallaCargarDatosDesdeJSON(this);
 	    mostrarPantalla(pantallaCargaDesdeJSON);
+	}
+	
+	public void crearPantallaTestStress() {
+		pantallaCargarTestStress = new PantallaCargarTestStress(this);
+		mostrarPantalla(pantallaCargarTestStress);	
 	}
 		
 	public PantallaResultado crearPantallaResultado() {
@@ -45,7 +51,7 @@ public class GestorPantallas implements InterfazGestorPantalla {
 	}
 		
 	private void ocultarPantallas(JFrame pantallaActual) {
-		JFrame[] todasLasPantallas = { pantallaInicio, pantallaCargaDatos, pantallaResultado, pantallaCargaDesdeJSON };
+		JFrame[] todasLasPantallas = { pantallaInicio, pantallaCargaDatos, pantallaResultado, pantallaCargaDesdeJSON, pantallaCargarTestStress };
 
 		for (JFrame pantalla : todasLasPantallas) {
 			if (pantalla != pantallaActual && pantalla != null) {
