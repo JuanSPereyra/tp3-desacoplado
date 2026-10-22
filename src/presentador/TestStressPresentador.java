@@ -15,16 +15,23 @@ public class TestStressPresentador implements ITestListener{
 		this.gestorInterfaz = gestor;	
 	}
 
-	public void manejarClickBtnEmpezarTest(int indice) {
+	public void manejarClickBtnEmpezarTest(String vertices, int indice) {
 		if (swingworker != null && !swingworker.isDone()) {
 			return;
 		}
 
-		_tsVista.borrarResultadoAnterior();
-		_tsVista.habilitarBotonesTestStress(true);
-		
-		swingworker = new TestStressWorker(this, indice);
-		swingworker.execute();
+		try {
+			int cantVertices = Integer.parseInt(vertices.trim());
+
+			_tsVista.borrarResultadoAnterior();
+			_tsVista.habilitarBotonesTestStress(true);
+
+			swingworker = new TestStressWorker(this, cantVertices, indice);
+			swingworker.execute();
+
+		} catch (NumberFormatException e) {
+			_tsVista.mostrarMensajeError("Ingrese un número válido y mayor a 0");
+		}
 	}
 
 	public void manejarClickBtnDetenerTest() {

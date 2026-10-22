@@ -17,9 +17,11 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 	private JButton btnDetenerTest, btnSalir, btnVolver, btnEmpezarTest;
 	private Container panelFondo;
 	private JComboBox<Object> comboDensidades;
-	private JLabel lblTitulo, lblElegirDensidad;
+	private JLabel lblTitulo, lblElegirDensidad, lblCantidadVertices;
 	private JTextArea txtResultado;
 	private JProgressBar barraProgreso;
+	private JTextField textCanVertices;
+	private DefaultListCellRenderer renderer;
 
 	public PantallaCargarTestStress(InterfazGestorPantalla gestorInterfaz) {
 
@@ -28,6 +30,8 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		configurarPantalla();
 		crearLblTitulo();
 		crearLblElegirDensidad();
+		crearLblCantidadVertices();
+		crearTxtIngreseCantidadVertices();
 		crearAreaResultado();
 		crearBarraProgreso();
 		crearBtnVolver();
@@ -62,8 +66,25 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		lblElegirDensidad = new JLabel("Elegir Densidad", SwingConstants.CENTER);
 		lblElegirDensidad.setForeground(new Color(248, 250, 252));
 		lblElegirDensidad.setFont(new Font("Segoe UI", Font.BOLD, 24));
-		lblElegirDensidad.setBounds(73, 366, 219, 40);
+		lblElegirDensidad.setBounds(334, 354, 219, 40);
 		panelFondo.add(lblElegirDensidad);
+	}
+	
+	private void crearLblCantidadVertices() {
+		lblCantidadVertices = new JLabel("Cantidad \r\nVertices", SwingConstants.CENTER);
+		lblCantidadVertices.setForeground(new Color(248, 250, 252));
+		lblCantidadVertices.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblCantidadVertices.setBounds(100, 354, 219, 40);
+		panelFondo.add(lblCantidadVertices);
+	}
+	
+	private void crearTxtIngreseCantidadVertices() {
+		textCanVertices = new JTextField();
+		textCanVertices.setHorizontalAlignment(JTextField.CENTER);
+		textCanVertices.setFont(new Font("Tahoma", Font.BOLD, 15));
+		textCanVertices.setBounds(150, 405, 145, 32);
+		textCanVertices.setColumns(10);
+		panelFondo.add(textCanVertices);
 	}
 
 	private void crearAreaResultado() {
@@ -86,7 +107,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		barraProgreso.setForeground(new Color(0, 128, 128));
 		barraProgreso.setBackground(new Color(15, 23, 42));
 		barraProgreso.setBorder(BorderFactory.createLineBorder(new Color(51, 65, 85)));
-		barraProgreso.setBounds(78, 465, 742, 25);
+		barraProgreso.setBounds(73, 453, 742, 32);
 		panelFondo.add(barraProgreso);
 	}
 
@@ -98,7 +119,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		btnVolver.setFocusPainted(false);
 		btnVolver.setBorderPainted(false);
 		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnVolver.setBounds(150, 508, 280, 45);
+		btnVolver.setBounds(150, 496, 280, 45);
 
 		agegarListenerBtnVolverMenu();
 		panelFondo.add(btnVolver);
@@ -120,7 +141,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		btnSalir.setFocusPainted(false);
 		btnSalir.setBorderPainted(false);
 		btnSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnSalir.setBounds(470, 508, 280, 45);
+		btnSalir.setBounds(470, 496, 280, 45);
 
 		agregarListenerBtnSalir();
 		panelFondo.add(btnSalir);
@@ -143,7 +164,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		btnEmpezarTest.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEmpezarTest.setBorderPainted(false);
 		btnEmpezarTest.setBackground(new Color(0, 128, 128));
-		btnEmpezarTest.setBounds(302, 363, 161, 40);
+		btnEmpezarTest.setBounds(587, 354, 193, 40);
 
 		agregarListenerBtnEmpezarTest();		
 		panelFondo.add(btnEmpezarTest);
@@ -153,24 +174,34 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		
 		btnEmpezarTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int indice = comboDensidades.getSelectedIndex();
-				testStressPresentador.manejarClickBtnEmpezarTest(indice+1);
+				
+				int densidad = comboDensidades.getSelectedIndex() + 1;
+				String vertices = textCanVertices.getText();
+				
+				testStressPresentador.manejarClickBtnEmpezarTest(vertices, densidad);
 			}
 		});
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void crearComboSoluciones() {
 		comboDensidades = new JComboBox<>();
-		comboDensidades.setModel(new DefaultComboBoxModel(new String[] {"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"}));
+		comboDensidades.setModel(
+				new DefaultComboBoxModel<>(
+						new String[] {"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"}
+						)
+				);
+		
+		renderer = new DefaultListCellRenderer();
+		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		comboDensidades.setRenderer(renderer);
 		comboDensidades.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		comboDensidades.setBackground(new Color(128, 0, 128));
-		comboDensidades.setFont(new Font("Verdana", Font.BOLD, 14));
-		comboDensidades.setSize(169, 32);
-		comboDensidades.setLocation(100, 416);
+		comboDensidades.setFont(new Font("Verdana", Font.BOLD, 15));
+		comboDensidades.setSize(145, 32);
+		comboDensidades.setLocation(377, 405);
 		comboDensidades.setForeground(new Color(240, 248, 255));
 		
-		getContentPane().add(comboDensidades, BorderLayout.SOUTH);
+		getContentPane().add(comboDensidades, BorderLayout.CENTER);
 	}
 	
 	private void crearBtnDetenerTest() {
@@ -182,7 +213,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		btnDetenerTest.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDetenerTest.setBorderPainted(false);
 		btnDetenerTest.setBackground(new Color(255, 128, 64));
-		btnDetenerTest.setBounds(302, 411, 161, 40);
+		btnDetenerTest.setBounds(587, 405, 193, 40);
 
 		agregarListenerBtnDetenerTest();
 		btnDetenerTest.setEnabled(false);
@@ -211,6 +242,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		btnDetenerTest.setEnabled(corriendo);
 		btnVolver.setEnabled(!corriendo);
 		btnSalir.setEnabled(!corriendo);
+		textCanVertices.setEnabled(!corriendo);
 	}	
 	
 	@Override
@@ -221,5 +253,15 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 	@Override
 	public void actualizarProgreso(int porcentaje) {
 		barraProgreso.setValue(porcentaje);
+		barraProgreso.setStringPainted(true);
+		barraProgreso.setForeground(new Color(125,15,156));
+		barraProgreso.setFont(new Font("Verdana", Font.BOLD, 16));
+		barraProgreso.setStringPainted(true);
+		barraProgreso.setBackground(Color.LIGHT_GRAY);
+	}
+	
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }

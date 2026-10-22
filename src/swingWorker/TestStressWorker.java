@@ -12,10 +12,11 @@ import presentador.ITestListener;
 public class TestStressWorker extends SwingWorker<String, String>{
 
 	private ITestListener _interfazPresentador;
-	private int densidad;
 	private volatile BackTracking backTrackingActual;
+
+	private int solucionesMaximas;	
+	private int densidad;
 	private int recibidos = 0;
-	private final int solucionesMaximas=70;
 	private int iteracion;
 	private int cantidadTotalAristas;
 	private int cantidadAristasAUsar;
@@ -23,8 +24,9 @@ public class TestStressWorker extends SwingWorker<String, String>{
 	private double tiempo;
 	private GeneradorGrafo generadorGrafoRnd;
 
-	public TestStressWorker(ITestListener listener, int densidad) {
+	public TestStressWorker(ITestListener listener, int cantVertices, int densidad) {
 		this._interfazPresentador = listener;
+		this.solucionesMaximas = cantVertices;
 		this.densidad = densidad;
 		this.generadorGrafoRnd = new GeneradorGrafo();
 	}
@@ -81,10 +83,10 @@ public class TestStressWorker extends SwingWorker<String, String>{
 	private String armarTexto() {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Solucion: " + this.iteracion + " con densidad del " + this.densidad*10 + "%\n");
+		sb.append("Solucion: " + this.iteracion + " de " + solucionesMaximas + " con densidad del " + this.densidad*10 + "%\n");
 		sb.append("Cantidad de Vertices:" + this.iteracion + "\n");
 		sb.append("Cantidad máxima de Aristas: " + this.cantidadTotalAristas + "\n");
-		sb.append("Cantidad de Aristas utilizadas:" + this.cantidadAristasAUsar + "\n");
+		sb.append("Cantidad de Aristas utilizadas: " + this.cantidadAristasAUsar + "\n");
 		sb.append(conjuntoEntreLLaves(this.resultado) + "\n");
 		sb.append("Tiempo utilizado: " + this.tiempo + "\n");
 		return sb.toString();
