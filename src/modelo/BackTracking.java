@@ -10,7 +10,7 @@ public class BackTracking {
 	private Grafo grafo;
 	private List<Vertice> vertices;
 	private Set<Vertice> mejorSolucion;
-	//private boolean cancelado; 
+	private volatile boolean cancelado; 
 	
 	public Set<Vertice> resolverGrafo(Grafo grafo){
 		this.grafo=grafo;
@@ -18,19 +18,20 @@ public class BackTracking {
 		this.mejorSolucion= null;
 		
 		buscar(new HashSet<>());
-		
-		//cuando termina todo
 		return mejorSolucion;
 	}
 	
+	public void cancelar() {
+		cancelado=true;
+	}
+	
 	private void buscar(Set<Vertice> solucionParcial) {	
-		//if(cancelado) return;	
+		if(cancelado) return;	
 		
 		if(mejorSolucion!=null && solucionParcial.size()>= mejorSolucion.size()) {
 			return;
 		}
 			
-		//VER
 		Vertice sinDominar= verticeNoDominado(solucionParcial);
 		
 		//caso base 
@@ -39,18 +40,16 @@ public class BackTracking {
 			return;
 		}
 		
-		//VER --> vecinos
         List<Vertice> candidatos = new ArrayList<>(grafo.obtenerVecinos(sinDominar)); 
-        //agrego ---> VER
         candidatos.add(sinDominar);
         
-        //aca empieza el backtracking  la recursividad
         for (Vertice v : candidatos) {
         		solucionParcial.add(v);
             buscar(solucionParcial);
             solucionParcial.remove(v);  
         }
 	}
+	
 	
 	private Vertice verticeNoDominado(Set<Vertice> actual) {
 	    for (Vertice v : vertices) {
