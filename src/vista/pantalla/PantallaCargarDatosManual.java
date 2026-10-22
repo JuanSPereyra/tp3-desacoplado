@@ -1,32 +1,20 @@
-package vista;
+package vista.pantalla;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import presentador.CargarDatosPresentador;
+import vista.interfaz.InterfazGestorPantalla;
+import vista.interfaz.CargarDatosVista;
 
 @SuppressWarnings("serial")
 public class PantallaCargarDatosManual extends JFrame implements CargarDatosVista {
 
 	private CargarDatosPresentador presentador;
+	
 	private JPanel panelFondo;
 	private JButton btnVolver, btnIrResultado, btnAgregarVertice, btnAgregarArista;
 	private JLabel lblTitulo, lblNombreVertice, lblOrigen, lblDestino;

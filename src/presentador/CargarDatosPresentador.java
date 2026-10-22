@@ -1,11 +1,10 @@
 package presentador;
 
-import modelo.Arista;
-import modelo.Instancia;
-import modelo.Vertice;
-import vista.CargarDatosVista;
-import vista.InterfazGestorPantalla;
-import vista.PantallaResultado;
+import modelo.*;
+
+import vista.interfaz.CargarDatosVista;
+import vista.interfaz.InterfazGestorPantalla;
+import vista.pantalla.PantallaResultado;
 
 public class CargarDatosPresentador {
 	private CargarDatosVista _cdVista;
@@ -24,10 +23,9 @@ public class CargarDatosPresentador {
 				_cdVista.mostrarMensajeError("El nombre del vértice no puede estar vacío.");
 				return;
 			}
-			// agregamos al modelo de negocio
+
 			instancia.agregarVertice(nombre.trim());
 			
-			// actualizamos la vista 
 			_cdVista.agregarVertice(nombre.trim());
 			_cdVista.limpiarCampoVertice();
 		} catch (Exception e) {
@@ -41,10 +39,9 @@ public class CargarDatosPresentador {
 				_cdVista.mostrarMensajeError("Debe seleccionar origen y destino válidos (y distintos)");
 				return;
 			}
-			// agregamos al modelo de negocio
+
 			instancia.agregarArista(origen, destino);
 			
-			// actualizamos la vista
 			_cdVista.agregarArista(origen, destino, "");
 		} catch (Exception e) {
 			_cdVista.mostrarMensajeError(e.getMessage());
@@ -76,12 +73,10 @@ public class CargarDatosPresentador {
 
 	        PantallaResultado pantallaResultado = gestorInterfaz.crearPantallaResultado();
 	        
-	        // le pasamos la instancia cargada al ResultadoPresentador
 	        ResultadoPresentador resultadoPresentador = new ResultadoPresentador(
 	                pantallaResultado, gestorInterfaz, instancia
-	        );
+	        		);
 	        
-	        // vinculamos el presentador a la pantalla y ejecutamos el cálculo
 	        pantallaResultado.setPresentador(resultadoPresentador);
 	        resultadoPresentador.calcularSolucionDominante();
 

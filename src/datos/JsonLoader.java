@@ -1,10 +1,9 @@
 package datos;
 
-import com.google.gson.Gson;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.List;
-//import modelo.CiudadSeleccionada;
+//import com.google.gson.Gson;
+//import java.io.InputStreamReader;
+//import java.io.Reader;
+//import java.util.List;
 
 public class JsonLoader {
 /*

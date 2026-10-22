@@ -1,4 +1,6 @@
-package vista;
+package vista.interfaz;
+
+import vista.pantalla.PantallaResultado;
 
 public interface InterfazGestorPantalla {
 	
@@ -8,11 +10,11 @@ public interface InterfazGestorPantalla {
 
 	void crearPantallaCargaDesdeJSON();
 	
+	void crearPantallaTestStress();
+	
 	PantallaResultado crearPantallaResultado();
 	
 	void mostrarPantallaCargaManual();
-	
-	void crearPantallaTestStress();
 	
 	void mostrarPantallaCargaDesdeJSON();
 }

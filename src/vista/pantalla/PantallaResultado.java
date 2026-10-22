@@ -1,31 +1,16 @@
-package vista;
+package vista.pantalla;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import util.Par;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import presentador.ResultadoPresentador;
-import util.Par;
+import vista.interfaz.InterfazGestorPantalla;
+import vista.interfaz.ResultadoVista;
+import vista.grafico.LibreriaMxGraphWrapper;
 
 @SuppressWarnings("serial")
 public class PantallaResultado extends JFrame implements ResultadoVista{

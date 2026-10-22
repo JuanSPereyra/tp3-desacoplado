@@ -1,6 +1,6 @@
 package presentador;
  
-import vista.InterfazGestorPantalla;
+import vista.interfaz.InterfazGestorPantalla;
  
 public class BienvenidaPresentador {
  

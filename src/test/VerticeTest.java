@@ -12,29 +12,19 @@ public class VerticeTest {
 	
 	@Before
 	public void inicializar() {
-	vertice=new Vertice("Argentina");
-	
-	
+	vertice=new Vertice("12");
 	}
 	
 	@Test
 	public void obtenerNombreDelvuelveNombreTest() {
 		assertEquals("Argentina",vertice.getNombre());
 	}
-	
-	
-	
-	
-	
-	
-	
+
     @Test
     public void verticesConMismoNombreSonIgualesTest() {
         assertEquals(vertice,new Vertice("Argentina"));
     }
-    
-    
-    
+
     @Test
     public void verticesIgualesTienenMismoHashCodeTest() {
         assertEquals(vertice.hashCode(), new Vertice("Argentina").hashCode());
@@ -50,17 +40,17 @@ public class VerticeTest {
         assertFalse(vertice.equals(null));
     }
     
-    @Test
+    @SuppressWarnings("unlikely-arg-type")
+	@Test
     public void verticeNoEsIgualAOtroTipoDeObjetoTest() {
-        assertFalse(vertice.equals("Argentina"));
+        assertFalse(vertice.equals("12"));
     }
     
     @Test
     public void equalsEsReflexivoTest() {
         assertTrue(vertice.equals(vertice));
     }
-    
-    
+     
     @Test
     public void toStringDevuelveElNombre() {
         assertEquals("Argentina",vertice.toString());

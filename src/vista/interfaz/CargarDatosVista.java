@@ -1,4 +1,4 @@
-package vista;
+package vista.interfaz;
 
 public interface CargarDatosVista {
 	

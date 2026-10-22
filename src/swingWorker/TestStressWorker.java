@@ -1,28 +1,32 @@
 package swingWorker;
 
-
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.swing.SwingWorker;
-import modelo.BackTracking;
-import modelo.GeneradorGrafo;
-import modelo.Grafo;
-import modelo.Vertice;
-import vista.PantallaCargarTestStress;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
-public class TestStressWorker extends SwingWorker<String, String> {
+import modelo.*;
 
-	private PantallaCargarTestStress pantalla;
+import java.math.*;
+
+import presentador.ITestListener;
+
+public class TestStressWorker extends SwingWorker<String, String>{
+
+	private ITestListener _interfazPresentador;
 	private int densidad;
 	private volatile BackTracking backTrackingActual;
 	private int recibidos = 0;
 	private final int solucionesMaximas=70;
+	private int iteracion;
+	private int cantidadTotalAristas;
+	private int cantidadAristasAUsar;
+	private Set<Vertice> resultado;
+	private double tiempo;
+	private GeneradorGrafo generadorGrafoRnd;
 
-	public TestStressWorker(PantallaCargarTestStress pantalla, int densidad) {
-		this.pantalla = pantalla;
+	public TestStressWorker(ITestListener listener, int densidad) {
+		this._interfazPresentador = listener;
 		this.densidad = densidad;
+		this.generadorGrafoRnd = new GeneradorGrafo();
 	}
 	
 	public void detener() {
@@ -35,21 +39,24 @@ public class TestStressWorker extends SwingWorker<String, String> {
 	
 	@Override
 	protected String doInBackground() {
-		GeneradorGrafo generador = new GeneradorGrafo();
+
 		double total = 0;
 
 		for (int i = 1; i <= solucionesMaximas && !isCancelled(); i++) {
 
 			long inicio = System.currentTimeMillis();
 
-			int cantidadAristas = calcularCantidad(i, densidad);
-			Set<Vertice> resultado = resolverGrafo(generador, i, cantidadAristas);
+			calcularCantidadAristas(i, densidad);
+			Set<Vertice> resultado = resolverGrafo(i, cantidadAristasAUsar);
 
 			if (!isCancelled()) {
-				double tiempo = (System.currentTimeMillis() - inicio) / 1000.0;
+				this.tiempo = (System.currentTimeMillis() - inicio) / 1000.0;
 				total += tiempo;
 
-				publish(armarTexto(i, cantidadAristas, resultado, tiempo));
+				this.iteracion = i;
+				this.resultado = resultado;
+				
+				publish(armarTexto());
 				pausar(250);
 			}
 		}
@@ -57,25 +64,29 @@ public class TestStressWorker extends SwingWorker<String, String> {
 		return "TestStress Finalizado." + "\n" + "Tiempo total de la ejecucion: " + redondeado + " segundos";
 	}
 	
-	private static int calcularCantidad(int numVertice, int densidad) {
-		return (numVertice * (numVertice - 1) / 2) * densidad / 10;
+	private void calcularCantidadAristas(int numVertice, int densidad) {
+		
+		this.cantidadTotalAristas = (numVertice * (numVertice - 1) / 2);
+		this.cantidadAristasAUsar = cantidadTotalAristas * densidad / 10;
 	}
 
-	private Set<Vertice> resolverGrafo(GeneradorGrafo generador, int vertices, int aristas) {
-		Grafo g = generador.grafoRandom(vertices, aristas, 0);
+	private Set<Vertice> resolverGrafo(int vertices, int aristas) {
+
+		Grafo g = generadorGrafoRnd.grafoRandom(vertices, aristas, 0);
 
 		backTrackingActual = new BackTracking();
 		return backTrackingActual.resolverGrafo(g);
 	}
 	
-	private String armarTexto(int solucion, int aristas, Set<Vertice> resultado, double tiempo) {
-		//se que 4 parametros son muchos, pero es para que este mas lindo el codigo principal
+	private String armarTexto() {
+
 		StringBuilder sb = new StringBuilder();
-		sb.append("Solucion: " + solucion + "\n");
-		sb.append("Cantidad de Vertices:" + solucion + "\n");
-		sb.append("Cantidad de Aristas:" + aristas + "\n");
-		sb.append(conjuntoEntreLLaves(resultado) + "\n");
-		sb.append("Tiempo utilizado: " + tiempo + "\n");
+		sb.append("Solucion: " + this.iteracion + " con densidad del " + this.densidad*10 + "%\n");
+		sb.append("Cantidad de Vertices:" + this.iteracion + "\n");
+		sb.append("Cantidad máxima de Aristas: " + this.cantidadTotalAristas + "\n");
+		sb.append("Cantidad de Aristas utilizadas:" + this.cantidadAristasAUsar + "\n");
+		sb.append(conjuntoEntreLLaves(this.resultado) + "\n");
+		sb.append("Tiempo utilizado: " + this.tiempo + "\n");
 		return sb.toString();
 	}
 	
@@ -102,24 +113,24 @@ public class TestStressWorker extends SwingWorker<String, String> {
 	@Override
 	protected void process(List<String> textos) {
 		for (String texto : textos) {
-			pantalla.mostrarResultado(texto);
+			_interfazPresentador.mostrarResultado(texto);
 		}
 		recibidos += textos.size();
-		pantalla.actualizarProgreso(recibidos * 100 / solucionesMaximas);
+		_interfazPresentador.actualizarProgreso(recibidos * 100 / solucionesMaximas);
 	}
 	
 	@Override
 	protected void done() {
 		if (isCancelled()) {
-			pantalla.mostrarResultado("TestStress detenido.");
+			_interfazPresentador.mostrarResultado("TestStress detenido.");
 		} else {
 			try {
-				pantalla.mostrarResultado(get());
+				_interfazPresentador.mostrarResultado(get());
 			} catch (Exception e) {
 				e.printStackTrace();
-				pantalla.mostrarResultado("Error en el TestStress.");
+				_interfazPresentador.mostrarResultado("Error en el TestStress.");
 			}
 		}
-		pantalla.habilitarBotonesTestStress(false);
+		_interfazPresentador.habilitarBotonesTestStress(false);
 	}
 }

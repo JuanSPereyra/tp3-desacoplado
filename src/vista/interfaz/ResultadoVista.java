@@ -1,7 +1,6 @@
-package vista;
+package vista.interfaz;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import util.Par;
 

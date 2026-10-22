@@ -1,20 +1,12 @@
-package vista;
+package vista.pantalla;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.net.URL;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import presentador.BienvenidaPresentador;
+import vista.interfaz.InterfazGestorPantalla;
 
 @SuppressWarnings("serial")
 public class PantallaInicio extends JFrame {

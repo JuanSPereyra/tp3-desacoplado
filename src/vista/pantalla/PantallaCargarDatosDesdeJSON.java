@@ -1,15 +1,11 @@
-package vista;
+package vista.pantalla;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+
+import vista.interfaz.InterfazGestorPantalla;
 
 @SuppressWarnings("serial")
 public class PantallaCargarDatosDesdeJSON extends JFrame {

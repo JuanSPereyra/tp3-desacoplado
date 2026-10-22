@@ -1,6 +1,8 @@
-package vista;
+package vista.pantalla;
 
 import javax.swing.JFrame;
+
+import vista.interfaz.InterfazGestorPantalla;
 
 public class GestorPantallas implements InterfazGestorPantalla {
 

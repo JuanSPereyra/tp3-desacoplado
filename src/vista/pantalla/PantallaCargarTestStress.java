@@ -1,38 +1,24 @@
-package vista;
+package vista.pantalla;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+
 import presentador.TestStressPresentador;
-import javax.swing.DefaultComboBoxModel;
+import vista.interfaz.InterfazGestorPantalla;
+import vista.interfaz.StressVista;
 
 @SuppressWarnings("serial")
-public class PantallaCargarTestStress extends JFrame {
+public class PantallaCargarTestStress extends JFrame implements StressVista{
 	
 	private TestStressPresentador testStressPresentador;
-	private JButton btnDetenerTest, btnSalir;
+	
+	private JButton btnDetenerTest, btnSalir, btnVolver, btnEmpezarTest;
 	private Container panelFondo;
 	private JComboBox<Object> comboDensidades;
-	private JLabel lblTitulo;
+	private JLabel lblTitulo, lblElegirDensidad;
 	private JTextArea txtResultado;
-	private JButton btnVolver;
-	private JButton btnEmpezarTest;
-	private JLabel lblElegirDensidad;
 	private JProgressBar barraProgreso;
 
 	public PantallaCargarTestStress(InterfazGestorPantalla gestorInterfaz) {
@@ -44,12 +30,11 @@ public class PantallaCargarTestStress extends JFrame {
 		crearLblElegirDensidad();
 		crearAreaResultado();
 		crearBarraProgreso();
-		crearBtnVolver(gestorInterfaz);
+		crearBtnVolver();
 		crearBtnSalir();
 		crearBtnEmpezarTest();
 		crearComboSoluciones();
 		crearBtnDetenerTest();
-
 	}
 
 	private void configurarPantalla() {
@@ -105,7 +90,7 @@ public class PantallaCargarTestStress extends JFrame {
 		panelFondo.add(barraProgreso);
 	}
 
-	private void crearBtnVolver(InterfazGestorPantalla gestorInterfaz) {
+	private void crearBtnVolver() {
 		btnVolver = new JButton("Volver al Menú");
 		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		btnVolver.setForeground(Color.WHITE);
@@ -115,16 +100,16 @@ public class PantallaCargarTestStress extends JFrame {
 		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnVolver.setBounds(150, 508, 280, 45);
 
+		agegarListenerBtnVolverMenu();
+		panelFondo.add(btnVolver);
+	}
+
+	private void agegarListenerBtnVolverMenu() {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (testStressPresentador != null) {
-					testStressPresentador.manejarClickVolverAlMenu();
-				} else {
-					gestorInterfaz.crearPantallaInicio();
-				}
+				testStressPresentador.manejarClickVolverAlMenu();
 			}
 		});
-		panelFondo.add(btnVolver);
 	}
 
 	private void crearBtnSalir() {
@@ -137,12 +122,16 @@ public class PantallaCargarTestStress extends JFrame {
 		btnSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(470, 508, 280, 45);
 
+		agregarListenerBtnSalir();
+		panelFondo.add(btnSalir);
+	}
+
+	private void agregarListenerBtnSalir() {
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					testStressPresentador.manejarClickBtnSalir();
+				testStressPresentador.manejarClickBtnSalir();
 			}
 		});
-		panelFondo.add(btnSalir);
 	}
 	
 	private void crearBtnEmpezarTest() {
@@ -156,8 +145,7 @@ public class PantallaCargarTestStress extends JFrame {
 		btnEmpezarTest.setBackground(new Color(0, 128, 128));
 		btnEmpezarTest.setBounds(302, 363, 161, 40);
 
-		agregarListenerBtnEmpezarTest();
-		
+		agregarListenerBtnEmpezarTest();		
 		panelFondo.add(btnEmpezarTest);
 	}
 	
@@ -198,6 +186,7 @@ public class PantallaCargarTestStress extends JFrame {
 
 		agregarListenerBtnDetenerTest();
 		btnDetenerTest.setEnabled(false);
+		
 		panelFondo.add(btnDetenerTest);
 	}
 	
@@ -208,24 +197,29 @@ public class PantallaCargarTestStress extends JFrame {
 			}
 		});
 	}
-
-	public void mostrarResultado(String texto) {
-		txtResultado.append(texto + "\n");
-	}
 	
+	@Override
 	public void borrarResultadoAnterior(){
 		txtResultado.setText("");
 		barraProgreso.setValue(0);
 	}
 	
+	@Override
+	public void habilitarBotonesTestStress(boolean corriendo) {
+		comboDensidades.setEnabled(!corriendo);
+		btnEmpezarTest.setEnabled(!corriendo);
+		btnDetenerTest.setEnabled(corriendo);
+		btnVolver.setEnabled(!corriendo);
+		btnSalir.setEnabled(!corriendo);
+	}	
+	
+	@Override
+	public void mostrarResultado(String texto) {
+		txtResultado.append(texto + "\n");
+	}
+	
+	@Override
 	public void actualizarProgreso(int porcentaje) {
 		barraProgreso.setValue(porcentaje);
 	}
-
-	public void habilitarBotonesTestStress(boolean corriendo) {
-		btnEmpezarTest.setEnabled(!corriendo);
-		comboDensidades.setEnabled(!corriendo);
-		btnDetenerTest.setEnabled(corriendo);
-	}
-
 }

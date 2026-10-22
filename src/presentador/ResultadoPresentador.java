@@ -9,8 +9,8 @@ import modelo.Solucion;
 import modelo.SolverGoloso;
 import modelo.Vertice;
 import util.Par;
-import vista.InterfazGestorPantalla;
-import vista.ResultadoVista;
+import vista.interfaz.InterfazGestorPantalla;
+import vista.interfaz.ResultadoVista;
 
 public class ResultadoPresentador {
 
