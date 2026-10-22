@@ -3,8 +3,6 @@ package vista;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -30,25 +28,22 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 
 	private CargarDatosPresentador presentador;
 	private JPanel panelFondo;
-	private JLabel lblTitulo;
-	private JButton btnVolver, btnIrResultado;
-	private JLabel lblNombreVertice;
-	private JLabel lblOrigen;
-	private JLabel lblDestino;
+	private JButton btnVolver, btnIrResultado, btnAgregarVertice, btnAgregarArista;
+	private JLabel lblTitulo, lblNombreVertice, lblOrigen, lblDestino;
 	private JTextField textNombreVertice;
-	private JButton btnAgregarVertice, btnAgregarArista;
 	private JTable tablaVertices, tablaAristas;
 	private JComboBox<String> comboOrigen, comboDestino;
 	private DefaultTableModel modeloVertices, modeloAristas;
-//	private static final String eliminar = "X";
 
 	public PantallaCargarDatosManual(InterfazGestorPantalla gestorInterfaz) {
+		
 		this.presentador = new CargarDatosPresentador(this, gestorInterfaz);
+		
 		configurarPantalla();
 		crearTitulo();
 		crearSeccionVertices();
 		crearSeccionAristas();
-		crearElementos(gestorInterfaz);
+		crearElementos();
 	}
 
 	private void configurarPantalla() {
@@ -66,46 +61,41 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 
 	private void crearTitulo() {
 		lblTitulo = new JLabel("CARGA MANUAL DE DATOS", SwingConstants.CENTER);
+		estiloEtiqueta(lblTitulo);
 		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
-		lblTitulo.setForeground(new Color(248, 250, 252));
 		lblTitulo.setBounds(50, 20, 800, 35);
 		panelFondo.add(lblTitulo);
 	}
 
 	private void crearSeccionVertices() {
-		lblNombreVertice = new JLabel("1. NOMBRE DEL VÉRTICE (PROVINCIA):");
+		lblNombreVertice = new JLabel("NOMBRE DEL VÉRTICE:");
 		estiloEtiqueta(lblNombreVertice);
 		lblNombreVertice.setBounds(40, 80, 360, 22);
 		panelFondo.add(lblNombreVertice);
 
+		crearTextNombreVertice();
+		crearBtnAgregarVertice();
+		crearTablaVertices();	
+	}
+	
+	private void crearTextNombreVertice() {
 		textNombreVertice = new JTextField();
 		textNombreVertice.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		textNombreVertice.setForeground(new Color(15, 23, 42));
 		textNombreVertice.setBackground(new Color(241, 245, 249));
 		textNombreVertice.setBounds(40, 108, 220, 34);
 		panelFondo.add(textNombreVertice);
-
+	}
+	
+	private void crearBtnAgregarVertice() {
 		btnAgregarVertice = new JButton("Agregar vértice");
 		estiloBotonPrimario(btnAgregarVertice);
 		btnAgregarVertice.setBounds(270, 108, 130, 34);
 		
-		btnAgregarVertice.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentador.manejarClickAgregarVertice(textNombreVertice.getText());
-			}
-		});
+		agregarListenerBtnAgregarVertice();
 		panelFondo.add(btnAgregarVertice);
-
-		modeloVertices = crearModeloNoEditable(new String[] { "Vértice", "" });
-		tablaVertices = new JTable(modeloVertices);
-		estiloTabla(tablaVertices);
-		configurarColumnaEliminar(tablaVertices);
-		agregarListenerEliminarVertice();
-		panelFondo.add(crearScroll(tablaVertices, 40, 160, 360, 290));
-		
 	}
-
+	
 	private void agregarListenerEliminarVertice() {
 		tablaVertices.addMouseListener(new MouseAdapter() {
 			@Override
@@ -120,7 +110,29 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		});
 	}
 
-	private void crearSeccionAristas() {
+	private void crearTablaVertices() {
+		modeloVertices = crearModeloNoEditable(new String[] { "Vértice", "" });
+		tablaVertices = new JTable(modeloVertices);
+		estiloTabla(tablaVertices);
+		configurarColumnaEliminar(tablaVertices);
+		agregarListenerEliminarVertice();
+		panelFondo.add(crearScroll(tablaVertices, 40, 160, 360, 290));
+	}
+
+	private void agregarListenerBtnAgregarVertice() {
+		btnAgregarVertice.addActionListener(e -> {
+			presentador.manejarClickAgregarVertice(textNombreVertice.getText());
+		});
+	}
+
+	private void crearSeccionAristas() {	
+		crearSeccionOrigen();
+		crearSeccionDestino();
+		crearBtnAgregarArista();
+		crearTablaAristas();
+	}
+
+	private void crearSeccionOrigen() {
 		lblOrigen = new JLabel("ORIGEN:");
 		estiloEtiqueta(lblOrigen);
 		lblOrigen.setBounds(460, 80, 180, 22);
@@ -130,7 +142,9 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		estiloCombo(comboOrigen);
 		comboOrigen.setBounds(460, 108, 180, 34);
 		panelFondo.add(comboOrigen);
+	}
 
+	private void crearSeccionDestino() {
 		lblDestino = new JLabel("DESTINO:");
 		estiloEtiqueta(lblDestino);
 		lblDestino.setBounds(660, 80, 180, 22);
@@ -140,21 +154,27 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		estiloCombo(comboDestino);
 		comboDestino.setBounds(660, 108, 180, 34);
 		panelFondo.add(comboDestino);
+	}
 
+	private void crearBtnAgregarArista() {
 		btnAgregarArista = new JButton("Agregar arista");
 		estiloBotonPrimario(btnAgregarArista);
 		btnAgregarArista.setBounds(460, 160, 380, 34);
 		
-		btnAgregarArista.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String origen = (String) comboOrigen.getSelectedItem();
-				String destino = (String) comboDestino.getSelectedItem();
-				presentador.manejarClickAgregarArista(origen, destino);
-			}
-		});
+		agregarListenerAgregarArista();
 		panelFondo.add(btnAgregarArista);
+	}
 
+	private void agregarListenerAgregarArista() {
+		btnAgregarArista.addActionListener(e -> {
+
+			String origen = (String) comboOrigen.getSelectedItem();
+			String destino = (String) comboDestino.getSelectedItem();
+			presentador.manejarClickAgregarArista(origen, destino);
+		});
+	}
+
+	private void crearTablaAristas() {
 		modeloAristas = crearModeloNoEditable(new String[] { "Origen", "Destino", "" });
 		tablaAristas = new JTable(modeloAristas);
 		estiloTabla(tablaAristas);
@@ -180,43 +200,44 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		});
 	}
 
-	private void crearElementos(InterfazGestorPantalla gestorInterfaz) {
+	private void crearElementos() {
+		crearBtnResultado();
+		crearBtnVolverMenu();
+	}
+
+	private void crearBtnResultado() {
 		btnIrResultado = new JButton("Ver Resultado");
+		estiloBotonPrimario(btnIrResultado);
 		btnIrResultado.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		btnIrResultado.setForeground(Color.WHITE);
 		btnIrResultado.setBackground(new Color(16, 185, 129));
-		btnIrResultado.setFocusPainted(false);
-		btnIrResultado.setBorderPainted(false);
-		btnIrResultado.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnIrResultado.setBounds(660, 470, 180, 42);
-
-		btnIrResultado.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentador.manejarClickCalcularDominante();
-			}
-		});
+		
+		agregarListenerBtnResultado();
 		panelFondo.add(btnIrResultado);
+	}
 
+	private void agregarListenerBtnResultado() {
+		btnIrResultado.addActionListener(e -> {
+			presentador.manejarClickCalcularDominante();
+		});
+	}
+
+	private void crearBtnVolverMenu() {
 		btnVolver = new JButton("Volver al Menú");
+		estiloBotonPrimario(btnVolver);
 		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		btnVolver.setForeground(Color.WHITE);
 		btnVolver.setBackground(new Color(239, 68, 68));
-		btnVolver.setFocusPainted(false);
-		btnVolver.setBorderPainted(false);
-		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnVolver.setBounds(470, 470, 170, 42);
 
-		btnVolver.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentador.manejarClickVolverAlMenu();
-			}
-		});
+		agregarListenerBtnVolverMenu();
 		panelFondo.add(btnVolver);
 	}
 
-	// Metodos de interfaz "CargarDatosVista"
+	private void agregarListenerBtnVolverMenu() {
+		btnVolver.addActionListener(e -> {
+			presentador.manejarClickVolverAlMenu();
+		});
+	}
 
 	@Override
 	public void agregarVertice(String nombre) {
@@ -263,8 +284,6 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	public void mostrarMensajeError(String mensaje) {
 		JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 	}
-
-	// Estilos
 
 	private JScrollPane crearScroll(JTable tabla, int x, int y, int ancho, int alto) {
 		JScrollPane scroll = new JScrollPane(tabla);
