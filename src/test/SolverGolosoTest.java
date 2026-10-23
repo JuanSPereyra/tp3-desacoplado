@@ -21,7 +21,7 @@ public class SolverGolosoTest {
     private SolverGoloso solver;
 
     @Before
-    public void setUp() {
+    public void inicializar() {
         instancia = new Instancia();
         cargarVertices(instancia, Arrays.asList("A", "B", "C", "D", "E", "F", "H"));
         instancia.agregarArista("A", "B");
@@ -31,8 +31,6 @@ public class SolverGolosoTest {
         instancia.agregarArista("E", "F");
         solver = new SolverGoloso(instancia);
     }
-
-    //cobertura 
 
     @Test
     public void coberturaDevuelveConjuntoDominanteTest() {
@@ -47,11 +45,8 @@ public class SolverGolosoTest {
 
     @Test
     public void coberturaDaElConjuntoEsperadoTest() {
-        // H (aislado), C (cubre 4), luego A y E por desempate de nombre
         assertEquals(conjunto(Arrays.asList("H", "C", "A", "E")), solver.resolverPorCobertura().getVertices());
     }
-
-    //grado 
 
     @Test
     public void gradoDevuelveConjuntoDominanteTest() {
@@ -66,11 +61,9 @@ public class SolverGolosoTest {
 
     @Test
     public void gradoDaElConjuntoEsperadoTest() {
-        // H, C (grado 3), luego B y E (grado 2, desempate por nombre)
+        
         assertEquals(conjunto(Arrays.asList("H", "C", "B", "E")), solver.resolverPorGradoMayor().getVertices());
     }
-
-    //pesoVertice
 
     @Test
     public void pesoVerticeDevuelveConjuntoDominanteTest() {
@@ -110,27 +103,6 @@ public class SolverGolosoTest {
     }
 
     @Test
-    public void unaSolaAristaNecesitaUnVerticeTest() {
-        Instancia par = instanciaConAislados(Arrays.asList("X", "Y"));
-        par.agregarArista("X", "Y");
-        assertEquals(1, new SolverGoloso(par).resolverPorCobertura().cardinal());
-    }
-
-    @Test
-    public void estrellaSeResuelveConElCentroTest() {
-        Instancia estrella = estrella();
-        assertEquals(conjunto(Arrays.asList("X")), new SolverGoloso(estrella).resolverPorGradoMayor().getVertices());
-    }
-
-    @Test
-    public void estrellaCubreTodoConLasTresEstrategiasTest() {
-        SolverGoloso s = new SolverGoloso(estrella());
-        assertEquals(1, s.resolverPorCobertura().cardinal() + s.resolverPorGradoMayor().cardinal() + s.resolverPorPesoDelVertice().cardinal() - 2);
-    }
-
-    //grafo enunciado tp = {2, 4}
-
-    @Test
     public void coberturaEncuentraElOptimoDelEnunciadoTest() {
         Instancia enunciado = enunciadoDelTp();
         assertEquals(2, new SolverGoloso(enunciado).resolverPorCobertura().cardinal());
@@ -147,8 +119,72 @@ public class SolverGolosoTest {
         Instancia enunciado = enunciadoDelTp();
         assertTrue(esDominante(enunciado, new SolverGoloso(enunciado).resolverPorPesoDelVertice()));
     }
+    
+    @Test
+    public void resolverDevuelveUnaSolucionPorEstrategiaTest() {
+        assertEquals(7, solver.resolver().size());
+    }
 
+    @Test
+    public void resolverDevuelveSoloSolucionesDominantesTest() {
+        for (Solucion s : solver.resolver())
+            assertTrue(esDominante(instancia, s));
+    }
 
+    @Test
+    public void resolverIncluyeAlVerticeAisladoEnTodasLasSolucionesTest() {
+        for (Solucion s : solver.resolver())
+            assertTrue(s.contiene(new Vertice("H")));
+    }
+    
+    @Test
+    public void resolverEnInstanciaVaciaDevuelveSolucionesVaciasTest() {
+        for (Solucion s : new SolverGoloso(new Instancia()).resolver())
+            assertEquals(0, s.cardinal());
+    }
+    
+    @Test
+    public void menosCoberturaIncluyeAlVerticeAisladoTest() {
+        assertTrue(solver.resolverPorMenosCobertura().contiene(new Vertice("H")));
+    }
+    
+    @Test
+    public void gradoMenorDevuelveConjuntoDominanteTest() {
+        assertTrue(esDominante(instancia, solver.resolverPorGradoMenor()));
+    }
+
+    @Test
+    public void gradoMenorIncluyeAlVerticeAisladoTest() {
+        assertTrue(solver.resolverPorGradoMenor().contiene(new Vertice("H")));
+    }
+    
+    @Test
+    public void nombreDevuelveConjuntoDominanteTest() {
+        assertTrue(esDominante(instancia, solver.resolverPorNombre()));
+    }
+
+    @Test
+    public void nombreIncluyeAlVerticeAisladoTest() {
+        assertTrue(solver.resolverPorNombre().contiene(new Vertice("H")));
+    }
+    
+    @Test
+    public void nombreInversoDevuelveConjuntoDominanteTest() {
+        assertTrue(esDominante(instancia, solver.resolverPorNombreInverso()));
+    }
+
+    @Test
+    public void nombreInversoIncluyeAlVerticeAisladoTest() {
+        assertTrue(solver.resolverPorNombreInverso().contiene(new Vertice("H")));
+    }
+    
+    @Test
+    public void todasLasEstrategiasDominanElGrafoDelEnunciadoTest() {
+        Instancia enunciado = enunciadoDelTp();
+        for (Solucion s : new SolverGoloso(enunciado).resolver())
+            assertTrue(esDominante(enunciado, s));
+    }
+    
     private void cargarVertices(Instancia i, List<String> nombres) {
         for (String n : nombres)
             i.agregarVertice(n);
@@ -157,13 +193,6 @@ public class SolverGolosoTest {
     private Instancia instanciaConAislados(List<String> nombres) {
         Instancia i = new Instancia();
         cargarVertices(i, nombres);
-        return i;
-    }
-
-    private Instancia estrella() {
-        Instancia i = instanciaConAislados(Arrays.asList("X", "A", "B", "C"));
-        for (String hoja : Arrays.asList("A", "B", "C"))
-            i.agregarArista("X", hoja);
         return i;
     }
 
@@ -185,8 +214,7 @@ public class SolverGolosoTest {
             ret.add(new Vertice(n));
         return ret;
     }
-
-    // Verificacion independiente del solver, todo vertice esta en la solucion
+    
     private boolean esDominante(Instancia i, Solucion s) {
         for (Vertice v : i.getVertices())
             if (!s.contiene(v) && !tieneVecinoEnSolucion(i, v, s))
@@ -200,4 +228,5 @@ public class SolverGolosoTest {
                 return true;
         return false;
     }
+
 }

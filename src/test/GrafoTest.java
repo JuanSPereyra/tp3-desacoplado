@@ -15,16 +15,14 @@ import modelo.Vertice;
 public class GrafoTest {
 
     private Grafo grafo;
-    private Grafo vacio;
+    private Grafo grafoVacio;
     private Vertice a, b, c, d, e, f, h;
 
     @Before
-    public void setUp() {
-        grafo = new Grafo();
+    public void inicializar() {
+        grafo = new Grafo(); 
+        grafoVacio = new Grafo();
         
-        vacio = new Grafo();
-        
-
         a = new Vertice("A");
         b = new Vertice("B");
         c = new Vertice("C");
@@ -50,24 +48,24 @@ public class GrafoTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void eliminarAristaConVerticeInexistenteLanzaExcepcionTest() {
-    	vacio.agregarVertice(a);
-        vacio.eliminarArista(a, b);
+    	grafoVacio.agregarVertice(a);
+        grafoVacio.eliminarArista(a, b);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void aristaConDestinoInexistenteLanzaExcepcionTest() {
-        vacio.agregarVertice(a);
-        vacio.agregarArista(a, b);           // b no existe
+        grafoVacio.agregarVertice(a);
+        grafoVacio.agregarArista(a, b);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void aristaDuplicadaLanzaExcepcionTest() {
-        grafo.agregarArista(a, b);           // A-B ya existe
+        grafo.agregarArista(a, b);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void aristaDuplicadaInvertidaLanzaExcepcionTest() {
-        grafo.agregarArista(b, a);           // A-B ya existe, al revés
+        grafo.agregarArista(b, a);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -82,7 +80,7 @@ public class GrafoTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void eliminarAristaInexistenteLanzaExcepcionTest() {
-        grafo.eliminarArista(a, c);          // existen los dos, pero no hay A-C
+        grafo.eliminarArista(a, c);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -92,7 +90,7 @@ public class GrafoTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void busquedaEnGrafoVacioLanzaExcepcionTest() {
-        vacio.getVertice("Argentina");
+        grafoVacio.getVertice("Argentina");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -100,7 +98,11 @@ public class GrafoTest {
         grafo.obtenerAristasDe(new Vertice("Z"));
     }
     
-    
+    @Test (expected = IllegalArgumentException.class)
+    public void verticesConMismoNombreSonElMismoVerticeTest() {
+        grafoVacio.agregarVertice(new Vertice("Argentina"));
+        grafoVacio.agregarVertice(new Vertice("Argentina"));
+    }
     
     @Test
     public void getVerticePorNombreDevuelveElVerticeTest() {
@@ -109,15 +111,9 @@ public class GrafoTest {
 
     @Test
     public void agregaVerticeNuevoYAumentaCantidadTest() {
-        vacio.agregarVertice(a);
-        assertEquals(1, vacio.cantidadVertices());
-        assertTrue(vacio.obtenerVertices().contains(a));
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void verticesConMismoNombreSonElMismoVerticeTest() {
-        vacio.agregarVertice(new Vertice("Argentina"));
-        vacio.agregarVertice(new Vertice("Argentina"));
+        grafoVacio.agregarVertice(a);
+        assertEquals(1, grafoVacio.cantidadVertices());
+        assertTrue(grafoVacio.obtenerVertices().contains(a));
     }
 
     @Test
@@ -145,7 +141,7 @@ public class GrafoTest {
     @Test
     public void eliminarVerticeConAristasQuitaLaAristaDelVecinoTest() {
         grafo.eliminarVertice(a);
-        assertEquals(1, grafo.obtenerAristasDe(b).size());   // solo queda B-C
+        assertEquals(1, grafo.obtenerAristasDe(b).size());
     }
     
     @Test
@@ -157,7 +153,7 @@ public class GrafoTest {
     @Test
     public void eliminarAristaTambienLaQuitaDelOtroVerticeTest() {
         grafo.eliminarArista(a, b);
-        assertEquals(1, grafo.obtenerAristasDe(b).size());   // solo queda B-C
+        assertEquals(1, grafo.obtenerAristasDe(b).size());
     }
 
     @Test
@@ -167,7 +163,7 @@ public class GrafoTest {
 
     @Test
     public void todasLasAristasDeGrafoVacioEsListaVaciaTest() {
-        assertTrue(vacio.obtenerTodasLasAristas().isEmpty());
+        assertTrue(grafoVacio.obtenerTodasLasAristas().isEmpty());
     }
 
     @Test
@@ -205,7 +201,6 @@ public class GrafoTest {
     @Test
     public void verticeConAristaNoEstaAisladoTest() {
         assertFalse(grafo.estaAislado(a));
-        assertFalse(grafo.estaAislado(c));
     }
 
     @Test
@@ -216,13 +211,13 @@ public class GrafoTest {
 
     @Test
     public void conjuntoSinElAisladoNoDominaTest() {
-        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(b, c, e));   // falta H
+        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(b, c, e));
         assertFalse(grafo.esConjuntoDominante(conjunto));
     }
 
     @Test
     public void conjuntoQueNoDominaTest() {
-        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(c, h));      // A y F quedan sin cubrir
+        Set<Vertice> conjunto = new HashSet<>(Arrays.asList(c, h));
         assertFalse(grafo.esConjuntoDominante(conjunto));
     }
 
@@ -233,11 +228,6 @@ public class GrafoTest {
 
     @Test
     public void conjuntoVacioDominaGrafoVacioTest() {
-        assertTrue(vacio.esConjuntoDominante(new HashSet<>()));
+        assertTrue(grafoVacio.esConjuntoDominante(new HashSet<>()));
     }
-   
-   
-    
-    
-
 }

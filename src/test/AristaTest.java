@@ -13,7 +13,7 @@ public class AristaTest {
     private Vertice c;
 
     @Before
-    public void Inicializacion() {
+    public void inicializar() {
         a = new Vertice("Argentina");
         b = new Vertice("Brasil");
         c = new Vertice ("Colombia");
@@ -24,7 +24,6 @@ public class AristaTest {
     	new Arista(a,b).obtenerOpuesto(c);
     }
     
-
     @Test
     public void obtenerOrigenTest() {
         Arista arista = new Arista(a, b);
@@ -37,8 +36,6 @@ public class AristaTest {
         assertEquals(b, arista.getDestino());
     }
 
-   
-
     @Test
     public void obtenerExtremoTest() {
         Arista arista = new Arista(a, b);
@@ -50,5 +47,4 @@ public class AristaTest {
     	Arista arista = new Arista(a, b);
     	assertEquals("Argentina" + " -- " + "Brasil",arista.toString());
     }
-
 }

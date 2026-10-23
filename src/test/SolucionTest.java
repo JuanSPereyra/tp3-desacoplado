@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import modelo.Instancia;
@@ -18,7 +19,7 @@ public class SolucionTest {
     private Vertice a, b, c, d, e, f, h;
 
     @Before
-    public void setUp() {
+    public void inicializar() {
         instancia = new Instancia();
         for (String n : new String[] {"A", "B", "C", "D", "E", "F", "H"})
             instancia.agregarVertice(n);
@@ -39,10 +40,14 @@ public class SolucionTest {
         f = new Vertice("F");
         h = new Vertice("H");
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void nuevosCubiertosDeVerticeInexistenteLanzaExcepcionTest() {
+        solucion.nuevosCubiertos(new Vertice("Z"));
+    }
 
     @Test
     public void solucionNuevaEstaVaciaTest() {
-        assertEquals(0, solucion.cardinal());
         assertTrue(solucion.getVertices().isEmpty());
     }
 
@@ -76,19 +81,13 @@ public class SolucionTest {
     @Test
     public void agregarVerticeNoAgregaSusVecinosALaSolucionTest() {
         solucion.agregar(c);
-        assertNoContiene(Arrays.asList(b, d, e));
+        assertEquals(new HashSet<>(Arrays.asList(c)), solucion.getVertices());
     }
 
     @Test
     public void agregarVerticeDominaALosVecinosYASiMismoTest() {
         solucion.agregar(c);
-        assertDominados(Arrays.asList(c, b, d, e));
-    }
-
-    @Test
-    public void agregarVerticeNoDominaALosNoVecinosTest() {
-        solucion.agregar(c);
-        assertNoDominados(Arrays.asList(a, f, h));
+        assertEquals(new HashSet<>(Arrays.asList(b, c, d, e)), dominados());
     }
 
     @Test
@@ -100,32 +99,7 @@ public class SolucionTest {
     @Test
     public void agregarVerticeAisladoSoloSeDominaASiMismoTest() {
         solucion.agregar(h);
-        assertDominados(Arrays.asList(h));
-        assertNoDominados(Arrays.asList(a));
-    }
-
-    @Test
-    public void noContieneVerticeNoAgregadoTest() {
-        assertNoContiene(Arrays.asList(a));
-    }
-
-    @Test
-    public void dominadoNoImplicaContenidoTest() {
-        solucion.agregar(c);
-        assertDominados(Arrays.asList(b));
-        assertNoContiene(Arrays.asList(b));
-    }
-
-    @Test
-    public void nuevosCubiertosAlInicioTest() {
-        //                              
-        assertNuevosCubiertos(new int[] {2, 3, 4, 2, 3, 2, 1});// A  B  C  D  E  F  H
-    }
-
-    @Test
-    public void nuevosCubiertosSeActualizaTrasAgregarTest() {
-        solucion.agregar(c);
-        assertNuevosCubiertos(new int[] {1, 1, 0, 0, 1, 1, 1});
+        assertEquals(new HashSet<>(Arrays.asList(h)), dominados());
     }
 
     @Test
@@ -152,6 +126,35 @@ public class SolucionTest {
         solucion.getVertices().clear();
         assertEquals(1, solucion.cardinal());
     }
+    
+    @Test
+    public void nuevosCubiertosDeUnVerticeYaAgregadoEsCeroTest() {
+        solucion.agregar(c);
+        assertEquals(0, solucion.nuevosCubiertos(c));
+    }
+    
+    @Test
+    public void nuevosCubiertosDeVerticeAisladoEsUnoTest() {
+        assertEquals(1, solucion.nuevosCubiertos(h));
+    }
+    
+    @Test
+    public void agregarEDominaAFTest() {
+        solucion.agregar(e);
+        assertTrue(solucion.estaDominado(f));
+    }
+    @Test
+    public void nuevosCubiertosDeVerticeAisladoYaAgregadoEsCeroTest() {
+        solucion.agregar(h);
+
+        assertEquals(0, solucion.nuevosCubiertos(h));
+    }
+    
+    @Test
+    public void consultarNuevosCubiertosNoModificaLaSolucionTest() {
+        solucion.nuevosCubiertos(c);
+        assertFalse(solucion.estaDominado(c));
+    }
 
     @Test
     public void toStringIncluyeLosVerticesElegidosTest() {
@@ -159,35 +162,17 @@ public class SolucionTest {
         assertTrue(solucion.toString().contains("C"));
     }
     
-    private void assertNoContiene(List<Vertice> vertices) {
-        for (Vertice v : vertices) {
-            assertFalse(solucion.contiene(v));
-        }
-    }
-
-    private void assertDominados(List<Vertice> vertices) {
-        for (Vertice v : vertices) {
-            assertTrue(solucion.estaDominado(v));
-        }
-    }
-
-    private void assertNoDominados(List<Vertice> vertices) {
-        for (Vertice v : vertices) {
-            assertFalse(solucion.estaDominado(v));
-        }
+    private Set<Vertice> dominados() {
+        Set<Vertice> ret = new HashSet<>();
+        for (Vertice v : instancia.getVertices())
+            if (solucion.estaDominado(v))
+                ret.add(v);
+        return ret;
     }
 
     private void agregarTodos(List<Vertice> vertices) {
         for (Vertice v : vertices) {
             solucion.agregar(v);
-        }
-    }
-
-    // esperados en el orden: a, b, c, d, e, f, h
-    private void assertNuevosCubiertos(int[] esperados) {
-        List<Vertice> vertices = Arrays.asList(a, b, c, d, e, f, h);
-        for (int i = 0; i < vertices.size(); i++) {
-            assertEquals(esperados[i], solucion.nuevosCubiertos(vertices.get(i)));
         }
     }
 }

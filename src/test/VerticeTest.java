@@ -12,7 +12,7 @@ public class VerticeTest {
 	
 	@Before
 	public void inicializar() {
-	vertice=new Vertice("12");
+	vertice=new Vertice("Argentina");
 	}
 	
 	@Test

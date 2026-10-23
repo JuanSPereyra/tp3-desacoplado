@@ -20,7 +20,7 @@ public class SolverGoloso {
 			resolverPorGradoMayor(),
 			resolverPorGradoMenor(),
 			resolverPorNombre(),
-			resolverPoNombreInverso(),
+			resolverPorNombreInverso(),
 			resolverPorPesoDelVertice()
 			);
 		
@@ -60,7 +60,7 @@ public class SolverGoloso {
 	}
 	
 	//estrategia 4: inversa a la 3, toma menor grado primero
-    private Solucion resolverPorGradoMenor() {
+    public Solucion resolverPorGradoMenor() {
 		return resolver(
 				new Solucion(instancia),
 				(a, b) -> Integer.compare(
@@ -78,7 +78,7 @@ public class SolverGoloso {
 	}
 	
     //estrategia 6: z--->a
-	private Solucion resolverPoNombreInverso() {
+	public Solucion resolverPorNombreInverso() {
 		return resolver(
 				new Solucion(instancia),
 				(a, b) -> b.getNombre().compareTo(a.getNombre())

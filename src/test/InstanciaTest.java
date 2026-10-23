@@ -13,12 +13,12 @@ import modelo.Vertice;
 public class InstanciaTest {
 
     private Instancia instancia;   // A-B, B-C, C-D, C-E, E-F y H aislado
-    private Instancia vacia;
+    private Instancia instanciaVacia;
     private Vertice a, b, c, d, e, f, h;
 
     @Before
     public void setUp() {
-        vacia = new Instancia();
+        instanciaVacia = new Instancia();
         instancia = new Instancia();
 
         for (String n : new String[] {"A", "B", "C", "D", "E", "F", "H"})
@@ -41,8 +41,8 @@ public class InstanciaTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void aristaConVerticeInexistenteLanzaExcepcionTest() {
-        vacia.agregarVertice("A");
-        vacia.agregarArista("A", "Z");
+        instanciaVacia.agregarVertice("A");
+        instanciaVacia.agregarArista("A", "Z");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -69,31 +69,37 @@ public class InstanciaTest {
     public void gradoDeVerticeInexistenteLanzaExcepcionTest() {
         instancia.grado(new Vertice("Z"));
     }
-
-    @Test
-    public void instanciaNuevaNoTieneVerticesTest() {
-        assertEquals(0, vacia.getTamanio());
-    }
     
-    @Test public void instaciaNuevaEstaVaciaTest() {
-    	assertTrue(vacia.getVertices().isEmpty());
-    }
-
-    @Test
-    public void agregarVerticeAumentaElTamanoTest() {
-        vacia.agregarVertice("A");
-        assertEquals(1, vacia.getTamanio());
-    }
-    
-    public void agregarVerticeVaciaLoContieneTest() {
-        vacia.agregarVertice("A");
-        assertTrue(vacia.getVertices().contains(a));
+    @Test (expected = IllegalArgumentException.class)
+    public void cantidadVerticesNoCambiaAlAgregarRepetidoTest() {
+        instanciaVacia.agregarVertice("A");
+        instanciaVacia.agregarVertice("A");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void agregarVerticeRepetidoNoAumentaElTamanoTest() {
-        vacia.agregarVertice("A");
-        vacia.agregarVertice("A");
+        instanciaVacia.agregarVertice("A");
+        instanciaVacia.agregarVertice("A");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void obtenerAristasDeVerticeInexistenteLanzaExcepcionTest() {
+        instancia.obtenerAristasDe(new Vertice("Z"));
+    }
+    
+    @Test
+    public void instanciaNuevaNoTieneVerticesTest() {
+        assertEquals(0, instanciaVacia.getTamanio());
+    }
+    
+    @Test public void instaciaNuevaEstaVaciaTest() {
+    	assertTrue(instanciaVacia.getVertices().isEmpty());
+    }
+
+    @Test
+    public void agregarVerticeAumentaElTamanoTest() {
+        instanciaVacia.agregarVertice("A");
+        assertEquals(1, instanciaVacia.getTamanio());
     }
 
     @Test
@@ -169,7 +175,7 @@ public class InstanciaTest {
     
     @Test
     public void cantidadVerticesDeInstanciaVaciaEsCeroTest() {
-        assertEquals(0, vacia.cantidadVertices());
+        assertEquals(0, instanciaVacia.cantidadVertices());
     }
 
     @Test
@@ -179,14 +185,8 @@ public class InstanciaTest {
 
     @Test
     public void cantidadVerticesAumentaAlAgregarUnoTest() {
-        vacia.agregarVertice("A");
-        assertEquals(1, vacia.cantidadVertices());
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void cantidadVerticesNoCambiaAlAgregarRepetidoTest() {
-        vacia.agregarVertice("A");
-        vacia.agregarVertice("A");
+        instanciaVacia.agregarVertice("A");
+        assertEquals(1, instanciaVacia.cantidadVertices());
     }
 
     @Test
@@ -194,10 +194,64 @@ public class InstanciaTest {
         assertEquals(2, grafoParaCantidad().cantidadVertices());
     }
     
+    @Test
+    public void eliminarVerticeReduceElTamanioTest() {
+        instancia.eliminarVertice(c);
+        assertFalse(instancia.getVertices().contains(c));
+    }
+    
+    @Test
+    public void eliminarVerticeQuitaSusAristasTest() {
+        instancia.eliminarVertice(c);
+        assertFalse(instancia.vecinosDe(e).contains(c));
+    }
+    
+    @Test
+    public void eliminarAristaQuitaLaConexionEnAmbosSentidosTest() {
+        instancia.eliminarArista(a, b);
+        assertFalse(instancia.vecinosDe(a).contains(b));
+    }
+    
+    @Test
+    public void eliminarAristaActualizaLosGradosTest() {
+        instancia.eliminarArista(a, b);
+        assertEquals(0, instancia.grado(a));
+    }
+    
+    @Test
+    public void getVerticePorNombreDevuelveElVerticeTest() {
+        assertEquals(c, instancia.getVertice("C"));
+    }
+   
+    @Test
+    public void obtenerAristasDeCuentaLasAristasDelVerticeTest() {
+        assertEquals(3, instancia.obtenerAristasDe(c).size());
+    }
+
+    @Test
+    public void obtenerAristasDeVerticeAisladoEsVaciaTest() {
+        assertTrue(instancia.obtenerAristasDe(h).isEmpty());
+    }
+    
+    @Test
+    public void getGrafoDevuelveElGrafoInternoTest() {
+        assertEquals(7, instancia.getGrafo().obtenerVertices().size());
+    }
+    
+    @Test
+    public void getAristasComoNombresDevuelveCadaAristaUnaSolaVezTest() {
+        assertEquals(5, instancia.getAristasComoNombres().size());
+    }
+
+    @Test
+    public void getAristasComoNombresDeInstanciaVaciaEsVaciaTest() {
+        assertTrue(instanciaVacia.getAristasComoNombres().isEmpty());
+    }
+    
     private Instancia grafoParaCantidad() {
-    	vacia.agregarVertice("A");
-        vacia.agregarVertice("B");
-    	vacia.agregarArista("A", "B");
-		return vacia;
+    	instanciaVacia.agregarVertice("A");
+        instanciaVacia.agregarVertice("B");
+    	instanciaVacia.agregarArista("A", "B");
+		return instanciaVacia;
     }
 }

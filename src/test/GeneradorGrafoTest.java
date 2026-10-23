@@ -23,7 +23,6 @@ public class GeneradorGrafoTest {
 		Grafo g = generador.grafoRandom(5,4,0);
 		assertEquals(4, g.cantidadAristas());
 	}
-	
 	@Test
 	public void puedeGenerarGrafoCompleto() {
 	    int n = 8;
