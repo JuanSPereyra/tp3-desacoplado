@@ -1,4 +1,4 @@
-package util;
+package estructuraDatosAux;
 
 public class Par<A, B> {
 	private A izquierda;

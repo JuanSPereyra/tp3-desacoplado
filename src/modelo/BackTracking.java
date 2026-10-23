@@ -13,30 +13,29 @@ public class BackTracking {
 	private volatile boolean cancelado; 
 	
 	public Set<Vertice> resolverGrafo(Grafo grafo){
-		this.grafo=grafo;
-		this.vertices=new ArrayList<>(grafo.obtenerVertices());
-		this.mejorSolucion= null;
+		this.grafo = grafo;
+		this.vertices = new ArrayList<>(grafo.obtenerVertices());
+		this.mejorSolucion = null;
 		
 		buscar(new HashSet<>());
 		return mejorSolucion;
 	}
 	
 	public void cancelar() {
-		cancelado=true;
+		cancelado = true;
 	}
 	
 	private void buscar(Set<Vertice> solucionParcial) {	
 		if(cancelado) return;	
 		
-		if(mejorSolucion!=null && solucionParcial.size()>= mejorSolucion.size()) {
+		if(mejorSolucion != null && solucionParcial.size() >= mejorSolucion.size()) {
 			return;
 		}
 			
 		Vertice sinDominar= verticeNoDominado(solucionParcial);
 		
-		//caso base 
-		if(sinDominar==null) {
-			mejorSolucion=new HashSet<>(solucionParcial);
+		if(sinDominar == null) {
+			mejorSolucion = new HashSet<>(solucionParcial);
 			return;
 		}
 		
@@ -49,8 +48,7 @@ public class BackTracking {
             solucionParcial.remove(v);  
         }
 	}
-	
-	
+		
 	private Vertice verticeNoDominado(Set<Vertice> actual) {
 	    for (Vertice v : vertices) {
 	        if (!verticeEstaDominado(v, actual)) {

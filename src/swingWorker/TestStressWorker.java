@@ -4,7 +4,6 @@ import java.util.*;
 import javax.swing.SwingWorker;
 
 import modelo.*;
-
 import java.math.*;
 
 import presentador.ITestListener;
@@ -84,7 +83,7 @@ public class TestStressWorker extends SwingWorker<String, String>{
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Solucion: " + this.iteracion + " de " + solucionesMaximas + " con densidad del " + this.densidad*10 + "%\n");
-		sb.append("Cantidad de Vertices:" + this.iteracion + "\n");
+		sb.append("Cantidad de Vertices: " + this.iteracion + "\n");
 		sb.append("Cantidad máxima de Aristas: " + this.cantidadTotalAristas + "\n");
 		sb.append("Cantidad de Aristas utilizadas: " + this.cantidadAristasAUsar + "\n");
 		sb.append(conjuntoEntreLLaves(this.resultado) + "\n");

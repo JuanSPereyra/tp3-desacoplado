@@ -1,16 +1,18 @@
 package vista.interfaz;
 
 import java.util.*;
-
-import util.Par;
+import estructuraDatosAux.Par;
+import estructuraDatosAux.VerticeVisual;
 
 public interface ResultadoVista {
 
 	void mostrarResultado(String string);
 
-	void completarComboSoluciones(int size);
+	void completarComboSoluciones(List<String> nombreHeuristica);
 
-	void mostrarGrafo(List<String> vertices, List<Par<String, String>> aristas, Set<String> solucionDominante);
+	void mostrarGrafo(List<VerticeVisual> vertices, List<Par<String, String>> aristas);
 	
 	void mostrarMensajeError(String mensaje);
+
+
 }

@@ -15,7 +15,7 @@ public class TestStressPresentador implements ITestListener{
 		this.gestorInterfaz = gestor;	
 	}
 
-	public void manejarClickBtnEmpezarTest(String vertices, int indice) {
+	public void manejarClickBtnEmpezarTest(String vertices, int densidad) {
 		if (swingworker != null && !swingworker.isDone()) {
 			return;
 		}
@@ -26,7 +26,7 @@ public class TestStressPresentador implements ITestListener{
 			_tsVista.borrarResultadoAnterior();
 			_tsVista.habilitarBotonesTestStress(true);
 
-			swingworker = new TestStressWorker(this, cantVertices, indice);
+			swingworker = new TestStressWorker(this, cantVertices, densidad);
 			swingworker.execute();
 
 		} catch (NumberFormatException e) {

@@ -33,7 +33,6 @@ public class Solucion {
         return dominados.size() == instancia.getTamanio();
     }
 
-    // vertices que pasarian a estar dominados si agregamos v
     public int nuevosCubiertos(Vertice v) {
     	int cantidad = 0;
     	

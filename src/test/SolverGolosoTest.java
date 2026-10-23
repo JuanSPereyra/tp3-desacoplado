@@ -55,19 +55,19 @@ public class SolverGolosoTest {
 
     @Test
     public void gradoDevuelveConjuntoDominanteTest() {
-        Solucion s = solver.resolverPorGrado();
+        Solucion s = solver.resolverPorGradoMayor();
         assertTrue(esDominante(instancia, s));
     }
 
     @Test
     public void gradoIncluyeAlVerticeAisladoTest() {
-        assertTrue(solver.resolverPorGrado().contiene(new Vertice("H")));
+        assertTrue(solver.resolverPorGradoMayor().contiene(new Vertice("H")));
     }
 
     @Test
     public void gradoDaElConjuntoEsperadoTest() {
         // H, C (grado 3), luego B y E (grado 2, desempate por nombre)
-        assertEquals(conjunto(Arrays.asList("H", "C", "B", "E")), solver.resolverPorGrado().getVertices());
+        assertEquals(conjunto(Arrays.asList("H", "C", "B", "E")), solver.resolverPorGradoMayor().getVertices());
     }
 
     //pesoVertice
@@ -99,7 +99,7 @@ public class SolverGolosoTest {
 
     @Test
     public void unSoloVerticeEntraEnLaSolucionTest() {
-        Solucion s = new SolverGoloso(instanciaConAislados(Arrays.asList("X"))).resolverPorGrado();
+        Solucion s = new SolverGoloso(instanciaConAislados(Arrays.asList("X"))).resolverPorGradoMayor();
         assertEquals(1, s.cardinal());
     }
 
@@ -119,13 +119,13 @@ public class SolverGolosoTest {
     @Test
     public void estrellaSeResuelveConElCentroTest() {
         Instancia estrella = estrella();
-        assertEquals(conjunto(Arrays.asList("X")), new SolverGoloso(estrella).resolverPorGrado().getVertices());
+        assertEquals(conjunto(Arrays.asList("X")), new SolverGoloso(estrella).resolverPorGradoMayor().getVertices());
     }
 
     @Test
     public void estrellaCubreTodoConLasTresEstrategiasTest() {
         SolverGoloso s = new SolverGoloso(estrella());
-        assertEquals(1, s.resolverPorCobertura().cardinal() + s.resolverPorGrado().cardinal() + s.resolverPorPesoDelVertice().cardinal() - 2);
+        assertEquals(1, s.resolverPorCobertura().cardinal() + s.resolverPorGradoMayor().cardinal() + s.resolverPorPesoDelVertice().cardinal() - 2);
     }
 
     //grafo enunciado tp = {2, 4}
@@ -139,7 +139,7 @@ public class SolverGolosoTest {
     @Test
     public void gradoEncuentraElOptimoDelEnunciadoTest() {
         Instancia enunciado = enunciadoDelTp();
-        assertEquals(conjunto(Arrays.asList("2", "4")), new SolverGoloso(enunciado).resolverPorGrado().getVertices());
+        assertEquals(conjunto(Arrays.asList("2", "4")), new SolverGoloso(enunciado).resolverPorGradoMayor().getVertices());
     }
 
     @Test

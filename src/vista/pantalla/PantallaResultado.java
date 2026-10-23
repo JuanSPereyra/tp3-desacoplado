@@ -3,9 +3,11 @@ package vista.pantalla;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import util.Par;
 
 import javax.swing.*;
+
+import estructuraDatosAux.Par;
+import estructuraDatosAux.VerticeVisual;
 
 import presentador.ResultadoPresentador;
 import vista.interfaz.InterfazGestorPantalla;
@@ -77,13 +79,13 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 	private void crearScrollResultados() {
 		scrollPane = new JScrollPane(txtResultado);
 		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(51, 65, 85)));
-		scrollPane.setBounds(80, 90, 370, 343);
+		scrollPane.setBounds(39, 90, 411, 343);
 		panelFondo.add(scrollPane);
 	}
 	
 	private void crearAreaMostrarGrafo() {
 		panelGrafo = new JPanel();
-	    panelGrafo.setBounds(460, 90, 370, 343);
+	    panelGrafo.setBounds(460, 90, 395, 343);
 	    panelGrafo.setBackground(new Color(15, 23, 42));
 	    panelGrafo.setForeground(new Color(241, 245, 249));
 	    panelFondo.add(panelGrafo);		
@@ -178,16 +180,16 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 	}
 	
 	@Override
-	public void completarComboSoluciones (int cantidadSoluciones) {
+	public void completarComboSoluciones (List<String> nombreHeuristica) {
 		comboSoluciones.removeAllItems();
 
-		for (int i = 0; i < cantidadSoluciones; i++) {
-			comboSoluciones.addItem("Ver solución " + (i+1));
+		for (String nombre : nombreHeuristica) {
+			comboSoluciones.addItem(nombre);
         }
 	}
 
 	@Override
-	public void mostrarGrafo(List<String> vertices, List<Par<String, String>> aristas, Set<String> solucionDominante) {
+	public void mostrarGrafo(List<VerticeVisual> vertices, List<Par<String, String>> aristas) {
 
 		graficadorDeGrafo = new LibreriaMxGraphWrapper();
 		Object parent = graficadorDeGrafo.getParent();
@@ -197,20 +199,25 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 
 			graficadorDeGrafo.actualizar();
 
-			for (String v : vertices) {
+			for (VerticeVisual vertice: vertices) {
 
-				String estiloVertice = solucionDominante.contains(v) ? graficadorDeGrafo.estiloVerticeDominante()
-						: graficadorDeGrafo.estiloVertice();
+				String estiloVertice = vertice.esDominante()
+						? graficadorDeGrafo.estiloVerticeDominante()
+						: graficadorDeGrafo.estiloVerticeNoDominante();
+				
+				String nombreV = vertice.getNombre();
 
-				Object nodo = graficadorDeGrafo.insertarVertice(parent, null, v, 0, 0, 50, 50, estiloVertice);
-				mapaDeVertices.put(v, nodo);
+				Object nodo = graficadorDeGrafo.insertarVertice(parent, null, nombreV, 0, 0, 50, 50, estiloVertice);
+				mapaDeVertices.put(nombreV, nodo);
 			}
 
 			String estiloArista = graficadorDeGrafo.estiloArista();
 
 			for (Par<String, String> arista : aristas) {
-				graficadorDeGrafo.insertarArista(parent, null, "", mapaDeVertices.get(arista.getIzquierda()),
-						mapaDeVertices.get(arista.getDerecha()), estiloArista);
+				graficadorDeGrafo.insertarArista(parent, null, "", 
+						mapaDeVertices.get(arista.getIzquierda()),
+						mapaDeVertices.get(arista.getDerecha()),
+						estiloArista);
 			}
 
 		} finally {

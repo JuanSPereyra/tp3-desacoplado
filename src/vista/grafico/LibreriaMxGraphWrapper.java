@@ -49,7 +49,7 @@ public class LibreriaMxGraphWrapper {
 		graficoGrafo.setDropEnabled(false);
 	}
 
-	public String estiloVertice() {
+	public String estiloVerticeNoDominante() {
 		return "shape=ellipse;"
 				+ "strokeColor=white;"
 				+ "fillColor=blue;"
