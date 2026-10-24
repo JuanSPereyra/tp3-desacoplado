@@ -52,24 +52,21 @@ public class GeneradorGrafo {
 		Random rnd = new Random(semilla);
 		
 		int agregados = 0;
-		int n = cantidadVertices;
-		int m = cantidadAristas;
 		
-		while (agregados < m) {
-			Vertice a = listaDeVertices.get(rnd.nextInt(n));
-			Vertice b = listaDeVertices.get(rnd.nextInt(n));
+		while (agregados < cantidadAristas) {
+			Vertice origen = listaDeVertices.get(rnd.nextInt(cantidadVertices));
+			Vertice destino = listaDeVertices.get(rnd.nextInt(cantidadVertices));
 			
-			if(!a.equals(b) && !grafoARetornar.existeArista(a,b)) {
-				grafoARetornar.agregarArista(a, b);
+			if(!origen.equals(destino) && !grafoARetornar.existeArista(origen,destino)) {
+				grafoARetornar.agregarArista(origen, destino);
 				agregados++;
 			}
 		}
 	}
 	
 	private void agregarVertices() {		
-		int n = cantidadVertices;
 		
-		for (int i=0; i<n; i++) {
+		for (int i=0; i<cantidadVertices; i++) {
 			Vertice v = new  Vertice (String.valueOf(i));
 			grafoARetornar.agregarVertice(v);
 			listaDeVertices.add(v);
