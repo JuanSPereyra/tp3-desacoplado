@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import modelo.GeneradorGrafo;
@@ -10,16 +11,21 @@ import modelo.Vertice;
 
 public class GeneradorGrafoTest {
 
+	GeneradorGrafo generador;
+	
+	@Before
+	public void inicializar() {
+		generador = new GeneradorGrafo();
+	}
+	
 	@Test
 	public void generarCantidadDeVertices() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		Grafo g = generador.grafoRandom(5,0,0);
 		assertEquals(5, g.cantidadVertices());
 	}
 
 	@Test
 	public void generarCantidadDeAristas() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		Grafo g = generador.grafoRandom(5,4,0);
 		assertEquals(4, g.cantidadAristas());
 	}
@@ -28,7 +34,6 @@ public class GeneradorGrafoTest {
 	    int n = 8;
 	    int maximo = n * (n - 1) / 2;
 	    
-	    GeneradorGrafo generador = new GeneradorGrafo();		
 		Grafo g = generador.grafoRandom(n, maximo, 0);
 
 	    assertEquals(maximo, g.cantidadAristas());
@@ -45,40 +50,34 @@ public class GeneradorGrafoTest {
 	
 	@Test(timeout = 2000, expected = IllegalArgumentException.class)
 	public void rechazaMasAristasQueLasPosibles() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		generador.grafoRandom(4, 7, 0);
 	}
 	
 	@Test
 	public void grafoVacio() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		Grafo g = generador.grafoRandom(0, 0, 0);
 	    assertEquals(0, g.cantidadAristas());
 	}
 	
 	@Test
 	public void unSoloVerticeSinAristas() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		Grafo g = generador.grafoRandom(1, 0, 0);
 	    assertEquals(0, g.cantidadAristas());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void rechazaVerticeNegativo() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		generador.grafoRandom(-1, 0, 0);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void rechazaAristaNegativa() {
-		GeneradorGrafo generador = new GeneradorGrafo();		
 		generador.grafoRandom(4, -1, 0);
 	}
 	
 	@Test
 	public void mismaSemillaGeneraMismoGrafo() {
 	    int n = 8;
-	    GeneradorGrafo generador = new GeneradorGrafo();		
 		Grafo g1 = generador.grafoRandom(n, 10, 42L);
 	    Grafo g2 = generador.grafoRandom(n, 10, 42L);
 
