@@ -5,14 +5,16 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import presentador.TestStressPresentador;
-import vista.interfaz.InterfazGestorPantalla;
+import estructuraDatosAux.Par;
 import vista.interfaz.StressVista;
 
 @SuppressWarnings("serial")
-public class PantallaCargarTestStress extends JFrame implements StressVista{
+public class PantallaTestStress extends JFrame implements StressVista{
 	
-	private TestStressPresentador testStressPresentador;
+	private ActionListener listenerVolverAlMenu;
+	private ActionListener listenerSalir;
+	private ActionListener listenerEmpezarTest;
+	private ActionListener listenerDetenerTest;
 	
 	private JButton btnDetenerTest, btnSalir, btnVolver, btnEmpezarTest;
 	private Container panelFondo;
@@ -22,10 +24,11 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 	private JProgressBar barraProgreso;
 	private JTextField textCanVertices;
 	private DefaultListCellRenderer renderer;
+	
+	private int porcentajeDensidad;
+	private String cantVertices;
 
-	public PantallaCargarTestStress(InterfazGestorPantalla gestorInterfaz) {
-
-		this.testStressPresentador = new TestStressPresentador(this, gestorInterfaz);
+	public PantallaTestStress() {
 
 		configurarPantalla();
 		crearLblTitulo();
@@ -40,7 +43,7 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		crearComboSoluciones();
 		crearBtnDetenerTest();
 	}
-
+	
 	private void configurarPantalla() {
 		setTitle("Conjunto Dominante Mínimo — Resultado");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,10 +129,8 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 	}
 
 	private void agegarListenerBtnVolverMenu() {
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				testStressPresentador.manejarClickVolverAlMenu();
-			}
+		btnVolver.addActionListener(e -> {
+			listenerVolverAlMenu.actionPerformed(e);
 		});
 	}
 
@@ -148,10 +149,8 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 	}
 
 	private void agregarListenerBtnSalir() {
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				testStressPresentador.manejarClickBtnSalir();
-			}
+		btnSalir.addActionListener(e -> {
+			listenerSalir.actionPerformed(e);
 		});
 	}
 	
@@ -175,10 +174,10 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 		btnEmpezarTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int densidad = comboDensidades.getSelectedIndex() + 1;
-				String vertices = textCanVertices.getText();
+				porcentajeDensidad = comboDensidades.getSelectedIndex() + 1;
+				cantVertices = textCanVertices.getText();
 				
-				testStressPresentador.manejarClickBtnEmpezarTest(vertices, densidad);
+				listenerEmpezarTest.actionPerformed(e);
 			}
 		});
 	}
@@ -222,11 +221,34 @@ public class PantallaCargarTestStress extends JFrame implements StressVista{
 	}
 	
 	private void agregarListenerBtnDetenerTest() {
-		btnDetenerTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				testStressPresentador.manejarClickBtnDetenerTest();
-			}
+		btnDetenerTest.addActionListener(e -> {
+			listenerDetenerTest.actionPerformed(e);
 		});
+	}
+	
+	@Override
+	public void alSolicitarVolverAlMenu(ActionListener listener) {
+		this.listenerVolverAlMenu = listener;
+	}
+
+	@Override
+	public void alSolicitarSalir(ActionListener listener) {
+		this.listenerSalir = listener;
+	}
+
+	@Override
+	public void alSolicitarEmpezarTest(ActionListener listener) {
+		this.listenerEmpezarTest = listener;
+	}
+
+	@Override
+	public void alSolicitarDetenerTest(ActionListener listener) {
+		this.listenerDetenerTest = listener;
+	}
+	
+	@Override
+	public Par<String, Integer> datosParaTest(){
+		return new Par<String, Integer>(cantVertices, porcentajeDensidad);
 	}
 	
 	@Override

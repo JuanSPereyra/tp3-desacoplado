@@ -2,6 +2,7 @@ package principal;
 
 import javax.swing.UIManager;
 
+import coordinadorMVP.CoordinadorPresentadores;
 import vista.interfaz.InterfazGestorPantalla;
 import vista.pantalla.GestorPantallas;
 
@@ -14,7 +15,11 @@ public class Principal {
             System.out.println("No se pudo cargar el LookAndFeel: " + e);
         }
 
-        InterfazGestorPantalla gestorInterfaz = new GestorPantallas();
-        gestorInterfaz.crearPantallaInicio();
+//        InterfazGestorPantalla gestorInterfaz = new GestorPantallas();
+        CoordinadorPresentadores coordinador = new CoordinadorPresentadores();
+        
+        coordinador.iniciarAplicacion();
+        
+//        gestorInterfaz.crearPantallaInicio();
     }
 }

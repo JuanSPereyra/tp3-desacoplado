@@ -6,11 +6,9 @@ import javax.swing.SwingWorker;
 import modelo.*;
 import java.math.*;
 
-import presentador.ITestListener;
-
 public class TestStressWorker extends SwingWorker<String, String>{
 
-	private ITestListener _interfazPresentador;
+	private InterfazTestStressPresentador _interfazPresentador;
 	private volatile BackTracking backTrackingActual;
 
 	private int solucionesMaximas;	
@@ -23,8 +21,8 @@ public class TestStressWorker extends SwingWorker<String, String>{
 	private double tiempo;
 	private GeneradorGrafo generadorGrafoRnd;
 
-	public TestStressWorker(ITestListener listener, int cantVertices, int densidad) {
-		this._interfazPresentador = listener;
+	public TestStressWorker(InterfazTestStressPresentador InterfazPresentador, int cantVertices, int densidad) {
+		this._interfazPresentador = InterfazPresentador;
 		this.solucionesMaximas = cantVertices;
 		this.densidad = densidad;
 		this.generadorGrafoRnd = new GeneradorGrafo();

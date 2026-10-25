@@ -5,20 +5,16 @@ import java.awt.event.*;
 import java.net.URL;
 import javax.swing.*;
 
-import presentador.BienvenidaPresentador;
-import vista.interfaz.InterfazGestorPantalla;
+import vista.interfaz.InicioVista;
 
 @SuppressWarnings("serial")
-public class PantallaInicio extends JFrame {
+public class PantallaInicio extends JFrame implements InicioVista{
 
-	private BienvenidaPresentador bienvenidaPresentador;
 	private JPanel panelFondo;
 	private JLabel lblTitulo, lblSubtitulo, lblImagen;
-	private JButton btnCargaManual, btnCargaDocumento, btnSalir;
-	private JButton btnTestStress;
+	private JButton btnCargaManual, btnCargaDocumento, btnSalir, btnTestStress;
 
-	public PantallaInicio(InterfazGestorPantalla gestorInterfaz) {
-		bienvenidaPresentador = new BienvenidaPresentador(gestorInterfaz);
+	public PantallaInicio() {
 
 		configurarPantalla();
 		crearLblTitulo();
@@ -70,11 +66,6 @@ public class PantallaInicio extends JFrame {
 		btnCargaManual.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnCargaManual.setBounds(300, 240, 300, 50);
 
-		btnCargaManual.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bienvenidaPresentador.manejarClickBotonCargaManual();
-			}
-		});
 		panelFondo.add(btnCargaManual);
 	}
 
@@ -89,21 +80,12 @@ public class PantallaInicio extends JFrame {
 		btnCargaDocumento.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnCargaDocumento.setBounds(300, 320, 300, 50);
 
-		btnCargaDocumento.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bienvenidaPresentador.manejarClickBotonCargaDocumento();
-			}
-		});
 		panelFondo.add(btnCargaDocumento);
 	}
 	
 	private void crearBtnTestStress(){
 		btnTestStress = new JButton("Stress Test");
-		btnTestStress.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bienvenidaPresentador.manejarClickBotonTestStress();
-			}
-		});
+
 		btnTestStress.setOpaque(true);
 		btnTestStress.setForeground(Color.WHITE);
 		btnTestStress.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -126,11 +108,6 @@ public class PantallaInicio extends JFrame {
 		btnSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(300, 477, 300, 50);
 
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bienvenidaPresentador.manejarClickBotonSalir();
-			}
-		});
 		panelFondo.add(btnSalir);
 	}
 
@@ -146,6 +123,25 @@ public class PantallaInicio extends JFrame {
 		lblImagen.setIcon(new ImageIcon(escalada));
 		lblImagen.setBounds(0, 0, 900, 570);
 		panelFondo.add(lblImagen);
+	}
+	
+	@Override
+	public void alSolicitarCargaManual(ActionListener listener) {
+		btnCargaManual.addActionListener(listener);
+	}
 
+	@Override
+	public void alSolicitarCargaDocumento(ActionListener listener) {
+		btnCargaDocumento.addActionListener(listener);	
+	}
+
+	@Override
+	public void alSolicitarTestStress(ActionListener listener) {
+		btnTestStress.addActionListener(listener);
+	}
+
+	@Override
+	public void alSolicitarSalir(ActionListener listener) {
+		btnSalir.addActionListener(listener);
 	}
 }

@@ -1,23 +1,75 @@
 package presentador;
 
+import coordinadorMVP.CoordinadorPresentadores;
+import estructuraDatosAux.Par;
 import modelo.*;
 
 import vista.interfaz.CargarDatosVista;
-import vista.interfaz.InterfazGestorPantalla;
-import vista.pantalla.PantallaResultado;
 
 public class CargarDatosPresentador {
 	private CargarDatosVista _cdVista;
-	private InterfazGestorPantalla gestorInterfaz;
+	private CoordinadorPresentadores coordinador;
 	private Instancia instancia;
     
-	public CargarDatosPresentador(CargarDatosVista cargarDatosVista, InterfazGestorPantalla gestorInterfaz) {
+	public CargarDatosPresentador(CargarDatosVista cargarDatosVista, Instancia instancia, CoordinadorPresentadores coordinador) {
 		this._cdVista = cargarDatosVista;
-		this.gestorInterfaz = gestorInterfaz;
-		this.instancia = new Instancia(); 
+		this.coordinador = coordinador;
+		this.instancia = instancia;
+		
+		iniciarListeners();
+	}
+
+	private void iniciarListeners() {
+		listenerAgregarVertice();
+		listenerAgregarArista();
+		listenerEliminarVertice();
+		listenerEliminarArista();
+		listenerCalcularDominante();
+		listenerVolverMenu();
+	}
+
+	private void listenerAgregarVertice() {
+		this._cdVista.alSolicitarAgregarVertice(e -> {
+			String nombre = _cdVista.obtenerTextoVertice();
+			manejarClickAgregarVertice(nombre);
+		});;
+	}
+
+	private void listenerAgregarArista() {
+		this._cdVista.alSolicitarAgregarArista(e -> {
+			Par<String, String> aristaNueva = this._cdVista.obtenerOrigenDestinoDeArista();
+			manejarClickAgregarArista(aristaNueva);
+		});
+	}
+
+	private void listenerEliminarVertice() {
+		this._cdVista.alSolicitarEliminarVertice(e -> {
+			String nombre = _cdVista.obtenerVerticeAEliminar();
+			manejarClickEliminarVertice(nombre);
+		});
+	}
+
+	private void listenerEliminarArista() {
+		this._cdVista.alSolicitarEliminarArista(e -> {
+			Par<String, String> aristaAEliminar = _cdVista.obtenerAristaAEliminar();
+			String origen = aristaAEliminar.getIzquierda();
+			String destino = aristaAEliminar.getDerecha();
+			
+			manejarClickEliminarArista(origen, destino);
+		});
+	}
+
+	private void listenerCalcularDominante() {
+		this._cdVista.alSolicitarCalcularDominante(e -> 
+			manejarClickCalcularDominante());
+	}
+
+	private void listenerVolverMenu() {
+		this._cdVista.alSolicitarVolverAlMenu(e -> 
+			manejarClickVolverAlMenu());
 	}
 	
-	public void manejarClickAgregarVertice(String nombre) {
+	private void manejarClickAgregarVertice(String nombre) {
 		try {
 			if (nombre == null || nombre.trim().isEmpty()) {
 				_cdVista.mostrarMensajeError("El nombre del vértice no puede estar vacío.");
@@ -33,8 +85,11 @@ public class CargarDatosPresentador {
 		}
 	}		
 		
-	public void manejarClickAgregarArista(String origen, String destino) {
+	private void manejarClickAgregarArista(Par<String, String> aristaNueva) {
 		try {
+			String origen = aristaNueva.getIzquierda();
+			String destino = aristaNueva.getDerecha();
+				
 			if (origen == null || destino == null || origen.equals(destino)) {
 				_cdVista.mostrarMensajeError("Debe seleccionar origen y destino válidos (y distintos)");
 				return;
@@ -48,12 +103,12 @@ public class CargarDatosPresentador {
 		}
 	}
 
-	public void manejarClickEliminarArista(String origen, String destino) {
+	private void manejarClickEliminarArista(String origen, String destino) {
 		instancia.eliminarArista(instancia.getVertice(origen), instancia.getVertice(destino));
 		_cdVista.eliminarArista(origen, destino);
 	}		
 	
-	public void manejarClickEliminarVertice(String nombre) {
+	private void manejarClickEliminarVertice(String nombre) {
 		Vertice vertice = instancia.getVertice(nombre);
 		 
 		for (Arista arista : instancia.obtenerAristasDe(vertice)) {
@@ -64,32 +119,21 @@ public class CargarDatosPresentador {
 		_cdVista.eliminarVertice(nombre);
 	} 	
 	
-	public void manejarClickCalcularDominante() {
+	private void manejarClickCalcularDominante() {
 		try {
 	        if (instancia.getVertices().isEmpty()) {
 	            _cdVista.mostrarMensajeError("Debe agregar al menos un vértice para calcular el conjunto dominante");
 	            return;
 	        }
-
-	        PantallaResultado pantallaResultado = gestorInterfaz.crearPantallaResultado();
 	        
-	        ResultadoPresentador resultadoPresentador = new ResultadoPresentador(
-	                pantallaResultado, gestorInterfaz, instancia
-	        		);
-	        
-	        pantallaResultado.setPresentador(resultadoPresentador);
-	        resultadoPresentador.calcularSolucionDominante();
+	        coordinador.irAResultado();
 
 	    } catch (Exception e) {
 	        _cdVista.mostrarMensajeError(e.getMessage());
 	    }
 	}
 		
-	public void manejarClickVolverAlMenu() {
-		gestorInterfaz.crearPantallaInicio();
+	private void manejarClickVolverAlMenu() {
+		coordinador.iniciarAplicacion();
 	}	
-	
-	public void manejarClickBtnSalir() {
-		System.exit(0);
-	}
 }

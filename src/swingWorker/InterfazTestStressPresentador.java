@@ -1,6 +1,6 @@
-package presentador;
+package swingWorker;
 
-public interface ITestListener {
+public interface InterfazTestStressPresentador {
 
 	void mostrarResultado(String texto);
 

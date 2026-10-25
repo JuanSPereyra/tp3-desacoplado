@@ -1,6 +1,7 @@
 package vista.pantalla;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
@@ -9,15 +10,19 @@ import javax.swing.*;
 import estructuraDatosAux.Par;
 import estructuraDatosAux.VerticeVisual;
 
-import presentador.ResultadoPresentador;
-import vista.interfaz.InterfazGestorPantalla;
 import vista.interfaz.ResultadoVista;
 import vista.grafico.LibreriaMxGraphWrapper;
 
 @SuppressWarnings("serial")
 public class PantallaResultado extends JFrame implements ResultadoVista{
 
-	private ResultadoPresentador resultadoPresentador;
+	private ActionListener listenerMostrarSolucion;
+	private ActionListener listenerVolverAlMenu;
+	private ActionListener listenerSalir;
+	private ActionListener listenerModificarDatos;
+	
+	private int solucionElegida;
+	
 	private LibreriaMxGraphWrapper graficadorDeGrafo;
 	
 	private JPanel panelFondo, panelGrafo;
@@ -28,7 +33,7 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 	private JComponent componenteDibujoDeGrafo;
 	private JScrollPane scrollPane;
 
-	public PantallaResultado(InterfazGestorPantalla gestorInterfaz) {
+	public PantallaResultado() {
 		
 		configurarPantalla();
 		crearLblTitulo();
@@ -38,10 +43,6 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		crearBtnVolver();
 		crearBtnSalir();
 		crearBtnModificarDatos();
-	}
-	
-	public void setPresentador(ResultadoPresentador resultadoPresentador) {
-		this.resultadoPresentador = resultadoPresentador;
 	}
 	
 	private void configurarPantalla() {
@@ -106,8 +107,8 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 
 	private void agregarListenerComboSoluciones() {
 		comboSoluciones.addActionListener(e -> {
-            int indice = comboSoluciones.getSelectedIndex();
-            resultadoPresentador.mostrarSolucion(indice);
+			if (listenerMostrarSolucion != null)
+			listenerMostrarSolucion.actionPerformed(e);
         });
 	}
 	
@@ -127,7 +128,8 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 
 	private void agregarListenerBtnVolverMenu() {
 		btnVolver.addActionListener(e -> {
-			resultadoPresentador.manejarClickVolverAlMenu();
+			if (listenerVolverAlMenu != null)
+			listenerVolverAlMenu.actionPerformed(e);
 		});
 	}
 	
@@ -147,7 +149,8 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 
 	private void agregarListenerBtnSalir() {
 		btnSalir.addActionListener(e -> {
-			resultadoPresentador.manejarClickBtnSalir();
+			if (listenerSalir != null)
+				listenerSalir.actionPerformed(e);
 		});
 	}
 
@@ -161,16 +164,42 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 	    btnModificarDatos.setBorderPainted(false);
 	    btnModificarDatos.setBackground(new Color(255, 128, 64));
 	    btnModificarDatos.setBounds(100, 444, 330, 32);
-	    panelFondo.add(btnModificarDatos);
 	    
-	    agregarListenerBtnModificarDatos();    
-	    panelFondo.add(btnSalir);
+	    agregarListenerBtnModificarDatos();
+	    panelFondo.add(btnModificarDatos);
 	}
 
 	private void agregarListenerBtnModificarDatos() {
 		btnModificarDatos.addActionListener(e -> {
-			resultadoPresentador.manejarClickModificarDatos();
+			if (listenerModificarDatos != null)
+			listenerModificarDatos.actionPerformed(e);
 	    });
+	}
+	
+	@Override
+	public void alSolicitarMostrarSolucion(ActionListener listener) {
+		this.listenerMostrarSolucion = listener;
+	}
+
+	@Override
+	public void alSolicitarVolverAlMenu(ActionListener listener) {
+		this.listenerVolverAlMenu = listener;
+	}
+
+	@Override
+	public void alSolicitarSalir(ActionListener listener) {
+		this.listenerSalir = listener;
+	}
+
+	@Override
+	public void alSolicitarModificarDatos(ActionListener listener) {
+		this.listenerModificarDatos = listener;
+	}
+	
+	@Override
+	public int solucionElegida() {
+		solucionElegida = comboSoluciones.getSelectedIndex();
+		return solucionElegida;
 	}
 
 	@Override

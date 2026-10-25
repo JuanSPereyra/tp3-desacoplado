@@ -50,7 +50,7 @@ public class PantallaCargarDatosDesdeJSON extends JFrame {
 
 		btnIrResultado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gestorInterfaz.crearPantallaResultado();
+//				gestorInterfaz.crearPantallaResultado();
 			}
 		});
 		panelFondo.add(btnIrResultado);
@@ -66,7 +66,7 @@ public class PantallaCargarDatosDesdeJSON extends JFrame {
 
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gestorInterfaz.crearPantallaInicio();
+//				gestorInterfaz.crearPantallaInicio();
 			}
 		});
 		panelFondo.add(btnVolver);

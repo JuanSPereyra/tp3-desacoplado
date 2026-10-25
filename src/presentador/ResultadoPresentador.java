@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import coordinadorMVP.CoordinadorPresentadores;
 import estructuraDatosAux.Par;
 import estructuraDatosAux.VerticeVisual;
 import modelo.BackTracking;
@@ -12,14 +13,13 @@ import modelo.Solucion;
 import modelo.SolverGoloso;
 import modelo.Vertice;
 
-import vista.interfaz.InterfazGestorPantalla;
 import vista.interfaz.ResultadoVista;
 
 public class ResultadoPresentador {
 
 	private ResultadoVista _rVista;
-	private InterfazGestorPantalla gestorInterfaz;
 	private Instancia instancia;
+	private CoordinadorPresentadores coordinador;
 	private List<Solucion> soluciones;
 	private static final List<String> NOMBRES_ESTRATEGIAS = List.of(
 			"Óptima (Backtracking)",
@@ -31,13 +31,47 @@ public class ResultadoPresentador {
 			"Nombre Z-A",
 			"Peso por vecino");
 
-	public ResultadoPresentador(ResultadoVista resultadoVista, InterfazGestorPantalla gestorInterfaz, Instancia instancia) {
+	public ResultadoPresentador(ResultadoVista resultadoVista, Instancia instancia,
+			CoordinadorPresentadores coordinadorPresentadores) {
 		this._rVista = resultadoVista;
-		this.gestorInterfaz = gestorInterfaz;
+		this.coordinador = coordinadorPresentadores;
 		this.instancia = instancia;
+		
+		calcularSolucionDominante();
+		
+		iniciarListeners();
 	}
 
-	public void calcularSolucionDominante() {
+	private void iniciarListeners() {
+		listenerMostrarSolucion();
+		listenerVolverMenu();
+		listenerSalir();
+		listenerModificarDatos();
+	}
+
+	private void listenerMostrarSolucion() {
+		this._rVista.alSolicitarMostrarSolucion(e -> {
+			int solucionAMostrar = this._rVista.solucionElegida();
+			mostrarSolucion(solucionAMostrar);
+		});
+	}
+
+	private void listenerVolverMenu() {
+		this._rVista.alSolicitarVolverAlMenu(e -> 
+			manejarClickVolverAlMenu());
+	}
+
+	private void listenerSalir() {
+		this._rVista.alSolicitarSalir(e -> 
+			manejarClickBtnSalir());
+	}
+
+	private void listenerModificarDatos() {
+		this._rVista.alSolicitarModificarDatos(e -> 
+			manejarClickModificarDatos());
+	}
+
+	private void calcularSolucionDominante() {
 
 		SolverGoloso solverGoloso = new SolverGoloso(instancia);
 		
@@ -48,6 +82,7 @@ public class ResultadoPresentador {
 
 		completarComboSoluciones();
 		construirStringDeRespuestas();
+		mostrarSolucion(0);
 	}
 	
 	private Solucion resolverBacktracking() {
@@ -96,7 +131,7 @@ public class ResultadoPresentador {
 		_rVista.mostrarResultado(sb.toString());;
 	}
 
-	public void mostrarSolucion(int indiceEstrategiaElegida) {
+	private void mostrarSolucion(int indiceEstrategiaElegida) {
 		
 		Solucion sol = soluciones.get(indiceEstrategiaElegida);
 				
@@ -111,15 +146,15 @@ public class ResultadoPresentador {
 		_rVista.mostrarGrafo(vertices, aristas);	
 	}
 
-	public void manejarClickVolverAlMenu() {
-		gestorInterfaz.crearPantallaInicio();
+	private void manejarClickVolverAlMenu() {
+		coordinador.iniciarAplicacion();
 	}
 
-	public void manejarClickBtnSalir() {
+	private void manejarClickBtnSalir() {
 		System.exit(0);
 	}
 
-	public void manejarClickModificarDatos() {
-		gestorInterfaz.mostrarPantallaCargaManual();
+	private void manejarClickModificarDatos() {
+		coordinador.mostrarPantallaCargaManual();
 	}
 }

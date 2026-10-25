@@ -6,14 +6,22 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-import presentador.CargarDatosPresentador;
-import vista.interfaz.InterfazGestorPantalla;
+import estructuraDatosAux.Par;
 import vista.interfaz.CargarDatosVista;
 
 @SuppressWarnings("serial")
 public class PantallaCargarDatosManual extends JFrame implements CargarDatosVista {
-
-	private CargarDatosPresentador presentador;
+	
+	private ActionListener listenerAgregarVertice;
+	private ActionListener listenerAgregarArista;
+	private ActionListener listenerEliminarVertice;
+	private ActionListener listenerEliminarArista;
+	private ActionListener listenerCalcularDominante;
+	private ActionListener listenerVolverMenu;
+	
+	private String verticeAEliminarTemp;
+	private String aristaOrigenTemp;
+	private String aristaDestinoTemp;
 	
 	private JPanel panelFondo;
 	private JButton btnVolver, btnIrResultado, btnAgregarVertice, btnAgregarArista;
@@ -23,10 +31,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	private JComboBox<String> comboOrigen, comboDestino;
 	private DefaultTableModel modeloVertices, modeloAristas;
 
-	public PantallaCargarDatosManual(InterfazGestorPantalla gestorInterfaz) {
-		
-		this.presentador = new CargarDatosPresentador(this, gestorInterfaz);
-		
+	public PantallaCargarDatosManual() {	
 		configurarPantalla();
 		crearTitulo();
 		crearSeccionVertices();
@@ -84,18 +89,12 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		panelFondo.add(btnAgregarVertice);
 	}
 	
-	private void agregarListenerEliminarVertice() {
-		tablaVertices.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int fila = tablaVertices.rowAtPoint(e.getPoint());
-				int columna = tablaVertices.columnAtPoint(e.getPoint());
-				if (fila >= 0 && columna == tablaVertices.getColumnCount() - 1) {
-					String nombre = (String) modeloVertices.getValueAt(fila, 0);
-					presentador.manejarClickEliminarVertice(nombre);
-				}
+	private void agregarListenerBtnAgregarVertice() {
+		btnAgregarVertice.addActionListener(e -> {
+			if (listenerAgregarVertice != null) {
+				listenerAgregarVertice.actionPerformed(e);
 			}
-		});
+		});	
 	}
 
 	private void crearTablaVertices() {
@@ -103,16 +102,26 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		tablaVertices = new JTable(modeloVertices);
 		estiloTabla(tablaVertices);
 		configurarColumnaEliminar(tablaVertices);
+		
 		agregarListenerEliminarVertice();
 		panelFondo.add(crearScroll(tablaVertices, 40, 160, 360, 290));
 	}
 
-	private void agregarListenerBtnAgregarVertice() {
-		btnAgregarVertice.addActionListener(e -> {
-			presentador.manejarClickAgregarVertice(textNombreVertice.getText());
+	private void agregarListenerEliminarVertice() {
+		tablaVertices.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaVertices.rowAtPoint(e.getPoint());
+				int columna = tablaVertices.columnAtPoint(e.getPoint());
+				if (fila >= 0 && columna == tablaVertices.getColumnCount() - 1) {
+					
+					verticeAEliminarTemp = (String) modeloVertices.getValueAt(fila, 0);
+					listenerEliminarVertice.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "eliminar"));
+				}
+			}
 		});
 	}
-
+	
 	private void crearSeccionAristas() {	
 		crearSeccionOrigen();
 		crearSeccionDestino();
@@ -156,9 +165,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	private void agregarListenerAgregarArista() {
 		btnAgregarArista.addActionListener(e -> {
 
-			String origen = (String) comboOrigen.getSelectedItem();
-			String destino = (String) comboDestino.getSelectedItem();
-			presentador.manejarClickAgregarArista(origen, destino);
+			listenerAgregarArista.actionPerformed(e);
 		});
 	}
 
@@ -180,9 +187,13 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 				int fila = tablaAristas.rowAtPoint(e.getPoint());
 				int columna = tablaAristas.columnAtPoint(e.getPoint());
 				if (fila >= 0 && columna == tablaAristas.getColumnCount() - 1) {
-					String origen = (String) modeloAristas.getValueAt(fila, 0);
-					String destino = (String) modeloAristas.getValueAt(fila, 1);
-					presentador.manejarClickEliminarArista(origen, destino);
+					aristaOrigenTemp = (String) modeloAristas.getValueAt(fila, 0);
+					aristaDestinoTemp = (String) modeloAristas.getValueAt(fila, 1);
+					
+					if (listenerEliminarArista != null) {
+						listenerEliminarArista.actionPerformed(new ActionEvent (
+								this, ActionEvent.ACTION_PERFORMED, "eliminar"));
+					}
 				}
 			}
 		});
@@ -206,7 +217,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 
 	private void agregarListenerBtnResultado() {
 		btnIrResultado.addActionListener(e -> {
-			presentador.manejarClickCalcularDominante();
+			listenerCalcularDominante.actionPerformed(e);
 		});
 	}
 
@@ -223,54 +234,8 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 
 	private void agregarListenerBtnVolverMenu() {
 		btnVolver.addActionListener(e -> {
-			presentador.manejarClickVolverAlMenu();
+			listenerVolverMenu.actionPerformed(e);
 		});
-	}
-
-	@Override
-	public void agregarVertice(String nombre) {
-		modeloVertices.addRow(new Object[] { nombre, "X" });
-		comboOrigen.addItem(nombre);
-		comboDestino.addItem(nombre);
-	}
-
-	@Override
-	public void agregarArista(String origen, String destino, String peso) {
-		modeloAristas.addRow(new Object[] { origen, destino, "X" });
-	}
-
-	@Override
-	public void eliminarVertice(String nombre) {
-		for (int i = 0; i < modeloVertices.getRowCount(); i++) {
-			if (modeloVertices.getValueAt(i, 0).equals(nombre)) {
-				modeloVertices.removeRow(i);
-				break;
-			}
-		}
-		comboOrigen.removeItem(nombre);
-		comboDestino.removeItem(nombre);
-	}
-
-	@Override
-	public void eliminarArista(String origen, String destino) {
-		for (int i = 0; i < modeloAristas.getRowCount(); i++) {
-			String orig = (String) modeloAristas.getValueAt(i, 0);
-			String dest = (String) modeloAristas.getValueAt(i, 1);
-			if ((orig.equals(origen) && dest.equals(destino)) || (orig.equals(destino) && dest.equals(origen))) {
-				modeloAristas.removeRow(i);
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void limpiarCampoVertice() {
-		textNombreVertice.setText("");
-	}
-
-	@Override
-	public void mostrarMensajeError(String mensaje) {
-		JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	private JScrollPane crearScroll(JTable tabla, int x, int y, int ancho, int alto) {
@@ -334,5 +299,104 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		boton.setBorderPainted(false);
 		boton.setOpaque(true);
 		boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+	
+	@Override
+	public void alSolicitarAgregarVertice(ActionListener listener) {
+		this.listenerAgregarVertice = listener;
+	}
+
+	@Override
+	public void alSolicitarAgregarArista(ActionListener listener) {
+		this.listenerAgregarArista = listener;
+	}
+
+	@Override
+	public void alSolicitarEliminarVertice(ActionListener listener) {
+		this.listenerEliminarVertice = listener;	
+	}
+
+	@Override
+	public void alSolicitarEliminarArista(ActionListener listener) {
+		this.listenerEliminarArista = listener;
+	}
+
+	@Override
+	public void alSolicitarCalcularDominante(ActionListener listener) {
+		this.listenerCalcularDominante = listener;	
+	}
+
+	@Override
+	public void alSolicitarVolverAlMenu(ActionListener listener) {
+		this.listenerVolverMenu = listener;
+	}
+
+	@Override
+	public String obtenerTextoVertice() {
+		return textNombreVertice.getText();
+	}
+
+	@Override
+	public Par<String, String> obtenerOrigenDestinoDeArista() {
+		String origen = (String) comboOrigen.getSelectedItem();
+		String destino = (String) comboDestino.getSelectedItem();
+		
+		Par<String, String> aristaNueva = new Par<String, String>(origen, destino);
+		return aristaNueva;
+	}
+
+	@Override
+	public String obtenerVerticeAEliminar() {
+		return verticeAEliminarTemp;
+	}
+
+	@Override
+	public Par<String, String> obtenerAristaAEliminar() {
+		return new Par<String, String>(aristaOrigenTemp, aristaDestinoTemp);
+	}
+	@Override
+	public void agregarVertice(String nombre) {
+		modeloVertices.addRow(new Object[] { nombre, "X" });
+		comboOrigen.addItem(nombre);
+		comboDestino.addItem(nombre);
+	}
+
+	@Override
+	public void agregarArista(String origen, String destino, String peso) {
+		modeloAristas.addRow(new Object[] { origen, destino, "X" });
+	}
+
+	@Override
+	public void eliminarVertice(String nombre) {
+		for (int i = 0; i < modeloVertices.getRowCount(); i++) {
+			if (modeloVertices.getValueAt(i, 0).equals(nombre)) {
+				modeloVertices.removeRow(i);
+				break;
+			}
+		}
+		comboOrigen.removeItem(nombre);
+		comboDestino.removeItem(nombre);
+	}
+
+	@Override
+	public void eliminarArista(String origen, String destino) {
+		for (int i = 0; i < modeloAristas.getRowCount(); i++) {
+			String orig = (String) modeloAristas.getValueAt(i, 0);
+			String dest = (String) modeloAristas.getValueAt(i, 1);
+			if ((orig.equals(origen) && dest.equals(destino)) || (orig.equals(destino) && dest.equals(origen))) {
+				modeloAristas.removeRow(i);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void limpiarCampoVertice() {
+		textNombreVertice.setText("");
+	}
+
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+		JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }

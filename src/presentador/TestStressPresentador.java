@@ -1,21 +1,60 @@
 package presentador;
 
+import coordinadorMVP.CoordinadorPresentadores;
+import estructuraDatosAux.Par;
+import swingWorker.InterfazTestStressPresentador;
 import swingWorker.TestStressWorker;
 import vista.interfaz.StressVista;
-import vista.interfaz.InterfazGestorPantalla;
 
-public class TestStressPresentador implements ITestListener{
+public class TestStressPresentador implements InterfazTestStressPresentador{
 	private StressVista _tsVista;
-	private InterfazGestorPantalla gestorInterfaz;
+	private CoordinadorPresentadores coordinador;
 	private TestStressWorker swingworker;
 
-	public TestStressPresentador(StressVista testStressVista, InterfazGestorPantalla gestor) {
-		
+	public TestStressPresentador(StressVista testStressVista, CoordinadorPresentadores coordinador) {
 		this._tsVista = testStressVista;
-		this.gestorInterfaz = gestor;	
+		this.coordinador = coordinador;
+		
+		iniciarListeners();
 	}
 
-	public void manejarClickBtnEmpezarTest(String vertices, int densidad) {
+	private void iniciarListeners() {
+		listenerVolverAlMenu();
+		listenerSalir();
+		listenerEmpezarTest();
+		listenerDetenerTest();	
+	}
+
+	private void listenerVolverAlMenu() {
+		this._tsVista.alSolicitarVolverAlMenu(e -> {
+			manejarClickVolverAlMenu();
+		});
+	}
+
+	private void listenerSalir() {
+		this._tsVista.alSolicitarSalir(e -> {
+			manejarClickBtnSalir();
+		});
+	}
+
+	private void listenerEmpezarTest() {
+		this._tsVista.alSolicitarEmpezarTest(e -> {
+			Par<String, Integer> datosParaTest = this._tsVista.datosParaTest();
+			
+			String cantVertices = datosParaTest.getIzquierda();
+			int densidad = datosParaTest.getDerecha();
+					
+			manejarClickBtnEmpezarTest(cantVertices, densidad);
+		});
+	}
+
+	private void listenerDetenerTest() {
+		this._tsVista.alSolicitarDetenerTest(e -> {
+			manejarClickBtnDetenerTest();
+		});
+	}
+
+	private void manejarClickBtnEmpezarTest(String vertices, int densidad) {
 		if (swingworker != null && !swingworker.isDone()) {
 			return;
 		}
@@ -34,18 +73,17 @@ public class TestStressPresentador implements ITestListener{
 		}
 	}
 
-	public void manejarClickBtnDetenerTest() {
+	private void manejarClickBtnDetenerTest() {
 		if (swingworker != null && !swingworker.isDone()) {
 			swingworker.detener();
 		}
 	}
 	
-	public void manejarClickVolverAlMenu() {
-		manejarClickBtnDetenerTest();
-		gestorInterfaz.crearPantallaInicio();
+	private void manejarClickVolverAlMenu() {
+		coordinador.iniciarAplicacion();
 	}
 
-	public void manejarClickBtnSalir() {
+	private void manejarClickBtnSalir() {
 		System.exit(0);
 	}
 	

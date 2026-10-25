@@ -1,28 +1,46 @@
 package presentador;
  
-import vista.interfaz.InterfazGestorPantalla;
+import coordinadorMVP.CoordinadorPresentadores;
+import vista.interfaz.InicioVista;
  
 public class BienvenidaPresentador {
  
-	private InterfazGestorPantalla gestorInterfaz;
+	private InicioVista _iVista;
+	private CoordinadorPresentadores coordinador;
  
-	public BienvenidaPresentador(InterfazGestorPantalla gestorInterfaz) {
-		this.gestorInterfaz = gestorInterfaz;
-	}	
-	
-	public void manejarClickBotonCargaManual() {
-		gestorInterfaz.crearPantallaCargaDatos();
-	}	
-	
-	public void manejarClickBotonCargaDocumento() {
-		gestorInterfaz.crearPantallaCargaDesdeJSON();
-	}	
-	
-	public void manejarClickBotonTestStress() {
-		gestorInterfaz.crearPantallaTestStress();
+	public BienvenidaPresentador(InicioVista inicioVista, CoordinadorPresentadores coordinador) {
+		
+		this._iVista = inicioVista;
+		this.coordinador = coordinador;
+		
+		iniciarListeners();
 	}
-	
-	public void manejarClickBotonSalir() {
-	    System.exit(0);
+
+	private void iniciarListeners() {
+		
+		listenerCargaManual();
+	    listenerCargaJSON();
+	    listenerTestStress();
+	    listenerSalir();
+	}
+
+	private void listenerTestStress() {
+		_iVista.alSolicitarTestStress(e -> 
+	    		coordinador.irATestStress());
+	}
+
+	private void listenerSalir() {
+		_iVista.alSolicitarSalir(e -> 
+	    		System.exit(0));
+	}
+
+	private void listenerCargaJSON() {
+		_iVista.alSolicitarCargaDocumento(e -> 
+	    		coordinador.irACargaDesdeJSON());
+	}
+
+	private void listenerCargaManual() {
+		_iVista.alSolicitarCargaManual(e -> 
+				coordinador.irACargaManual());
 	}
 }
