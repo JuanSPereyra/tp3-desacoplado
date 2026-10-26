@@ -25,5 +25,5 @@ public interface StressVista {
 	void actualizarProgreso(int porcentaje);
 
 	void mostrarMensajeError(String mensaje);
-	
+
 }

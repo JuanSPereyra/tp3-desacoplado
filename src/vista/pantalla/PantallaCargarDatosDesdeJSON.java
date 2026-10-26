@@ -1,26 +1,24 @@
 package vista.pantalla;
 
 import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.event.ActionListener;
 import javax.swing.*;
-
-import vista.interfaz.InterfazGestorPantalla;
+import vista.interfaz.CargaJsonVista;
 
 @SuppressWarnings("serial")
-public class PantallaCargarDatosDesdeJSON extends JFrame {
+public class PantallaCargarDatosDesdeJSON extends JFrame implements CargaJsonVista {
 
 	private JPanel panelFondo;
-	private JLabel lblTitulo;
-	private JButton btnVolver, btnIrResultado;
+	private JLabel lblTitulo, lblRutaArchivo;
+	private JButton btnVolver, btnIrResultado, btnSeleccionarArchivo;
 
-	public PantallaCargarDatosDesdeJSON(InterfazGestorPantalla gestorInterfaz) {
+	public PantallaCargarDatosDesdeJSON() {
 		configurarPantalla();
-		crearElementos(gestorInterfaz);
+		crearElementos();
 	}
 
 	private void configurarPantalla() {
-		setTitle("Carga con Documento - MPV");
+		setTitle("Carga con Documento");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
 		setLocationRelativeTo(null);
@@ -32,43 +30,98 @@ public class PantallaCargarDatosDesdeJSON extends JFrame {
 		panelFondo.setLayout(null);
 	}
 
-	private void crearElementos(InterfazGestorPantalla gestorInterfaz) {
-		lblTitulo = new JLabel("Pantalla de Carga con Documento", SwingConstants.CENTER);
-		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
-		lblTitulo.setForeground(Color.WHITE);
-		lblTitulo.setBounds(100, 120, 700, 50);
-		panelFondo.add(lblTitulo);
+	private void crearElementos() {
+		crearLblTitulo();
 
+		crearBtnSeleccionarArchivo();
+		panelFondo.add(btnSeleccionarArchivo);
+
+		crearLblRutaArchivo();
+
+		crearBtnResultado();
+		panelFondo.add(btnIrResultado);
+
+		crearBtnVolverAMenu();
+		panelFondo.add(btnVolver);
+	}
+
+	private void crearLblTitulo() {
+		lblTitulo = new JLabel("CARGA DE DATOS DESDE JSON", SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblTitulo.setForeground(Color.WHITE);
+		lblTitulo.setBounds(100, 60, 700, 50);
+		panelFondo.add(lblTitulo);
+	}
+
+	private void crearBtnSeleccionarArchivo() {
+		btnSeleccionarArchivo = new JButton("Seleccionar Archivo JSON");
+		btnSeleccionarArchivo.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		btnSeleccionarArchivo.setForeground(Color.WHITE);
+		btnSeleccionarArchivo.setBackground(new Color(37, 99, 235));
+		btnSeleccionarArchivo.setFocusPainted(false);
+		btnSeleccionarArchivo.setBorderPainted(false);
+		btnSeleccionarArchivo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnSeleccionarArchivo.setBounds(300, 160, 300, 50);
+	}
+
+	private void crearLblRutaArchivo() {
+		lblRutaArchivo = new JLabel("Ningún archivo seleccionado", SwingConstants.CENTER);
+		lblRutaArchivo.setFont(new Font("Segoe UI", Font.ITALIC, 14));
+		lblRutaArchivo.setForeground(new Color(203, 213, 225));
+		lblRutaArchivo.setBounds(100, 230, 700, 30);
+		panelFondo.add(lblRutaArchivo);
+	}
+
+	private void crearBtnResultado() {
 		btnIrResultado = new JButton("Ver Resultado");
 		btnIrResultado.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnIrResultado.setForeground(Color.WHITE);
-		btnIrResultado.setBackground(new Color(16, 185, 129)); // verde 
+		btnIrResultado.setBackground(new Color(16, 185, 129));
 		btnIrResultado.setFocusPainted(false);
 		btnIrResultado.setBorderPainted(false);
 		btnIrResultado.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnIrResultado.setBounds(300, 220, 300, 50);
+		btnIrResultado.setBounds(300, 300, 300, 50);
+		btnIrResultado.setEnabled(false);
+	}
 
-		btnIrResultado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				gestorInterfaz.crearPantallaResultado();
-			}
-		});
-		panelFondo.add(btnIrResultado);
-
+	private void crearBtnVolverAMenu() {
 		btnVolver = new JButton("Volver al Menú");
 		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnVolver.setForeground(Color.WHITE);
-		btnVolver.setBackground(new Color(239, 68, 68)); // rojo
+		btnVolver.setBackground(new Color(239, 68, 68)); // Rojo
 		btnVolver.setFocusPainted(false);
 		btnVolver.setBorderPainted(false);
 		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnVolver.setBounds(300, 300, 300, 50);
+		btnVolver.setBounds(300, 380, 300, 50);
+	}
 
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				gestorInterfaz.crearPantallaInicio();
-			}
-		});
-		panelFondo.add(btnVolver);
+	@Override
+	public void alSolicitarSeleccionarArchivo(ActionListener e) {
+		btnSeleccionarArchivo.addActionListener(e);
+	}
+
+	@Override
+	public void alSolicitarVolverAlMenu(ActionListener e) {
+		btnVolver.addActionListener(e);
+	}
+
+	@Override
+	public void alSolicitarVerResultados(ActionListener e) {
+		btnIrResultado.addActionListener(e);
+	}
+
+	@Override
+	public void mostrarRutaArchivo(String ruta) {
+		lblRutaArchivo.setText(ruta);
+	}
+
+	@Override
+	public void habilitarBotonResultado(boolean b) {
+		btnIrResultado.setEnabled(b);
+	}
+
+	@Override
+	public void mostrarMensajeError(String m) {
+		JOptionPane.showMessageDialog(this, m, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }

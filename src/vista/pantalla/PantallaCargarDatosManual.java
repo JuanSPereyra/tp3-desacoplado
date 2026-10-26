@@ -11,18 +11,11 @@ import vista.interfaz.CargarDatosVista;
 
 @SuppressWarnings("serial")
 public class PantallaCargarDatosManual extends JFrame implements CargarDatosVista {
-	
-	private ActionListener listenerAgregarVertice;
-	private ActionListener listenerAgregarArista;
-	private ActionListener listenerEliminarVertice;
-	private ActionListener listenerEliminarArista;
-	private ActionListener listenerCalcularDominante;
-	private ActionListener listenerVolverMenu;
-	
+
 	private String verticeAEliminarTemp;
 	private String aristaOrigenTemp;
 	private String aristaDestinoTemp;
-	
+
 	private JPanel panelFondo;
 	private JButton btnVolver, btnIrResultado, btnAgregarVertice, btnAgregarArista;
 	private JLabel lblTitulo, lblNombreVertice, lblOrigen, lblDestino;
@@ -31,7 +24,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	private JComboBox<String> comboOrigen, comboDestino;
 	private DefaultTableModel modeloVertices, modeloAristas;
 
-	public PantallaCargarDatosManual() {	
+	public PantallaCargarDatosManual() {
 		configurarPantalla();
 		crearTitulo();
 		crearSeccionVertices();
@@ -68,9 +61,9 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 
 		crearTextNombreVertice();
 		crearBtnAgregarVertice();
-		crearTablaVertices();	
+		crearTablaVertices();
 	}
-	
+
 	private void crearTextNombreVertice() {
 		textNombreVertice = new JTextField();
 		textNombreVertice.setFont(new Font("Segoe UI", Font.PLAIN, 15));
@@ -79,22 +72,13 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		textNombreVertice.setBounds(40, 108, 220, 34);
 		panelFondo.add(textNombreVertice);
 	}
-	
+
 	private void crearBtnAgregarVertice() {
 		btnAgregarVertice = new JButton("Agregar vértice");
 		estiloBotonPrimario(btnAgregarVertice);
 		btnAgregarVertice.setBounds(270, 108, 130, 34);
-		
-		agregarListenerBtnAgregarVertice();
+
 		panelFondo.add(btnAgregarVertice);
-	}
-	
-	private void agregarListenerBtnAgregarVertice() {
-		btnAgregarVertice.addActionListener(e -> {
-			if (listenerAgregarVertice != null) {
-				listenerAgregarVertice.actionPerformed(e);
-			}
-		});	
 	}
 
 	private void crearTablaVertices() {
@@ -102,27 +86,11 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		tablaVertices = new JTable(modeloVertices);
 		estiloTabla(tablaVertices);
 		configurarColumnaEliminar(tablaVertices);
-		
-		agregarListenerEliminarVertice();
+
 		panelFondo.add(crearScroll(tablaVertices, 40, 160, 360, 290));
 	}
 
-	private void agregarListenerEliminarVertice() {
-		tablaVertices.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int fila = tablaVertices.rowAtPoint(e.getPoint());
-				int columna = tablaVertices.columnAtPoint(e.getPoint());
-				if (fila >= 0 && columna == tablaVertices.getColumnCount() - 1) {
-					
-					verticeAEliminarTemp = (String) modeloVertices.getValueAt(fila, 0);
-					listenerEliminarVertice.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "eliminar"));
-				}
-			}
-		});
-	}
-	
-	private void crearSeccionAristas() {	
+	private void crearSeccionAristas() {
 		crearSeccionOrigen();
 		crearSeccionDestino();
 		crearBtnAgregarArista();
@@ -157,16 +125,8 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		btnAgregarArista = new JButton("Agregar arista");
 		estiloBotonPrimario(btnAgregarArista);
 		btnAgregarArista.setBounds(460, 160, 380, 34);
-		
-		agregarListenerAgregarArista();
+
 		panelFondo.add(btnAgregarArista);
-	}
-
-	private void agregarListenerAgregarArista() {
-		btnAgregarArista.addActionListener(e -> {
-
-			listenerAgregarArista.actionPerformed(e);
-		});
 	}
 
 	private void crearTablaAristas() {
@@ -174,29 +134,8 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		tablaAristas = new JTable(modeloAristas);
 		estiloTabla(tablaAristas);
 		configurarColumnaEliminar(tablaAristas);
-		
-		agregarListenerEliminarArista();
-		
-		panelFondo.add(crearScroll(tablaAristas, 460, 210, 380, 240));
-	}
 
-	private void agregarListenerEliminarArista() {
-		tablaAristas.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int fila = tablaAristas.rowAtPoint(e.getPoint());
-				int columna = tablaAristas.columnAtPoint(e.getPoint());
-				if (fila >= 0 && columna == tablaAristas.getColumnCount() - 1) {
-					aristaOrigenTemp = (String) modeloAristas.getValueAt(fila, 0);
-					aristaDestinoTemp = (String) modeloAristas.getValueAt(fila, 1);
-					
-					if (listenerEliminarArista != null) {
-						listenerEliminarArista.actionPerformed(new ActionEvent (
-								this, ActionEvent.ACTION_PERFORMED, "eliminar"));
-					}
-				}
-			}
-		});
+		panelFondo.add(crearScroll(tablaAristas, 460, 210, 380, 240));
 	}
 
 	private void crearElementos() {
@@ -210,15 +149,8 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		btnIrResultado.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnIrResultado.setBackground(new Color(16, 185, 129));
 		btnIrResultado.setBounds(660, 470, 180, 42);
-		
-		agregarListenerBtnResultado();
-		panelFondo.add(btnIrResultado);
-	}
 
-	private void agregarListenerBtnResultado() {
-		btnIrResultado.addActionListener(e -> {
-			listenerCalcularDominante.actionPerformed(e);
-		});
+		panelFondo.add(btnIrResultado);
 	}
 
 	private void crearBtnVolverMenu() {
@@ -228,14 +160,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		btnVolver.setBackground(new Color(239, 68, 68));
 		btnVolver.setBounds(470, 470, 170, 42);
 
-		agregarListenerBtnVolverMenu();
 		panelFondo.add(btnVolver);
-	}
-
-	private void agregarListenerBtnVolverMenu() {
-		btnVolver.addActionListener(e -> {
-			listenerVolverMenu.actionPerformed(e);
-		});
 	}
 
 	private JScrollPane crearScroll(JTable tabla, int x, int y, int ancho, int alto) {
@@ -300,35 +225,58 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 		boton.setOpaque(true);
 		boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
-	
+
 	@Override
-	public void alSolicitarAgregarVertice(ActionListener listener) {
-		this.listenerAgregarVertice = listener;
+	public void alSolicitarAgregarVertice(ActionListener e) {
+		btnAgregarVertice.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarAgregarArista(ActionListener listener) {
-		this.listenerAgregarArista = listener;
+	public void alSolicitarAgregarArista(ActionListener e) {
+		btnAgregarArista.addActionListener(e);
 	}
 
 	@Override
 	public void alSolicitarEliminarVertice(ActionListener listener) {
-		this.listenerEliminarVertice = listener;	
+		tablaVertices.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaVertices.rowAtPoint(e.getPoint());
+				int columna = tablaVertices.columnAtPoint(e.getPoint());
+				if (fila >= 0 && columna == tablaVertices.getColumnCount() - 1) {
+
+					verticeAEliminarTemp = (String) modeloVertices.getValueAt(fila, 0);
+					listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "eliminar"));
+				}
+			}
+		});
 	}
 
 	@Override
 	public void alSolicitarEliminarArista(ActionListener listener) {
-		this.listenerEliminarArista = listener;
+		tablaAristas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaAristas.rowAtPoint(e.getPoint());
+				int columna = tablaAristas.columnAtPoint(e.getPoint());
+				if (fila >= 0 && columna == tablaAristas.getColumnCount() - 1) {
+					aristaOrigenTemp = (String) modeloAristas.getValueAt(fila, 0);
+					aristaDestinoTemp = (String) modeloAristas.getValueAt(fila, 1);
+
+					listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "eliminar"));
+				}
+			}
+		});
 	}
 
 	@Override
-	public void alSolicitarCalcularDominante(ActionListener listener) {
-		this.listenerCalcularDominante = listener;	
+	public void alSolicitarCalcularDominante(ActionListener e) {
+		btnIrResultado.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarVolverAlMenu(ActionListener listener) {
-		this.listenerVolverMenu = listener;
+	public void alSolicitarVolverAlMenu(ActionListener e) {
+		btnVolver.addActionListener(e);
 	}
 
 	@Override
@@ -340,7 +288,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	public Par<String, String> obtenerOrigenDestinoDeArista() {
 		String origen = (String) comboOrigen.getSelectedItem();
 		String destino = (String) comboDestino.getSelectedItem();
-		
+
 		Par<String, String> aristaNueva = new Par<String, String>(origen, destino);
 		return aristaNueva;
 	}
@@ -354,6 +302,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	public Par<String, String> obtenerAristaAEliminar() {
 		return new Par<String, String>(aristaOrigenTemp, aristaDestinoTemp);
 	}
+
 	@Override
 	public void agregarVertice(String nombre) {
 		modeloVertices.addRow(new Object[] { nombre, "X" });

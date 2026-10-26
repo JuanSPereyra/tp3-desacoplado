@@ -6,7 +6,7 @@ import swingWorker.InterfazTestStressPresentador;
 import swingWorker.TestStressWorker;
 import vista.interfaz.StressVista;
 
-public class TestStressPresentador implements InterfazTestStressPresentador{
+public class TestStressPresentador implements InterfazTestStressPresentador {
 	private StressVista _tsVista;
 	private CoordinadorPresentadores coordinador;
 	private TestStressWorker swingworker;
@@ -14,7 +14,7 @@ public class TestStressPresentador implements InterfazTestStressPresentador{
 	public TestStressPresentador(StressVista testStressVista, CoordinadorPresentadores coordinador) {
 		this._tsVista = testStressVista;
 		this.coordinador = coordinador;
-		
+
 		iniciarListeners();
 	}
 
@@ -22,7 +22,7 @@ public class TestStressPresentador implements InterfazTestStressPresentador{
 		listenerVolverAlMenu();
 		listenerSalir();
 		listenerEmpezarTest();
-		listenerDetenerTest();	
+		listenerDetenerTest();
 	}
 
 	private void listenerVolverAlMenu() {
@@ -40,10 +40,10 @@ public class TestStressPresentador implements InterfazTestStressPresentador{
 	private void listenerEmpezarTest() {
 		this._tsVista.alSolicitarEmpezarTest(e -> {
 			Par<String, Integer> datosParaTest = this._tsVista.datosParaTest();
-			
+
 			String cantVertices = datosParaTest.getIzquierda();
 			int densidad = datosParaTest.getDerecha();
-					
+
 			manejarClickBtnEmpezarTest(cantVertices, densidad);
 		});
 	}
@@ -78,7 +78,7 @@ public class TestStressPresentador implements InterfazTestStressPresentador{
 			swingworker.detener();
 		}
 	}
-	
+
 	private void manejarClickVolverAlMenu() {
 		coordinador.iniciarAplicacion();
 	}
@@ -86,7 +86,7 @@ public class TestStressPresentador implements InterfazTestStressPresentador{
 	private void manejarClickBtnSalir() {
 		System.exit(0);
 	}
-	
+
 	@Override
 	public void mostrarResultado(String texto) {
 		_tsVista.mostrarResultado(texto);

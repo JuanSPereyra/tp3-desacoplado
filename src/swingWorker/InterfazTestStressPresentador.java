@@ -7,6 +7,6 @@ public interface InterfazTestStressPresentador {
 	void actualizarProgreso(int porcentaje);
 
 	void finalizarTest();
-	
+
 	void habilitarBotonesTestStress(boolean b);
 }

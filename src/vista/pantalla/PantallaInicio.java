@@ -8,7 +8,7 @@ import javax.swing.*;
 import vista.interfaz.InicioVista;
 
 @SuppressWarnings("serial")
-public class PantallaInicio extends JFrame implements InicioVista{
+public class PantallaInicio extends JFrame implements InicioVista {
 
 	private JPanel panelFondo;
 	private JLabel lblTitulo, lblSubtitulo, lblImagen;
@@ -22,7 +22,7 @@ public class PantallaInicio extends JFrame implements InicioVista{
 		crearBtnCargaManual();
 		crearBtnCargaDocumento();
 		crearBtnTestStress();
-		crearBtnSalir();		
+		crearBtnSalir();
 		crearImagenFondo();
 	}
 
@@ -82,8 +82,8 @@ public class PantallaInicio extends JFrame implements InicioVista{
 
 		panelFondo.add(btnCargaDocumento);
 	}
-	
-	private void crearBtnTestStress(){
+
+	private void crearBtnTestStress() {
 		btnTestStress = new JButton("Stress Test");
 
 		btnTestStress.setOpaque(true);
@@ -114,7 +114,7 @@ public class PantallaInicio extends JFrame implements InicioVista{
 	private void crearImagenFondo() {
 		URL url = getClass().getResource("/imagenes/CDM.jpg");
 		if (url == null) {
-			return; 
+			return;
 		}
 		lblImagen = new JLabel();
 		lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
@@ -124,24 +124,24 @@ public class PantallaInicio extends JFrame implements InicioVista{
 		lblImagen.setBounds(0, 0, 900, 570);
 		panelFondo.add(lblImagen);
 	}
-	
+
 	@Override
-	public void alSolicitarCargaManual(ActionListener listener) {
-		btnCargaManual.addActionListener(listener);
+	public void alSolicitarCargaManual(ActionListener e) {
+		btnCargaManual.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarCargaDocumento(ActionListener listener) {
-		btnCargaDocumento.addActionListener(listener);	
+	public void alSolicitarCargaDocumento(ActionListener e) {
+		btnCargaDocumento.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarTestStress(ActionListener listener) {
-		btnTestStress.addActionListener(listener);
+	public void alSolicitarTestStress(ActionListener e) {
+		btnTestStress.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarSalir(ActionListener listener) {
-		btnSalir.addActionListener(listener);
+	public void alSolicitarSalir(ActionListener e) {
+		btnSalir.addActionListener(e);
 	}
 }

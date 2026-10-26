@@ -14,17 +14,12 @@ import vista.interfaz.ResultadoVista;
 import vista.grafico.LibreriaMxGraphWrapper;
 
 @SuppressWarnings("serial")
-public class PantallaResultado extends JFrame implements ResultadoVista{
+public class PantallaResultado extends JFrame implements ResultadoVista {
 
-	private ActionListener listenerMostrarSolucion;
-	private ActionListener listenerVolverAlMenu;
-	private ActionListener listenerSalir;
-	private ActionListener listenerModificarDatos;
-	
 	private int solucionElegida;
-	
+
 	private LibreriaMxGraphWrapper graficadorDeGrafo;
-	
+
 	private JPanel panelFondo, panelGrafo;
 	private JLabel lblTitulo;
 	private JTextArea txtResultado;
@@ -34,7 +29,7 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 	private JScrollPane scrollPane;
 
 	public PantallaResultado() {
-		
+
 		configurarPantalla();
 		crearLblTitulo();
 		crearAreaResultado();
@@ -44,7 +39,7 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		crearBtnSalir();
 		crearBtnModificarDatos();
 	}
-	
+
 	private void configurarPantalla() {
 		setTitle("Conjunto Dominante Mínimo — Resultado");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,7 +52,7 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		setContentPane(panelFondo);
 		panelFondo.setLayout(null);
 	}
-	
+
 	private void crearLblTitulo() {
 		lblTitulo = new JLabel("RESULTADO DEL CONJUNTO DOMINANTE", SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
@@ -65,10 +60,10 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		lblTitulo.setBounds(100, 30, 700, 40);
 		panelFondo.add(lblTitulo);
 	}
-	
+
 	private void crearAreaResultado() {
 		txtResultado = new JTextArea();
-		txtResultado.setFont(new Font("Consolas", Font.PLAIN, 15)); 
+		txtResultado.setFont(new Font("Consolas", Font.PLAIN, 15));
 		txtResultado.setBackground(new Color(15, 23, 42));
 		txtResultado.setForeground(new Color(241, 245, 249));
 		txtResultado.setEditable(false);
@@ -83,35 +78,27 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		scrollPane.setBounds(39, 90, 411, 343);
 		panelFondo.add(scrollPane);
 	}
-	
+
 	private void crearAreaMostrarGrafo() {
 		panelGrafo = new JPanel();
-	    panelGrafo.setBounds(460, 90, 395, 343);
-	    panelGrafo.setBackground(new Color(15, 23, 42));
-	    panelGrafo.setForeground(new Color(241, 245, 249));
-	    panelFondo.add(panelGrafo);		
-	}
-	
-	private void crearComboSoluciones() {
-        comboSoluciones = new JComboBox<>();
-        comboSoluciones.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        comboSoluciones.setBackground(new Color(128, 0, 128));
-        comboSoluciones.setFont(new Font("Verdana", Font.BOLD, 14));
-        comboSoluciones.setSize(330, 32);
-        comboSoluciones.setLocation(470, 444);
-        comboSoluciones.setForeground(new Color(240, 248, 255));
-        
-        agregarListenerComboSoluciones();
-        getContentPane().add(comboSoluciones, BorderLayout.SOUTH);
+		panelGrafo.setBounds(460, 90, 395, 343);
+		panelGrafo.setBackground(new Color(15, 23, 42));
+		panelGrafo.setForeground(new Color(241, 245, 249));
+		panelFondo.add(panelGrafo);
 	}
 
-	private void agregarListenerComboSoluciones() {
-		comboSoluciones.addActionListener(e -> {
-			if (listenerMostrarSolucion != null)
-			listenerMostrarSolucion.actionPerformed(e);
-        });
+	private void crearComboSoluciones() {
+		comboSoluciones = new JComboBox<>();
+		comboSoluciones.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		comboSoluciones.setBackground(new Color(128, 0, 128));
+		comboSoluciones.setFont(new Font("Verdana", Font.BOLD, 14));
+		comboSoluciones.setSize(330, 32);
+		comboSoluciones.setLocation(470, 444);
+		comboSoluciones.setForeground(new Color(240, 248, 255));
+
+		getContentPane().add(comboSoluciones, BorderLayout.SOUTH);
 	}
-	
+
 	private void crearBtnVolver() {
 		btnVolver = new JButton("Volver al Menú");
 		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 15));
@@ -122,17 +109,9 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnVolver.setBounds(150, 487, 280, 45);
 
-		agregarListenerBtnVolverMenu();
 		panelFondo.add(btnVolver);
 	}
 
-	private void agregarListenerBtnVolverMenu() {
-		btnVolver.addActionListener(e -> {
-			if (listenerVolverAlMenu != null)
-			listenerVolverAlMenu.actionPerformed(e);
-		});
-	}
-	
 	private void crearBtnSalir() {
 		btnSalir = new JButton("Salir");
 		btnSalir.setFont(new Font("Segoe UI", Font.BOLD, 15));
@@ -143,59 +122,43 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 		btnSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(470, 487, 280, 45);
 
-		agregarListenerBtnSalir();
 		panelFondo.add(btnSalir);
 	}
 
-	private void agregarListenerBtnSalir() {
-		btnSalir.addActionListener(e -> {
-			if (listenerSalir != null)
-				listenerSalir.actionPerformed(e);
-		});
-	}
-
 	private void crearBtnModificarDatos() {
-		btnModificarDatos = new JButton("Modificar datos");  
-	    btnModificarDatos.setOpaque(true);
-	    btnModificarDatos.setForeground(Color.WHITE);
-	    btnModificarDatos.setFont(new Font("Segoe UI", Font.BOLD, 15));
-	    btnModificarDatos.setFocusPainted(false);
-	    btnModificarDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	    btnModificarDatos.setBorderPainted(false);
-	    btnModificarDatos.setBackground(new Color(255, 128, 64));
-	    btnModificarDatos.setBounds(100, 444, 330, 32);
-	    
-	    agregarListenerBtnModificarDatos();
-	    panelFondo.add(btnModificarDatos);
-	}
+		btnModificarDatos = new JButton("Modificar datos");
+		btnModificarDatos.setOpaque(true);
+		btnModificarDatos.setForeground(Color.WHITE);
+		btnModificarDatos.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		btnModificarDatos.setFocusPainted(false);
+		btnModificarDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnModificarDatos.setBorderPainted(false);
+		btnModificarDatos.setBackground(new Color(255, 128, 64));
+		btnModificarDatos.setBounds(100, 444, 330, 32);
 
-	private void agregarListenerBtnModificarDatos() {
-		btnModificarDatos.addActionListener(e -> {
-			if (listenerModificarDatos != null)
-			listenerModificarDatos.actionPerformed(e);
-	    });
-	}
-	
-	@Override
-	public void alSolicitarMostrarSolucion(ActionListener listener) {
-		this.listenerMostrarSolucion = listener;
+		panelFondo.add(btnModificarDatos);
 	}
 
 	@Override
-	public void alSolicitarVolverAlMenu(ActionListener listener) {
-		this.listenerVolverAlMenu = listener;
+	public void alSolicitarMostrarSolucion(ActionListener e) {
+		comboSoluciones.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarSalir(ActionListener listener) {
-		this.listenerSalir = listener;
+	public void alSolicitarVolverAlMenu(ActionListener e) {
+		btnVolver.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarModificarDatos(ActionListener listener) {
-		this.listenerModificarDatos = listener;
+	public void alSolicitarSalir(ActionListener e) {
+		btnSalir.addActionListener(e);
 	}
-	
+
+	@Override
+	public void alSolicitarModificarDatos(ActionListener e) {
+		btnModificarDatos.addActionListener(e);
+	}
+
 	@Override
 	public int solucionElegida() {
 		solucionElegida = comboSoluciones.getSelectedIndex();
@@ -205,16 +168,15 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 	@Override
 	public void mostrarResultado(String texto) {
 		txtResultado.setText(texto);
-		txtResultado.setCaretPosition(0); 
+		txtResultado.setCaretPosition(0);
 	}
-	
+
 	@Override
-	public void completarComboSoluciones (List<String> nombreHeuristica) {
+	public void completarComboSoluciones(List<String> nombreHeuristica) {
 		comboSoluciones.removeAllItems();
 
-		for (String nombre : nombreHeuristica) {
+		for (String nombre : nombreHeuristica)
 			comboSoluciones.addItem(nombre);
-        }
 	}
 
 	@Override
@@ -228,12 +190,11 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 
 			graficadorDeGrafo.actualizar();
 
-			for (VerticeVisual vertice: vertices) {
+			for (VerticeVisual vertice : vertices) {
 
-				String estiloVertice = vertice.esDominante()
-						? graficadorDeGrafo.estiloVerticeDominante()
+				String estiloVertice = vertice.esDominante() ? graficadorDeGrafo.estiloVerticeDominante()
 						: graficadorDeGrafo.estiloVerticeNoDominante();
-				
+
 				String nombreV = vertice.getNombre();
 
 				Object nodo = graficadorDeGrafo.insertarVertice(parent, null, nombreV, 0, 0, 50, 50, estiloVertice);
@@ -243,10 +204,8 @@ public class PantallaResultado extends JFrame implements ResultadoVista{
 			String estiloArista = graficadorDeGrafo.estiloArista();
 
 			for (Par<String, String> arista : aristas) {
-				graficadorDeGrafo.insertarArista(parent, null, "", 
-						mapaDeVertices.get(arista.getIzquierda()),
-						mapaDeVertices.get(arista.getDerecha()),
-						estiloArista);
+				graficadorDeGrafo.insertarArista(parent, null, "", mapaDeVertices.get(arista.getIzquierda()),
+						mapaDeVertices.get(arista.getDerecha()), estiloArista);
 			}
 
 		} finally {
