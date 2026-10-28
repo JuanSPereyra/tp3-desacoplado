@@ -34,15 +34,15 @@ public class CargaJsonPresentador {
 	}
 
 	private void listenerSeleccionarArchivo() {
-		_vista.alSolicitarSeleccionarArchivo(e -> abrirExploradorArchivos());
+		_vista.listenerSeleccionarArchivo(e -> abrirExploradorArchivos());
 	}
 
 	private void listenerVolverMenu() {
-		_vista.alSolicitarVolverAlMenu(e -> coordinador.iniciarAplicacion());
+		_vista.listenerVolverAlMenu(e -> coordinador.iniciarAplicacion());
 	}
 
 	private void listenerVerResultado() {
-		_vista.alSolicitarVerResultados(e -> coordinador.irAResultado());
+		_vista.listenerVerResultados(e -> coordinador.irAResultado());
 	}
 
 	private void abrirExploradorArchivos() {

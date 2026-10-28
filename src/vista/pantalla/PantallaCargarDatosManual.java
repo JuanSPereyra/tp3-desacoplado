@@ -12,9 +12,7 @@ import vista.interfaz.CargarDatosVista;
 @SuppressWarnings("serial")
 public class PantallaCargarDatosManual extends JFrame implements CargarDatosVista {
 
-	private String verticeAEliminarTemp;
-	private String aristaOrigenTemp;
-	private String aristaDestinoTemp;
+	private String verticeAEliminarTemp, aristaOrigenTemp, aristaDestinoTemp;
 
 	private JPanel panelFondo;
 	private JButton btnVolver, btnIrResultado, btnAgregarVertice, btnAgregarArista;
@@ -227,17 +225,17 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	}
 
 	@Override
-	public void alSolicitarAgregarVertice(ActionListener e) {
+	public void listenerAgregarVertice(ActionListener e) {
 		btnAgregarVertice.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarAgregarArista(ActionListener e) {
+	public void listenerAgregarArista(ActionListener e) {
 		btnAgregarArista.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarEliminarVertice(ActionListener listener) {
+	public void listenerEliminarVertice(ActionListener listener) {
 		tablaVertices.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -253,7 +251,7 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	}
 
 	@Override
-	public void alSolicitarEliminarArista(ActionListener listener) {
+	public void listenerEliminarArista(ActionListener listener) {
 		tablaAristas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -270,12 +268,12 @@ public class PantallaCargarDatosManual extends JFrame implements CargarDatosVist
 	}
 
 	@Override
-	public void alSolicitarCalcularDominante(ActionListener e) {
+	public void listenerCalcularDominante(ActionListener e) {
 		btnIrResultado.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarVolverAlMenu(ActionListener e) {
+	public void listenerVolverAlMenu(ActionListener e) {
 		btnVolver.addActionListener(e);
 	}
 

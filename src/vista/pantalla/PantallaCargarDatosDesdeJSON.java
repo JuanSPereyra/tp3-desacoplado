@@ -88,7 +88,7 @@ public class PantallaCargarDatosDesdeJSON extends JFrame implements CargaJsonVis
 		btnVolver = new JButton("Volver al Menú");
 		btnVolver.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnVolver.setForeground(Color.WHITE);
-		btnVolver.setBackground(new Color(239, 68, 68)); // Rojo
+		btnVolver.setBackground(new Color(239, 68, 68));
 		btnVolver.setFocusPainted(false);
 		btnVolver.setBorderPainted(false);
 		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -96,17 +96,17 @@ public class PantallaCargarDatosDesdeJSON extends JFrame implements CargaJsonVis
 	}
 
 	@Override
-	public void alSolicitarSeleccionarArchivo(ActionListener e) {
+	public void listenerSeleccionarArchivo(ActionListener e) {
 		btnSeleccionarArchivo.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarVolverAlMenu(ActionListener e) {
+	public void listenerVolverAlMenu(ActionListener e) {
 		btnVolver.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarVerResultados(ActionListener e) {
+	public void listenerVerResultados(ActionListener e) {
 		btnIrResultado.addActionListener(e);
 	}
 

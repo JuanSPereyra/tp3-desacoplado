@@ -1,4 +1,4 @@
-package test;
+package modelo.heuristicas;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,6 @@ import org.junit.Test;
 import modelo.Instancia;
 import modelo.Solucion;
 import modelo.grafo.Vertice;
-import modelo.heuristicas.SolverGoloso;
 
 public class SolverGolosoTest {
 

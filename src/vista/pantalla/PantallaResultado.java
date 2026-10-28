@@ -140,22 +140,22 @@ public class PantallaResultado extends JFrame implements ResultadoVista {
 	}
 
 	@Override
-	public void alSolicitarMostrarSolucion(ActionListener e) {
+	public void listenerMostrarSolucion(ActionListener e) {
 		comboSoluciones.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarVolverAlMenu(ActionListener e) {
+	public void listenerVolverAlMenu(ActionListener e) {
 		btnVolver.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarSalir(ActionListener e) {
+	public void listenerSalir(ActionListener e) {
 		btnSalir.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarModificarDatos(ActionListener e) {
+	public void listenerModificarDatos(ActionListener e) {
 		btnModificarDatos.addActionListener(e);
 	}
 

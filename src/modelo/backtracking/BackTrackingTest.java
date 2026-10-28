@@ -1,4 +1,4 @@
-package test;
+package modelo.backtracking;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -7,7 +7,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import modelo.backtracking.BackTracking;
 import modelo.grafo.Grafo;
 import modelo.grafo.Vertice;
 

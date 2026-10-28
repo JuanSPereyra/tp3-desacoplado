@@ -126,22 +126,22 @@ public class PantallaInicio extends JFrame implements InicioVista {
 	}
 
 	@Override
-	public void alSolicitarCargaManual(ActionListener e) {
+	public void listenerCargaManual(ActionListener e) {
 		btnCargaManual.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarCargaDocumento(ActionListener e) {
+	public void listenerCargaDocumento(ActionListener e) {
 		btnCargaDocumento.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarTestStress(ActionListener e) {
+	public void listenerTestStress(ActionListener e) {
 		btnTestStress.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarSalir(ActionListener e) {
+	public void listenerSalir(ActionListener e) {
 		btnSalir.addActionListener(e);
 	}
 }

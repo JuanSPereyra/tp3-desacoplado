@@ -52,22 +52,22 @@ public class ResultadoPresentador {
 	}
 
 	private void listenerMostrarSolucion() {
-		this._rVista.alSolicitarMostrarSolucion(e -> {
+		this._rVista.listenerMostrarSolucion(e -> {
 			int solucionAMostrar = this._rVista.solucionElegida();
 			mostrarSolucion(solucionAMostrar);
 		});
 	}
 
 	private void listenerVolverMenu() {
-		this._rVista.alSolicitarVolverAlMenu(e -> manejarClickVolverAlMenu());
+		this._rVista.listenerVolverAlMenu(e -> manejarClickVolverAlMenu());
 	}
 
 	private void listenerSalir() {
-		this._rVista.alSolicitarSalir(e -> manejarClickBtnSalir());
+		this._rVista.listenerSalir(e -> manejarClickBtnSalir());
 	}
 
 	private void listenerModificarDatos() {
-		this._rVista.alSolicitarModificarDatos(e -> manejarClickModificarDatos());
+		this._rVista.listenerModificarDatos(e -> manejarClickModificarDatos());
 	}
 
 	private void calcularSolucionDominante() {

@@ -180,22 +180,22 @@ public class PantallaTestStress extends JFrame implements StressVista {
 	}
 
 	@Override
-	public void alSolicitarVolverAlMenu(ActionListener e) {
+	public void listenerVolverAlMenu(ActionListener e) {
 		btnVolver.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarSalir(ActionListener e) {
+	public void listenerSalir(ActionListener e) {
 		btnSalir.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarEmpezarTest(ActionListener e) {
+	public void listenerEmpezarTest(ActionListener e) {
 		btnEmpezarTest.addActionListener(e);
 	}
 
 	@Override
-	public void alSolicitarDetenerTest(ActionListener e) {
+	public void listenerDetenerTest(ActionListener e) {
 		btnDetenerTest.addActionListener(e);
 	}
 

@@ -110,5 +110,4 @@ public class Individuo {
 		if (noDominados > 0) return -100 * noDominados;
 		else return 100 - verticesSeleccionados;
 	}
-
 }

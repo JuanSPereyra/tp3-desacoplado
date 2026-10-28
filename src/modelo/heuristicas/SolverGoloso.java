@@ -31,7 +31,7 @@ public class SolverGoloso {
 	}
 
 	// estrategia 1: el que cubre mas vertices nuevos
-	public Solucion resolverPorCobertura() {
+	Solucion resolverPorCobertura() {
 		Solucion parcial = new Solucion(instancia);
 
 		return resolver(parcial, (a, b) -> 
@@ -39,7 +39,7 @@ public class SolverGoloso {
 	}
 
 	// estrategia 2: opuesto al 1, el que cubre menos vertices nuevos
-	public Solucion resolverPorMenosCobertura() {
+	Solucion resolverPorMenosCobertura() {
 		Solucion parcial = new Solucion(instancia);
 
 		return resolver(parcial, (a, b) -> 
@@ -47,31 +47,31 @@ public class SolverGoloso {
 	}
 
 	// estrategia 3: el de mayor grado
-	public Solucion resolverPorGradoMayor() {
+	Solucion resolverPorGradoMayor() {
 		return resolver(new Solucion(instancia), (a, b) -> 
 			Integer.compare(instancia.grado(b), instancia.grado(a)));
 	}
 
 	// estrategia 4: inversa a la 3, toma menor grado primero
-	public Solucion resolverPorGradoMenor() {
+	Solucion resolverPorGradoMenor() {
 		return resolver(new Solucion(instancia), (a, b) -> 
 			Integer.compare(instancia.grado(a), instancia.grado(b)));
 	}
 
 	// estrategia 5: a-->z
-	public Solucion resolverPorNombre() {
+	Solucion resolverPorNombre() {
 		return resolver(new Solucion(instancia), (a, b) -> 
 			a.getNombre().compareTo(b.getNombre()));
 	}
 
 	// estrategia 6: z--->a
-	public Solucion resolverPorNombreInverso() {
+	Solucion resolverPorNombreInverso() {
 		return resolver(new Solucion(instancia), (a, b) -> 
 			b.getNombre().compareTo(a.getNombre()));
 	}
 
 	// estrategia 7: peso de vertice mas urgente
-	public Solucion resolverPorPesoDelVertice() {
+	Solucion resolverPorPesoDelVertice() {
 		Solucion parcial = new Solucion(instancia);
 
 		return resolver(parcial, (a, b) -> 

@@ -25,18 +25,18 @@ public class BienvenidaPresentador {
 	}
 
 	private void listenerTestStress() {
-		_iVista.alSolicitarTestStress(e -> coordinador.irATestStress());
+		_iVista.listenerTestStress(e -> coordinador.irATestStress());
 	}
 
 	private void listenerSalir() {
-		_iVista.alSolicitarSalir(e -> System.exit(0));
+		_iVista.listenerSalir(e -> System.exit(0));
 	}
 
 	private void listenerCargaJSON() {
-		_iVista.alSolicitarCargaDocumento(e -> coordinador.irACargaDesdeJSON());
+		_iVista.listenerCargaDocumento(e -> coordinador.irACargaDesdeJSON());
 	}
 
 	private void listenerCargaManual() {
-		_iVista.alSolicitarCargaManual(e -> coordinador.irACargaManual());
+		_iVista.listenerCargaManual(e -> coordinador.irACargaManual());
 	}
 }

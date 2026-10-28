@@ -26,19 +26,19 @@ public class TestStressPresentador implements InterfazTestStressPresentador {
 	}
 
 	private void listenerVolverAlMenu() {
-		this._tsVista.alSolicitarVolverAlMenu(e -> {
+		this._tsVista.listenerVolverAlMenu(e -> {
 			manejarClickVolverAlMenu();
 		});
 	}
 
 	private void listenerSalir() {
-		this._tsVista.alSolicitarSalir(e -> {
+		this._tsVista.listenerSalir(e -> {
 			manejarClickBtnSalir();
 		});
 	}
 
 	private void listenerEmpezarTest() {
-		this._tsVista.alSolicitarEmpezarTest(e -> {
+		this._tsVista.listenerEmpezarTest(e -> {
 			Par<String, Integer> datosParaTest = this._tsVista.datosParaTest();
 
 			String cantVertices = datosParaTest.getIzquierda();
@@ -49,7 +49,7 @@ public class TestStressPresentador implements InterfazTestStressPresentador {
 	}
 
 	private void listenerDetenerTest() {
-		this._tsVista.alSolicitarDetenerTest(e -> {
+		this._tsVista.listenerDetenerTest(e -> {
 			manejarClickBtnDetenerTest();
 		});
 	}

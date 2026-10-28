@@ -4,11 +4,11 @@ import java.awt.event.ActionListener;
 
 public interface CargaJsonVista {
 
-	void alSolicitarSeleccionarArchivo(ActionListener listener);
+	void listenerSeleccionarArchivo(ActionListener listener);
 
-	void alSolicitarVolverAlMenu(ActionListener listener);
+	void listenerVolverAlMenu(ActionListener listener);
 
-	void alSolicitarVerResultados(ActionListener listener);
+	void listenerVerResultados(ActionListener listener);
 
 	void mostrarRutaArchivo(String ruta);
 

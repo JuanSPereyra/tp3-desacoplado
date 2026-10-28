@@ -6,13 +6,13 @@ import estructuraDatosAux.Par;
 
 public interface StressVista {
 
-	void alSolicitarVolverAlMenu(ActionListener listener);
+	void listenerVolverAlMenu(ActionListener listener);
 
-	void alSolicitarSalir(ActionListener listener);
+	void listenerSalir(ActionListener listener);
 
-	void alSolicitarEmpezarTest(ActionListener listener);
+	void listenerEmpezarTest(ActionListener listener);
 
-	void alSolicitarDetenerTest(ActionListener listener);
+	void listenerDetenerTest(ActionListener listener);
 
 	Par<String, Integer> datosParaTest();
 
@@ -25,5 +25,4 @@ public interface StressVista {
 	void actualizarProgreso(int porcentaje);
 
 	void mostrarMensajeError(String mensaje);
-
 }

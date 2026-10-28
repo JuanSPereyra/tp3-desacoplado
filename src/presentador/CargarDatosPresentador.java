@@ -31,7 +31,7 @@ public class CargarDatosPresentador {
 	}
 
 	private void listenerAgregarVertice() {
-		this._cdVista.alSolicitarAgregarVertice(e -> {
+		this._cdVista.listenerAgregarVertice(e -> {
 			String nombre = _cdVista.obtenerTextoVertice();
 			manejarClickAgregarVertice(nombre);
 		});
@@ -39,21 +39,21 @@ public class CargarDatosPresentador {
 	}
 
 	private void listenerAgregarArista() {
-		this._cdVista.alSolicitarAgregarArista(e -> {
+		this._cdVista.listenerAgregarArista(e -> {
 			Par<String, String> aristaNueva = this._cdVista.obtenerOrigenDestinoDeArista();
 			manejarClickAgregarArista(aristaNueva);
 		});
 	}
 
 	private void listenerEliminarVertice() {
-		this._cdVista.alSolicitarEliminarVertice(e -> {
+		this._cdVista.listenerEliminarVertice(e -> {
 			String nombre = _cdVista.obtenerVerticeAEliminar();
 			manejarClickEliminarVertice(nombre);
 		});
 	}
 
 	private void listenerEliminarArista() {
-		this._cdVista.alSolicitarEliminarArista(e -> {
+		this._cdVista.listenerEliminarArista(e -> {
 			Par<String, String> aristaAEliminar = _cdVista.obtenerAristaAEliminar();
 			String origen = aristaAEliminar.getIzquierda();
 			String destino = aristaAEliminar.getDerecha();
@@ -63,11 +63,11 @@ public class CargarDatosPresentador {
 	}
 
 	private void listenerCalcularDominante() {
-		this._cdVista.alSolicitarCalcularDominante(e -> manejarClickCalcularDominante());
+		this._cdVista.listenerCalcularDominante(e -> manejarClickCalcularDominante());
 	}
 
 	private void listenerVolverMenu() {
-		this._cdVista.alSolicitarVolverAlMenu(e -> manejarClickVolverAlMenu());
+		this._cdVista.listenerVolverAlMenu(e -> manejarClickVolverAlMenu());
 	}
 
 	private void manejarClickAgregarVertice(String nombre) {

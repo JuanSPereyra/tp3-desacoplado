@@ -4,11 +4,11 @@ import java.awt.event.ActionListener;
 
 public interface InicioVista {
 
-	void alSolicitarCargaManual(ActionListener listener);
+	void listenerCargaManual(ActionListener listener);
 
-	void alSolicitarCargaDocumento(ActionListener listener);
+	void listenerCargaDocumento(ActionListener listener);
 
-	void alSolicitarTestStress(ActionListener listener);
+	void listenerTestStress(ActionListener listener);
 
-	void alSolicitarSalir(ActionListener listener);
+	void listenerSalir(ActionListener listener);
 }

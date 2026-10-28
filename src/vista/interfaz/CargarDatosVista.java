@@ -6,17 +6,17 @@ import estructuraDatosAux.Par;
 
 public interface CargarDatosVista {
 
-	void alSolicitarAgregarVertice(ActionListener listener);
+	void listenerAgregarVertice(ActionListener listener);
 
-	void alSolicitarAgregarArista(ActionListener listener);
+	void listenerAgregarArista(ActionListener listener);
 
-	void alSolicitarEliminarVertice(ActionListener listener);
+	void listenerEliminarVertice(ActionListener listener);
 
-	void alSolicitarEliminarArista(ActionListener listener);
+	void listenerEliminarArista(ActionListener listener);
 
-	void alSolicitarCalcularDominante(ActionListener listener);
+	void listenerCalcularDominante(ActionListener listener);
 
-	void alSolicitarVolverAlMenu(ActionListener listener);
+	void listenerVolverAlMenu(ActionListener listener);
 
 	String obtenerTextoVertice();
 

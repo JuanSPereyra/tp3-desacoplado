@@ -7,13 +7,13 @@ import estructuraDatosAux.VerticeVisual;
 
 public interface ResultadoVista {
 
-	void alSolicitarMostrarSolucion(ActionListener listener);
+	void listenerMostrarSolucion(ActionListener listener);
 
-	void alSolicitarVolverAlMenu(ActionListener listener);
+	void listenerVolverAlMenu(ActionListener listener);
 
-	void alSolicitarSalir(ActionListener listener);
+	void listenerSalir(ActionListener listener);
 
-	void alSolicitarModificarDatos(ActionListener listener);
+	void listenerModificarDatos(ActionListener listener);
 
 	int solucionElegida();
 

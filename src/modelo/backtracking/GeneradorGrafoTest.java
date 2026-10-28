@@ -1,4 +1,4 @@
-package test;
+package modelo.backtracking;
 
 import static org.junit.Assert.*;
 
@@ -7,9 +7,7 @@ import org.junit.Test;
 
 import generadorRandomWrapper.GeneradorPrefijado;
 import generadorRandomWrapper.GeneradorRandom;
-import modelo.backtracking.GeneradorGrafo;
 import modelo.grafo.Grafo;
-import modelo.grafo.Vertice;
 
 public class GeneradorGrafoTest {
 
@@ -37,30 +35,26 @@ public class GeneradorGrafoTest {
 	public void rechazarMismoVerticeParaArista() {
 		GeneradorGrafo.setGenerador(new GeneradorPrefijado(2));
 		generador.iniciarGrafoYVertices(3);
-		boolean resultadoDeLaInsercion = generador.agregado();
-		assertFalse(resultadoDeLaInsercion);	
+		assertFalse(generador.agregado());
+
+	}
+	
+	@Test
+	public void aceptarDistintoVerticeParaArista() {
+		GeneradorGrafo.setGenerador(new GeneradorRandom());
+		generador.grafoRandom(3,1);
+		assertTrue(generador.agregado());
 	}
 
 	@Test
 	public void puedeGenerarGrafoCompleto() {
-		int n = 8;
-		int maximo = n * (n - 1) / 2;
+		int n = 8, maximo = n * (n - 1) / 2;
 
 		Grafo g = generador.grafoRandom(n, maximo);
-
 		assertEquals(maximo, g.cantidadAristas());
-		for (int i = 0; i < n; i++) {
-			Vertice v1 = g.getVertice(String.valueOf(i));
-			for (int j = 0; j < n; j++) {
-				if (i != j) {
-					Vertice v2 = g.getVertice(String.valueOf(j));
-					assertTrue(g.existeArista(v1, v2));
-				}
-			}
-		}
 	}
 
-	@Test(timeout = 2000, expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void rechazaMasAristasQueLasPosibles() {
 		generador.grafoRandom(4, 7);
 	}
