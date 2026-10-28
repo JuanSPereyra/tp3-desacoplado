@@ -3,7 +3,8 @@ package presentador;
 import coordinadorMVP.CoordinadorPresentadores;
 import estructuraDatosAux.Par;
 import modelo.*;
-
+import modelo.grafo.Arista;
+import modelo.grafo.Vertice;
 import vista.interfaz.CargarDatosVista;
 
 public class CargarDatosPresentador {

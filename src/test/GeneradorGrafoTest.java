@@ -5,9 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import modelo.GeneradorGrafo;
-import modelo.Grafo;
-import modelo.Vertice;
+import generadorRandomWrapper.GeneradorPrefijado;
+import generadorRandomWrapper.GeneradorRandom;
+import modelo.backtracking.GeneradorGrafo;
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
 
 public class GeneradorGrafoTest {
 
@@ -16,18 +18,27 @@ public class GeneradorGrafoTest {
 	@Before
 	public void inicializar() {
 		generador = new GeneradorGrafo();
+		GeneradorGrafo.setGenerador(new GeneradorRandom());
 	}
 
 	@Test
 	public void generarCantidadDeVertices() {
-		Grafo g = generador.grafoRandom(5, 0, 0);
+		Grafo g = generador.grafoRandom(5, 0);
 		assertEquals(5, g.cantidadVertices());
 	}
 
 	@Test
 	public void generarCantidadDeAristas() {
-		Grafo g = generador.grafoRandom(5, 4, 0);
+		Grafo g = generador.grafoRandom(5, 4);
 		assertEquals(4, g.cantidadAristas());
+	}
+	
+	@Test
+	public void rechazarMismoVerticeParaArista() {
+		GeneradorGrafo.setGenerador(new GeneradorPrefijado(2));
+		generador.iniciarGrafoYVertices(3);
+		boolean resultadoDeLaInsercion = generador.agregado();
+		assertFalse(resultadoDeLaInsercion);	
 	}
 
 	@Test
@@ -35,7 +46,7 @@ public class GeneradorGrafoTest {
 		int n = 8;
 		int maximo = n * (n - 1) / 2;
 
-		Grafo g = generador.grafoRandom(n, maximo, 0);
+		Grafo g = generador.grafoRandom(n, maximo);
 
 		assertEquals(maximo, g.cantidadAristas());
 		for (int i = 0; i < n; i++) {
@@ -51,46 +62,29 @@ public class GeneradorGrafoTest {
 
 	@Test(timeout = 2000, expected = IllegalArgumentException.class)
 	public void rechazaMasAristasQueLasPosibles() {
-		generador.grafoRandom(4, 7, 0);
+		generador.grafoRandom(4, 7);
 	}
 
 	@Test
 	public void grafoVacio() {
-		Grafo g = generador.grafoRandom(0, 0, 0);
+		Grafo g = generador.grafoRandom(0, 0);
 		assertEquals(0, g.cantidadAristas());
 	}
 
 	@Test
 	public void unSoloVerticeSinAristas() {
-		Grafo g = generador.grafoRandom(1, 0, 0);
+		Grafo g = generador.grafoRandom(1, 0);
 		assertEquals(0, g.cantidadAristas());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void rechazaVerticeNegativo() {
-		generador.grafoRandom(-1, 0, 0);
+		generador.grafoRandom(-1, 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void rechazaAristaNegativa() {
-		generador.grafoRandom(4, -1, 0);
-	}
-
-	@Test
-	public void mismaSemillaGeneraMismoGrafo() {
-		int n = 8;
-		Grafo g1 = generador.grafoRandom(n, 10, 42L);
-		Grafo g2 = generador.grafoRandom(n, 10, 42L);
-
-		for (int i = 0; i < n; i++) {
-			for (int j = i + 1; j < n; j++) {
-				Vertice a1 = g1.getVertice(String.valueOf(i));
-				Vertice b1 = g1.getVertice(String.valueOf(j));
-				Vertice a2 = g2.getVertice(String.valueOf(i));
-				Vertice b2 = g2.getVertice(String.valueOf(j));
-				assertEquals(g1.existeArista(a1, b1), g2.existeArista(a2, b2));
-			}
-		}
+		generador.grafoRandom(4, -1);
 	}
 }
 	

@@ -3,7 +3,13 @@ package swingWorker;
 import java.util.*;
 import javax.swing.SwingWorker;
 
+import generadorRandomWrapper.GeneradorRandom;
 import modelo.*;
+import modelo.backtracking.BackTracking;
+import modelo.backtracking.GeneradorGrafo;
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
+
 import java.math.*;
 
 public class TestStressWorker extends SwingWorker<String, String> {
@@ -71,7 +77,8 @@ public class TestStressWorker extends SwingWorker<String, String> {
 
 	private Set<Vertice> resolverGrafo(int vertices, int aristas) {
 
-		Grafo g = generadorGrafoRnd.grafoRandom(vertices, aristas, 0);
+		GeneradorGrafo.setGenerador(new GeneradorRandom());
+		Grafo g = generadorGrafoRnd.grafoRandom(vertices, aristas);
 
 		backTrackingActual = new BackTracking();
 		return backTrackingActual.resolverGrafo(g);

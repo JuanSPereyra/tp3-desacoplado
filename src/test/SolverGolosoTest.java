@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import modelo.Instancia;
 import modelo.Solucion;
-import modelo.SolverGoloso;
-import modelo.Vertice;
+import modelo.grafo.Vertice;
+import modelo.heuristicas.SolverGoloso;
 
 public class SolverGolosoTest {
 

@@ -6,9 +6,10 @@ import static org.junit.Assert.assertNull;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
-import modelo.BackTracking;
-import modelo.Grafo;
-import modelo.Vertice;
+
+import modelo.backtracking.BackTracking;
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
 
 public class BackTrackingTest {
 

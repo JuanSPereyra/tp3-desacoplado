@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import modelo.Vertice;
+import modelo.grafo.Vertice;
 
 public class VerticeTest {
 	private Vertice vertice;

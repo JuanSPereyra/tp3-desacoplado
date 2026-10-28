@@ -1,8 +1,11 @@
-package modelo;
+package modelo.backtracking;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import generadorRandomWrapper.Generador;
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
 
 public class GeneradorGrafo {
 	private int cantidadVertices;
@@ -10,28 +13,36 @@ public class GeneradorGrafo {
 	long semilla;
 	private Grafo grafoARetornar;
 	private List<Vertice> listaDeVertices;
-
-	public Grafo grafoRandom(int cantidadVertices, int cantidadAristas, long semilla) {
-		return random(cantidadVertices, cantidadAristas, semilla);
+	private static Generador generadorRnd;
+	
+	public Grafo grafoRandom(int cantidadVertices, int cantidadAristas) {
+		return random(cantidadVertices, cantidadAristas);
+	}
+	
+	public static void setGenerador(Generador generador) {
+		generadorRnd = generador;
 	}
 
-	private Grafo random(int cantidadVertices, int cantidadAristas, long semilla) {
-
-		this.cantidadVertices = cantidadVertices;
-		this.cantidadAristas = cantidadAristas;
-		this.semilla = semilla;
-
-		this.grafoARetornar = new Grafo();
-		this.listaDeVertices = new ArrayList<Vertice>();
-
+	private Grafo random(int cantidadVertices, int cantidadAristas) {
+		
 		validarCantVertices(cantidadVertices);
 		validadCantAristas(cantidadAristas);
 		validarMaximoAristas(cantidadVertices, cantidadAristas);
-
-		agregarVertices();
+		
+		iniciarGrafoYVertices(cantidadVertices);
+		
+		this.cantidadAristas = cantidadAristas;
 		agregarAristas();
 
 		return grafoARetornar;
+	}
+
+	public void iniciarGrafoYVertices(int cantidadVertices) {
+		this.cantidadVertices = cantidadVertices;
+		this.grafoARetornar = new Grafo();
+		this.listaDeVertices = new ArrayList<Vertice>();
+
+		agregarVertices();
 	}
 
 	private void validarCantVertices(int cantidadVertices) {
@@ -53,19 +64,21 @@ public class GeneradorGrafo {
 
 	private void agregarAristas() {
 
-		Random rnd = new Random(semilla);
-
 		int agregados = 0;
 
 		while (agregados < cantidadAristas) {
-			Vertice origen = listaDeVertices.get(rnd.nextInt(cantidadVertices));
-			Vertice destino = listaDeVertices.get(rnd.nextInt(cantidadVertices));
-
-			if (!origen.equals(destino) && !grafoARetornar.existeArista(origen, destino)) {
-				grafoARetornar.agregarArista(origen, destino);
-				agregados++;
-			}
+			if (agregado()) agregados++;
 		}
+	}
+
+	public boolean agregado() {
+		Vertice origen = listaDeVertices.get(generadorRnd.nextInt(cantidadVertices));
+		Vertice destino = listaDeVertices.get(generadorRnd.nextInt(cantidadVertices));
+
+		if (!origen.equals(destino) && !grafoARetornar.existeArista(origen, destino)) {
+			grafoARetornar.agregarArista(origen, destino);
+			return true;
+		} else { return false;}
 	}
 
 	private void agregarVertices() {

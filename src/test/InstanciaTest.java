@@ -8,7 +8,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import modelo.Instancia;
-import modelo.Vertice;
+import modelo.grafo.Vertice;
 
 public class InstanciaTest {
 
@@ -89,7 +89,7 @@ public class InstanciaTest {
 
 	@Test
 	public void instanciaNuevaNoTieneVerticesTest() {
-		assertEquals(0, instanciaVacia.getTamanio());
+		assertEquals(0, instanciaVacia.cantidadVertices());
 	}
 
 	@Test
@@ -100,12 +100,12 @@ public class InstanciaTest {
 	@Test
 	public void agregarVerticeAumentaElTamanoTest() {
 		instanciaVacia.agregarVertice("A");
-		assertEquals(1, instanciaVacia.getTamanio());
+		assertEquals(1, instanciaVacia.cantidadVertices());
 	}
 
 	@Test
 	public void getTamanoCuentaTodosLosVerticesTest() {
-		assertEquals(7, instancia.getTamanio());
+		assertEquals(7, instancia.cantidadVertices());
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class InstanciaTest {
 	@Test
 	public void modificarVerticesObtenidosNoAfectaALaInstanciaTest() {
 		instancia.getVertices().clear();
-		assertEquals(7, instancia.getTamanio());
+		assertEquals(7, instancia.cantidadVertices());
 	}
 
 	@Test

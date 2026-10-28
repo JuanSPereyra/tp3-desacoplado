@@ -3,6 +3,8 @@ package modelo;
 import java.util.HashSet;
 import java.util.Set;
 
+import modelo.grafo.Vertice;
+
 public class Solucion {
 	private Instancia instancia;
 	private Set<Vertice> verticesConjuntoMinimo;
@@ -29,7 +31,7 @@ public class Solucion {
 	}
 
 	public boolean dominioIgualGrafo() {
-		return dominados.size() == instancia.getTamanio();
+		return dominados.size() == instancia.cantidadVertices();
 	}
 
 	public int nuevosCubiertos(Vertice v) {

@@ -8,8 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
-import modelo.Grafo;
-import modelo.Vertice;
+
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
 
 public class GrafoTest {
 

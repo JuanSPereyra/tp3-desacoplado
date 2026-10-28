@@ -1,10 +1,13 @@
-package modelo;
+package modelo.backtracking;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import java.util.Set;
+
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
 
 public class BackTracking {
 	private Grafo grafo;

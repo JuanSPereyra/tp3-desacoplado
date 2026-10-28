@@ -3,8 +3,9 @@ package test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import modelo.Arista;
-import modelo.Vertice;
+
+import modelo.grafo.Arista;
+import modelo.grafo.Vertice;
 
 public class AristaTest {
 

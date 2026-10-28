@@ -7,12 +7,12 @@ import java.util.Set;
 import coordinadorMVP.CoordinadorPresentadores;
 import estructuraDatosAux.Par;
 import estructuraDatosAux.VerticeVisual;
-import modelo.BackTracking;
 import modelo.Instancia;
 import modelo.Solucion;
-import modelo.SolverGoloso;
-import modelo.Vertice;
-
+import modelo.backtracking.BackTracking;
+import modelo.grafo.Vertice;
+import modelo.grafogenetico.PoblacionGrafoGenetico;
+import modelo.heuristicas.SolverGoloso;
 import vista.interfaz.ResultadoVista;
 
 public class ResultadoPresentador {
@@ -21,8 +21,18 @@ public class ResultadoPresentador {
 	private Instancia instancia;
 	private CoordinadorPresentadores coordinador;
 	private List<Solucion> soluciones;
-	private static final List<String> NOMBRES_ESTRATEGIAS = List.of("Óptima (Backtracking)", "Mayor Cobertura",
-			"Menor Cobertura", "Mayor Grado", "Menor Grado", "Nombre A-Z", "Nombre Z-A", "Peso por vecino");
+	private static final List<String> NOMBRES_ESTRATEGIAS = List.of
+			(
+				"Óptima (Backtracking)",
+				"Solución Genética",
+				"Mayor Cobertura",
+				"Menor Cobertura",
+				"Mayor Grado",
+				"Menor Grado",
+				"Nombre A-Z",
+				"Nombre Z-A",
+				"Peso por vecino"
+			);
 
 	public ResultadoPresentador(ResultadoVista resultadoVista, Instancia instancia,
 			CoordinadorPresentadores coordinadorPresentadores) {
@@ -31,7 +41,6 @@ public class ResultadoPresentador {
 		this.instancia = instancia;
 
 		calcularSolucionDominante();
-
 		iniciarListeners();
 	}
 
@@ -68,6 +77,7 @@ public class ResultadoPresentador {
 		soluciones = new ArrayList<>();
 
 		soluciones.add(resolverBacktracking());
+		soluciones.add(resolverGrafoGenetico());
 		soluciones.addAll(solverGoloso.resolver());
 
 		completarComboSoluciones();
@@ -75,17 +85,31 @@ public class ResultadoPresentador {
 		mostrarSolucion(0);
 	}
 
+	private Solucion resolverGrafoGenetico() {
+
+		PoblacionGrafoGenetico poblacionGenetica = new PoblacionGrafoGenetico(instancia);
+
+		Set<Vertice> mejorIndividuo = poblacionGenetica.resolver();
+
+		return transformarSetASolucion(mejorIndividuo);
+	}
+
 	private Solucion resolverBacktracking() {
+
 		BackTracking bt = new BackTracking();
 
 		Set<Vertice> verticesOptimos = bt.resolverGrafo(instancia.getGrafo());
 
-		Solucion solBackTracking = new Solucion(instancia);
+		return transformarSetASolucion(verticesOptimos);
+	}
 
-		for (Vertice v : verticesOptimos) {
-			solBackTracking.agregar(v);
+	private Solucion transformarSetASolucion(Set<Vertice> setSolucion) {
+		Solucion sol = new Solucion(instancia);
+
+		for (Vertice v : setSolucion) {
+			sol.agregar(v);
 		}
-		return solBackTracking;
+		return sol;
 	}
 
 	private void completarComboSoluciones() {
@@ -100,9 +124,7 @@ public class ResultadoPresentador {
 			Solucion sol = soluciones.get(i);
 
 			sb.append(NOMBRES_ESTRATEGIAS.get(i)).append("\n");
-
 			sb.append("Total de vértices en la solución: ").append(sol.cardinal()).append("\n");
-
 			sb.append("Vértices seleccionados:\n{");
 
 			for (Vertice v : sol.getVertices()) {
@@ -116,7 +138,6 @@ public class ResultadoPresentador {
 			sb.append("}\n\n");
 		}
 		_rVista.mostrarResultado(sb.toString());
-		;
 	}
 
 	private void mostrarSolucion(int indiceEstrategiaElegida) {

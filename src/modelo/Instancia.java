@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import estructuraDatosAux.Par;
+import modelo.grafo.Arista;
+import modelo.grafo.Grafo;
+import modelo.grafo.Vertice;
 
 public class Instancia {
 	private final Grafo grafo;
@@ -26,10 +29,6 @@ public class Instancia {
 	}
 
 	public int cantidadVertices() {
-		return grafo.cantidadVertices();
-	}
-
-	public int getTamanio() {
 		return grafo.cantidadVertices();
 	}
 
@@ -58,7 +57,6 @@ public class Instancia {
 
 	public void eliminarArista(Vertice origen, Vertice destino) {
 		grafo.eliminarArista(origen, destino);
-
 	}
 
 	public List<Par<String, String>> getAristasComoNombres() {

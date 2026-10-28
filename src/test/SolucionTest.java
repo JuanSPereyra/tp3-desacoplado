@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import modelo.Instancia;
 import modelo.Solucion;
-import modelo.Vertice;
+import modelo.grafo.Vertice;
 
 public class SolucionTest {
 
