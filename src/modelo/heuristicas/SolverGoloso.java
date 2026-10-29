@@ -19,8 +19,8 @@ public class SolverGoloso {
 
 		conjuntoSoluciones = List.of(
 
-				resolverPorCobertura(),
-				resolverPorMenosCobertura(),
+				resolverPorMayorCobertura(),
+				resolverPorMenorCobertura(),
 				resolverPorGradoMayor(),
 				resolverPorGradoMenor(),
 				resolverPorNombre(),
@@ -30,52 +30,38 @@ public class SolverGoloso {
 		return conjuntoSoluciones;
 	}
 
-	// estrategia 1: el que cubre mas vertices nuevos
-	Solucion resolverPorCobertura() {
+	Solucion resolverPorMayorCobertura() {
 		Solucion parcial = new Solucion(instancia);
 
-		return resolver(parcial, (a, b) -> 
-			Integer.compare(parcial.nuevosCubiertos(b), parcial.nuevosCubiertos(a)));
+		return resolver(parcial, (a, b) -> Integer.compare(parcial.nuevosCubiertos(b), parcial.nuevosCubiertos(a)));
 	}
 
-	// estrategia 2: opuesto al 1, el que cubre menos vertices nuevos
-	Solucion resolverPorMenosCobertura() {
+	Solucion resolverPorMenorCobertura() {
 		Solucion parcial = new Solucion(instancia);
 
-		return resolver(parcial, (a, b) -> 
-			Integer.compare(parcial.nuevosCubiertos(a), parcial.nuevosCubiertos(b)));
+		return resolver(parcial, (a, b) -> Integer.compare(parcial.nuevosCubiertos(a), parcial.nuevosCubiertos(b)));
 	}
 
-	// estrategia 3: el de mayor grado
 	Solucion resolverPorGradoMayor() {
-		return resolver(new Solucion(instancia), (a, b) -> 
-			Integer.compare(instancia.grado(b), instancia.grado(a)));
+		return resolver(new Solucion(instancia), (a, b) -> Integer.compare(instancia.grado(b), instancia.grado(a)));
 	}
 
-	// estrategia 4: inversa a la 3, toma menor grado primero
 	Solucion resolverPorGradoMenor() {
-		return resolver(new Solucion(instancia), (a, b) -> 
-			Integer.compare(instancia.grado(a), instancia.grado(b)));
+		return resolver(new Solucion(instancia), (a, b) -> Integer.compare(instancia.grado(a), instancia.grado(b)));
 	}
 
-	// estrategia 5: a-->z
 	Solucion resolverPorNombre() {
-		return resolver(new Solucion(instancia), (a, b) -> 
-			a.getNombre().compareTo(b.getNombre()));
+		return resolver(new Solucion(instancia), (a, b) -> a.getNombre().compareTo(b.getNombre()));
 	}
 
-	// estrategia 6: z--->a
 	Solucion resolverPorNombreInverso() {
-		return resolver(new Solucion(instancia), (a, b) -> 
-			b.getNombre().compareTo(a.getNombre()));
+		return resolver(new Solucion(instancia), (a, b) -> b.getNombre().compareTo(a.getNombre()));
 	}
 
-	// estrategia 7: peso de vertice mas urgente
 	Solucion resolverPorPesoDelVertice() {
 		Solucion parcial = new Solucion(instancia);
 
-		return resolver(parcial, (a, b) -> 
-			Double.compare(puntajePorVecino(b, parcial), puntajePorVecino(a, parcial)));
+		return resolver(parcial, (a, b) -> Double.compare(puntajePorVecino(b, parcial), puntajePorVecino(a, parcial)));
 	}
 
 	private Solucion resolver(Solucion sol, Comparator<Vertice> comparador) {

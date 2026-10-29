@@ -31,17 +31,17 @@ public class GeneradorGrafoTest {
 		Grafo g = generador.grafoRandom(5, 4);
 		assertEquals(4, g.cantidadAristas());
 	}
-	
+
 	@Test
 	public void rechazarMismoVerticeParaArista() {
 		GeneradorGrafo.setGenerador(new GeneradorPrefijado(2));
 		generador.iniciarGrafoYVertices(3);
 		assertFalse(generador.agregado());
 	}
-	
+
 	@Test
 	public void aceptarDistintoVerticeParaArista() {
-		generador.grafoRandom(3,1);
+		generador.grafoRandom(3, 1);
 		assertTrue(generador.agregado());
 	}
 
@@ -52,15 +52,15 @@ public class GeneradorGrafoTest {
 		Grafo g = generador.grafoRandom(n, maximo);
 		assertEquals(maximo, g.cantidadAristas());
 	}
-	
+
 	@Test
 	public void puedeGenerarGrafoCompleto2() {
-	    int n = 8;
-	    int maximo = n * (n - 1) / 2;
+		int n = 8;
+		int maximo = n * (n - 1) / 2;
 		Grafo g = generador.grafoRandom(n, maximo);
-		
-	    assertEquals(maximo, g.cantidadAristas());
-	    assertTrue (esGrafoCompleto(g));
+
+		assertEquals(maximo, g.cantidadAristas());
+		assertTrue(esGrafoCompleto(g));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -89,50 +89,48 @@ public class GeneradorGrafoTest {
 	public void rechazaAristaNegativa() {
 		generador.grafoRandom(4, -1);
 	}
-	
+
 	@Test
 	public void mismaSemillaGeneraMismoGrafo() {
-	    int n = 8;
-	    generador = new GeneradorGrafo();
+		int n = 8;
+		generador = new GeneradorGrafo();
 		GeneradorGrafo.setGenerador(new GeneradorAleatorio(42L));
 		Grafo g1 = generador.grafoRandom(n, 10);
 		GeneradorGrafo.setGenerador(new GeneradorAleatorio(42L));
 		Grafo g2 = generador.grafoRandom(n, 10);
 
-	    
-	    assertTrue(grafoSonIguales(g1, g2));
+		assertTrue(grafoSonIguales(g1, g2));
 	}
 
 	private boolean grafoSonIguales(Grafo g1, Grafo g2) {
 		int cantidadVertices = g1.cantidadVertices();
 		boolean bandera = true;
-		
+
 		for (int i = 0; i < cantidadVertices; i++) {
-	        for (int j = i + 1; j < cantidadVertices; j++) {
-	            Vertice a1 = g1.getVertice(String.valueOf(i));
-	            Vertice b1 = g1.getVertice(String.valueOf(j));
-	            Vertice a2 = g2.getVertice(String.valueOf(i));
-	            Vertice b2 = g2.getVertice(String.valueOf(j));
-	            bandera = bandera && (g1.existeArista(a1, b1) == g2.existeArista(a2, b2));
-	        }
-	    }
-	return bandera;
+			for (int j = i + 1; j < cantidadVertices; j++) {
+				Vertice a1 = g1.getVertice(String.valueOf(i));
+				Vertice b1 = g1.getVertice(String.valueOf(j));
+				Vertice a2 = g2.getVertice(String.valueOf(i));
+				Vertice b2 = g2.getVertice(String.valueOf(j));
+				bandera = bandera && (g1.existeArista(a1, b1) == g2.existeArista(a2, b2));
+			}
+		}
+		return bandera;
 	}
 
 	private boolean esGrafoCompleto(Grafo g) {
 		int cantidadVertices = g.cantidadVertices();
 		boolean bandera = true;
-		
+
 		for (int i = 0; i < cantidadVertices; i++) {
-	    	Vertice v1 = g.getVertice(String.valueOf(i));
-	        for (int j = 0; j < cantidadVertices; j++) {
-	            if (i != j) {
-	            	Vertice v2 = g.getVertice(String.valueOf(j));
-	            	bandera = bandera && (g.existeArista(v1,v2));
-	            }
-	        }
-	    }
-	return bandera;
+			Vertice v1 = g.getVertice(String.valueOf(i));
+			for (int j = 0; j < cantidadVertices; j++) {
+				if (i != j) {
+					Vertice v2 = g.getVertice(String.valueOf(j));
+					bandera = bandera && (g.existeArista(v1, v2));
+				}
+			}
+		}
+		return bandera;
 	}
 }
-	

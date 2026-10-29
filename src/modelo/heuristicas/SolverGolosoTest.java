@@ -16,7 +16,7 @@ import modelo.grafo.Vertice;
 
 public class SolverGolosoTest {
 
-	private Instancia instancia; // A-B, B-C, C-D, C-E, E-F y H aislado
+	private Instancia instancia;
 	private SolverGoloso solver;
 
 	@Before
@@ -33,18 +33,18 @@ public class SolverGolosoTest {
 
 	@Test
 	public void coberturaDevuelveConjuntoDominanteTest() {
-		Solucion s = solver.resolverPorCobertura();
+		Solucion s = solver.resolverPorMayorCobertura();
 		assertTrue(esDominante(instancia, s));
 	}
 
 	@Test
 	public void coberturaIncluyeAlVerticeAisladoTest() {
-		assertTrue(solver.resolverPorCobertura().contiene(new Vertice("H")));
+		assertTrue(solver.resolverPorMayorCobertura().contiene(new Vertice("H")));
 	}
 
 	@Test
 	public void coberturaDaElConjuntoEsperadoTest() {
-		assertEquals(conjunto(Arrays.asList("H", "C", "A", "E")), solver.resolverPorCobertura().getVertices());
+		assertEquals(conjunto(Arrays.asList("H", "C", "A", "E")), solver.resolverPorMayorCobertura().getVertices());
 	}
 
 	@Test
@@ -77,13 +77,13 @@ public class SolverGolosoTest {
 
 	@Test
 	public void resolverDosVecesDaElMismoResultadoTest() {
-		Set<Vertice> primera = solver.resolverPorCobertura().getVertices();
-		assertEquals(primera, solver.resolverPorCobertura().getVertices());
+		Set<Vertice> primera = solver.resolverPorMayorCobertura().getVertices();
+		assertEquals(primera, solver.resolverPorMayorCobertura().getVertices());
 	}
 
 	@Test
 	public void instanciaVaciaDaSolucionVaciaTest() {
-		Solucion s = new SolverGoloso(new Instancia()).resolverPorCobertura();
+		Solucion s = new SolverGoloso(new Instancia()).resolverPorMayorCobertura();
 		assertEquals(0, s.cardinal());
 	}
 
@@ -102,7 +102,7 @@ public class SolverGolosoTest {
 	@Test
 	public void coberturaEncuentraElOptimoDelEnunciadoTest() {
 		Instancia enunciado = enunciadoDelTp();
-		assertEquals(2, new SolverGoloso(enunciado).resolverPorCobertura().cardinal());
+		assertEquals(2, new SolverGoloso(enunciado).resolverPorMayorCobertura().cardinal());
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class SolverGolosoTest {
 
 	@Test
 	public void menosCoberturaIncluyeAlVerticeAisladoTest() {
-		assertTrue(solver.resolverPorMenosCobertura().contiene(new Vertice("H")));
+		assertTrue(solver.resolverPorMenorCobertura().contiene(new Vertice("H")));
 	}
 
 	@Test

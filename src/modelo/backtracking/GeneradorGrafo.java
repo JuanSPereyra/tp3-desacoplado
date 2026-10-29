@@ -14,23 +14,23 @@ public class GeneradorGrafo {
 	private Grafo grafoARetornar;
 	private List<Vertice> listaDeVertices;
 	private static Generador generadorRnd;
-	
+
 	public Grafo grafoRandom(int cantidadVertices, int cantidadAristas) {
 		return random(cantidadVertices, cantidadAristas);
 	}
-	
+
 	public static void setGenerador(Generador generador) {
 		generadorRnd = generador;
 	}
 
 	private Grafo random(int cantidadVertices, int cantidadAristas) {
-		
+
 		validarCantVertices(cantidadVertices);
 		validadCantAristas(cantidadAristas);
 		validarMaximoAristas(cantidadVertices, cantidadAristas);
-		
+
 		iniciarGrafoYVertices(cantidadVertices);
-		
+
 		this.cantidadAristas = cantidadAristas;
 		agregarAristas();
 
@@ -67,7 +67,8 @@ public class GeneradorGrafo {
 		int agregados = 0;
 
 		while (agregados < cantidadAristas) {
-			if (agregado()) agregados++;
+			if (agregado())
+				agregados++;
 		}
 	}
 
@@ -78,7 +79,9 @@ public class GeneradorGrafo {
 		if (!origen.equals(destino) && !grafoARetornar.existeArista(origen, destino)) {
 			grafoARetornar.agregarArista(origen, destino);
 			return true;
-		} else { return false;}
+		} else {
+			return false;
+		}
 	}
 
 	private void agregarVertices() {

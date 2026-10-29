@@ -8,7 +8,7 @@ public class GeneradorAleatorio implements Generador {
 	public GeneradorAleatorio(long semilla) {
 		_random = new Random(semilla);
 	}
-	
+
 	public GeneradorAleatorio() {
 		_random = new Random();
 	}

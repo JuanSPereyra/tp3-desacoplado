@@ -80,8 +80,7 @@ public class CoordinadorPresentadores {
 		case JSON:
 			this.pantallaCargaManual = new PantallaCargarDatosManual();
 
-			CargarDatosPresentador presentadorManual = new CargarDatosPresentador(pantallaCargaManual, this.instancia,
-					this);
+			CargarDatosPresentador presentadorManual = new CargarDatosPresentador(pantallaCargaManual, instancia, this);
 
 			presentadorManual.cargarDatosDesdeModelo();
 

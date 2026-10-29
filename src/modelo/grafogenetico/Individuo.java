@@ -19,7 +19,7 @@ public class Individuo {
 	public static void setGenerador(Generador random) {
 		_generador = random;
 	}
-	
+
 	public static void setCantVertices(int cantVertices) {
 		_cantVertices = cantVertices;
 	}
@@ -38,7 +38,7 @@ public class Individuo {
 	}
 
 	static Individuo prefijado(Instancia instancia, String bits) {
-		
+
 		if (bits != null && bits.length() != _cantVertices)
 			throw new IllegalArgumentException("El string de bits es incorrecto! bits = " + bits);
 
@@ -92,7 +92,7 @@ public class Individuo {
 
 	public int fitness() {
 		int verticesSeleccionados = 0;
-		
+
 		Set<Vertice> alcanzados = new HashSet<>();
 		List<Vertice> listaVertices = new ArrayList<>(_instancia.getVertices());
 
@@ -107,7 +107,9 @@ public class Individuo {
 
 		int noDominados = listaVertices.size() - alcanzados.size();
 
-		if (noDominados > 0) return -100 * noDominados;
-		else return 100 - verticesSeleccionados;
+		if (noDominados > 0)
+			return -100 * noDominados;
+		else
+			return 100 - verticesSeleccionados;
 	}
 }

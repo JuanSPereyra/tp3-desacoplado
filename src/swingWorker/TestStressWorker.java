@@ -4,7 +4,6 @@ import java.util.*;
 import javax.swing.SwingWorker;
 
 import generadorRandomWrapper.GeneradorAleatorio;
-import modelo.*;
 import modelo.backtracking.BackTracking;
 import modelo.backtracking.GeneradorGrafo;
 import modelo.grafo.Grafo;

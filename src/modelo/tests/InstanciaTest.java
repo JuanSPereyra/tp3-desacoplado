@@ -1,4 +1,4 @@
-package test;
+package modelo.tests;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,7 @@ import modelo.grafo.Vertice;
 
 public class InstanciaTest {
 
-	private Instancia instancia; // A-B, B-C, C-D, C-E, E-F y H aislado
+	private Instancia instancia;
 	private Instancia instanciaVacia;
 	private Vertice a, b, c, d, e, f, h;
 
