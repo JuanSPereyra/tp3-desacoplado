@@ -54,7 +54,7 @@ public class CoordinadorPresentadores {
 		this.instancia = new Instancia();
 
 		pantallaJson = new PantallaCargarDatosDesdeJSON();
-		new CargaJsonPresentador(pantallaJson, instancia, this);
+		new CargarJsonPresentador(pantallaJson, instancia, this);
 
 		gestorInterfaz.mostrarPantalla(pantallaJson);
 	}

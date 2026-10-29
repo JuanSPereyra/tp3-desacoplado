@@ -3,10 +3,10 @@ package vista.pantalla;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import vista.interfaz.CargaJsonVista;
+import vista.interfaz.CargarJsonVista;
 
 @SuppressWarnings("serial")
-public class PantallaCargarDatosDesdeJSON extends JFrame implements CargaJsonVista {
+public class PantallaCargarDatosDesdeJSON extends JFrame implements CargarJsonVista {
 
 	private JPanel panelFondo;
 	private JLabel lblTitulo, lblRutaArchivo;

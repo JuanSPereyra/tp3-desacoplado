@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.List;
 
 import generadorRandomWrapper.Generador;
-import generadorRandomWrapper.GeneradorRandom;
+import generadorRandomWrapper.GeneradorAleatorio;
 import modelo.Instancia;
 import modelo.grafo.Vertice;
 
@@ -20,7 +20,7 @@ public class PoblacionGrafoGenetico {
 	private int _maxIteraciones = 100;
 	private int _iteracion;
 
-	private Generador _generador = new GeneradorRandom();
+	private Generador _generador = new GeneradorAleatorio();
 
 	public PoblacionGrafoGenetico(Instancia instancia) {
 		this._instancia = instancia;

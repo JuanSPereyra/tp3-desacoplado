@@ -6,20 +6,19 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import datos.JsonLoader;
-import datos.JsonLoader.AristaJson;
-import datos.JsonLoader.GrafoWrapper;
-
+import datos.CargadorJson;
+import estructuraDatosAux.AristaJson;
+import estructuraDatosAux.GrafoJson;
 import modelo.Instancia;
-import vista.interfaz.CargaJsonVista;
+import vista.interfaz.CargarJsonVista;
 
-public class CargaJsonPresentador {
-	private CargaJsonVista _vista;
+public class CargarJsonPresentador {
+	private CargarJsonVista _vista;
 	private CoordinadorPresentadores coordinador;
 	private Instancia instancia;
-	private GrafoWrapper datosGrafo;
+	private GrafoJson datosGrafo;
 
-	public CargaJsonPresentador(CargaJsonVista vista, Instancia instancia, CoordinadorPresentadores coordinador) {
+	public CargarJsonPresentador(CargarJsonVista vista, Instancia instancia, CoordinadorPresentadores coordinador) {
 		this._vista = vista;
 		this.instancia = instancia;
 		this.coordinador = coordinador;
@@ -61,11 +60,9 @@ public class CargaJsonPresentador {
 			_vista.mostrarRutaArchivo(archivoSeleccionado.getName());
 
 			try {
-				this.datosGrafo = JsonLoader.cargarGrafo(archivoSeleccionado.getAbsolutePath());
+				this.datosGrafo = CargadorJson.cargarGrafo(archivoSeleccionado.getAbsolutePath());
 
-				cargarVertices();
-				cargarAristas();
-
+				transformarGrafoJsonAInstancia();
 				_vista.habilitarBotonResultado(true);
 
 			} catch (Exception e) {
@@ -74,6 +71,11 @@ public class CargaJsonPresentador {
 				_vista.mostrarRutaArchivo("Ningún archivo seleccionado");
 			}
 		}
+	}
+
+	private void transformarGrafoJsonAInstancia() {
+		cargarVertices();
+		cargarAristas();
 	}
 
 	private void cargarAristas() {

@@ -2,11 +2,15 @@ package generadorRandomWrapper;
 
 import java.util.Random;
 
-public class GeneradorRandom implements Generador {
+public class GeneradorAleatorio implements Generador {
 	private Random _random;
 
-	public GeneradorRandom() {
-		_random = new Random(0);
+	public GeneradorAleatorio(long semilla) {
+		_random = new Random(semilla);
+	}
+	
+	public GeneradorAleatorio() {
+		_random = new Random();
 	}
 
 	@Override

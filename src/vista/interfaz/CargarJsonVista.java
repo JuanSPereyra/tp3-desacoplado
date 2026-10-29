@@ -2,7 +2,7 @@ package vista.interfaz;
 
 import java.awt.event.ActionListener;
 
-public interface CargaJsonVista {
+public interface CargarJsonVista {
 
 	void listenerSeleccionarArchivo(ActionListener listener);
 
